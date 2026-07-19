@@ -1,0 +1,30 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import PorondamTool from '../../components/islands/PorondamTool.jsx';
+import content from '../../partials/features/compatibility.html?raw';
+const jsonld = "{\"@context\":\"https://schema.org\",\"@type\":\"WebPage\",\"name\":\"Vedic Compatibility Matching — Grahachara\",\"url\":\"https://grahachara.com/features/compatibility\",\"isPartOf\":{\"@type\":\"WebSite\",\"name\":\"Grahachara\",\"url\":\"https://grahachara.com\"},\"breadcrumb\":{\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://grahachara.com/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Features\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Compatibility\"}]}}";
+---
+<ArticleLayout
+  title="Vedic Compatibility Matching App — Grahachara | Kundali Milan & Porutham"
+  description="Find your perfect match with Vedic compatibility analysis. Ashtakoot 36-point Kundali matching, Mangal Dosha check, Nakshatra compatibility & relationship insights."
+  canonical="https://grahachara.com/features/compatibility"
+  eyebrow="Feature"
+  heroTitle="Vedic Compatibility Matching"
+  heroSub="Discover your cosmic connection. The ancient 36-point Ashtakoot system reveals if your stars align — for love, marriage, or partnership."
+  breadcrumb={[{"label":"Home","href":"../index.html"},{"label":"Features","href":"../index.html#features"},{"label":"Compatibility"}]}
+  bg="page_hero_porondam.webp"
+  active="Compatibility"
+  jsonld={jsonld}
+>
+  <section class="pc-toolband" slot="tool">
+    <div class="pc-wrap">
+      <div class="pc-section__head">
+        <div class="pc-flourish" style="max-width:320px;margin:0 auto 14px;">Try It Free</div>
+        <h2 class="pc-section__title pc-gold-text">Check your Porondam</h2>
+        <p class="pc-section__sub">See your first three porondam free — then unlock the full 20-porondam reading and auspicious wedding dates in the app.</p>
+      </div>
+      <PorondamTool client:visible />
+    </div>
+  </section>
+  <Fragment set:html={content} />
+</ArticleLayout>

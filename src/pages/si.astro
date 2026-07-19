@@ -1,0 +1,290 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import IconSprite from '../components/IconSprite.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Footer from '../components/Footer.astro';
+import TarotCanvas from '../components/islands/TarotCanvas.jsx';
+import KendaraTool from '../components/islands/KendaraTool.jsx';
+import PorondamTool from '../components/islands/PorondamTool.jsx';
+import TodaySky from '../components/islands/TodaySky.jsx';
+import DailyReading from '../components/islands/DailyReading.jsx';
+import {
+  featureCardsSi, zodiacSi, featureSectionsSi, elementsSi, modalitiesSi, planetsSi, trustBandSi, PLAY_URL,
+} from '../data/site.js';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const ac = (p) => `${base}/assets/cosmos/${p}`;
+
+const glyphGroups = [
+  { title: 'මූලද්‍රව්‍ය', sub: 'ග්‍රහ ශක්තියේ මූලික ගොඩනැඟිලි කොටස්.', items: elementsSi, more: `${base}/features/zodiac-signs.html` },
+  { title: 'ස්වභාවයන්', sub: 'ශක්තිය චලනය වන ආකාරය සකසන ක්‍රම.', items: modalitiesSi, more: `${base}/blog/what-is-vedic-astrology.html` },
+  { title: 'ග්‍රහ බලපෑම්', sub: 'මඟපෙන්වන හා හැඩගස්වන ග්‍රහ බලවේග.', items: planetsSi, more: `${base}/blog/what-is-nakshatra.html` },
+];
+---
+<BaseLayout
+  bodyClass="portal-page"
+  lang="si"
+  title="ග්‍රහචාර — තාරකාවලින් ලියැවුණු ඔබේ ජීවන කතාව | වේද ජ්‍යොතිෂය හා පලාපල"
+  description="අහස් කුසේ සැඟවුණු ඔබේ ජීවන රහස් නිවැරදිව කියවන මාලිමාව 'ග්‍රහචාර' යි. කේන්දරය, පොරොන්දම් සහ දෛනික තාරකා මඟපෙන්වීම් සමඟින් ඔබේ ඉරණම ජයගන්න."
+  canonical="https://grahachara.com/si.html"
+  ogTitle="ග්‍රහචාර — සැඟවුණු අනාගතයේ දොරටු විවර කරමු"
+  ogDescription="පැරණි සෘෂිවරුන්ගේ ප්‍රඥාවෙන් ඔබේ ජීවිතයට ආලෝකයක්. නිවැරදි කේන්දර විශ්ලේෂණය, පොරොන්දම් ගැළපීම් සහ දෛනික මඟපෙන්වීම්."
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline set:html={`[
+      {"@context":"https://schema.org","@type":"SoftwareApplication","name":"Grahachara","alternateName":"ග්‍රහචාර","applicationCategory":"LifestyleApplication","operatingSystem":"Android","url":"https://grahachara.com","downloadUrl":"${PLAY_URL}","installUrl":"${PLAY_URL}","inLanguage":["si","en"],"creator":{"@type":"Organization","name":"Wenthura Solutions Pvt Ltd","url":"https://grahachara.com"}},
+      {"@context":"https://schema.org","@type":"WebSite","name":"Grahachara","url":"https://grahachara.com/si.html","inLanguage":"si"}
+    ]`} />
+  </Fragment>
+
+  <IconSprite />
+
+  <div class="pc-cosmos" aria-hidden="true"></div>
+  <div class="pc-starfield" aria-hidden="true"></div>
+  <div class="pc-vignette" aria-hidden="true"></div>
+  <div class="pc-grain" aria-hidden="true"></div>
+
+  <Nav active="මුල් පිටුව" lang="si" />
+
+  <div class="seo-block" role="complementary" aria-label="ග්‍රහචාර ගැන">
+    <div class="container">
+      <p><strong>'ග්‍රහචාර' යනු යෙදුමක් පමණක් නොවේ; එය ඔබේ ජීවන ගමනට මඟ පෙන්වන විශ්වීය ඇසයි.</strong> ග්‍රහලෝකවල සියුම් චලනයන් ඔබේ හුස්ම හා බැඳෙන ආකාරය අතිශය නිවැරදිව ගණනය කරමින්, ඔබේ ජීවිතයේ යහපත් හැරවුම් ලක්ෂ්‍යයන්, ආදරය, රැකියාව හා අනාගතය පිළිබඳව පැහැදිලි හා මිත්‍රශීලී මඟපෙන්වීමක් අපි ලබා දෙන්නෙමු. ඔබ ඉපදුණු මොහොතේ විශ්වය ඔබ වෙනුවෙන් මැවූ සිතියම මෙතැනින් දිගහරින්න.</p>
+    </div>
+  </div>
+
+  <Hero lang="si" />
+
+  <!-- Feature cards -->
+  <section class="pc-section" id="explore">
+    <div class="pc-wrap">
+      <div class="pc-features">
+        {featureCardsSi.map((f) => (
+          <a class="pc-card pc-feature" href={PLAY_URL} target="_blank" rel="noopener">
+            <img class="pc-feature__ico" src={ac(`${f.icon}.webp`)} alt={`${f.title} සංකේතය`} width="512" height="512" loading="lazy" />
+            <h3 class="pc-feature__title pc-gold-text">{f.title}</h3>
+            <p class="pc-feature__desc">{f.desc}</p>
+            <span class="pc-feature__cta">දැන් බලන්න</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- App feature walkthroughs -->
+  <div class="pc-appfeatures">
+    <section class="features-intro" id="features">
+      <div class="container">
+        <p class="section-eyebrow" data-reveal="up">විශ්වයේ පණිවිඩය</p>
+        <h2 class="section-title" data-reveal="up">සැඟවුණු අනාගතයේ<br>දොරටු විවර කරමු.</h2>
+        <p class="section-subtitle" data-reveal="up">ඔබ අතට පත්වන්නේ හුදු අනාවැකි නොවේ. පැරණි ඍෂිවරුන්ගේ ප්‍රඥාව සහ නවීන තාක්ෂණය මුසුකර, ඔබ ගමන් කළ යුතු නිවැරදිම දිශාව පෙන්වා දෙන විශ්වාසවන්තම අත්වැලයි.</p>
+      </div>
+    </section>
+
+    {featureSectionsSi.map((s, i) => {
+      const content = (
+        <div class="feature__content" data-reveal={s.side === 'left' ? 'right' : 'left'}>
+          <span class="feature__badge">{s.badge}</span>
+          <h3 class="feature__title" set:html={s.title}></h3>
+          <p class="feature__desc">{s.desc}</p>
+          <ul class="feature__list">{s.list.map((li) => <li>{li}</li>)}</ul>
+        </div>
+      );
+      const visuals = (
+        <div class="feature__visuals" data-reveal={s.side === 'left' ? 'left' : 'right'}>
+          <div class="feature__art">
+            <TarotCanvas client:visible slug={s.art} base={base} index={i} alt={s.label} />
+            <span class="feature__art-label">{s.num} · {s.label}</span>
+          </div>
+        </div>
+      );
+      return (
+        <section class={`feature feature--${s.side}`} id={s.id}>
+          <div class={`container feature__grid${s.side === 'left' ? ' feature__grid--reverse' : ''}`}>
+            {s.side === 'left' ? <>{visuals}{content}</> : <>{content}{visuals}</>}
+          </div>
+        </section>
+      );
+    })}
+  </div>
+
+  <!-- Your Daily Reading -->
+  <section class="pc-section" id="daily">
+    <div class="pc-wrap">
+      <DailyReading client:visible base={base} lang="si" />
+    </div>
+  </section>
+
+  <!-- Today's Sky -->
+  <section class="pc-todaysky" id="today" aria-label="අද අහස">
+    <img class="pc-todaysky__bg" src={ac('today_night.webp')} alt="" width="2048" height="1024" aria-hidden="true" />
+    <div class="pc-todaysky__veil" aria-hidden="true"></div>
+    <div class="pc-wrap" style="position:relative;z-index:2;">
+      <TodaySky client:visible lang="si" />
+    </div>
+  </section>
+
+  <!-- Try it free -->
+  <section class="pc-section" id="try">
+    <div class="pc-wrap">
+      <div class="pc-section__head">
+        <div class="pc-flourish" style="max-width:300px;margin:0 auto 14px;">ඉරණමේ පෙරනිමිති</div>
+        <h2 class="pc-section__title pc-gold-text">විශ්වය ඔබ ගැන පවසන දේ අසන්න</h2>
+        <p class="pc-section__sub">කිසිදු ගෙවීමකින් තොරව දැන්ම ඔබගේ මූලික ග්‍රහ සටහන කියවන්න. තාරකාවල සැඟවුණු සම්පූර්ණ කතාව ඇසීමට යෙදුමට පිවිසෙන්න.</p>
+      </div>
+      <div class="pc-tools">
+        <KendaraTool client:visible lang="si" />
+        <PorondamTool client:visible lang="si" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Rashi Chakra -->
+  <section class="pc-chakra" id="chakra" aria-label="රාශි චක්‍රය">
+    <img class="pc-chakra__bg" src={ac('hero_nebula.webp')} alt="" width="2048" height="1536" aria-hidden="true" />
+    <div class="pc-chakra__veil" aria-hidden="true"></div>
+    <div class="pc-wrap pc-chakra__inner">
+      <div class="pc-chakra__copy">
+        <div class="pc-flourish" style="max-width:320px;margin:0 auto 14px;">අහස් තලයේ සිතියම</div>
+        <h2 class="pc-section__title pc-gold-text">අනන්ත වූ රාශි වළල්ල</h2>
+        <p class="pc-section__sub">උපතේ සිට මරණය දක්වා අපගේ ජීවිත මෙහෙයවන, ආලෝකය සහ ශක්තිය මුදාහරින අද්භූත තාරකා මාලාව.</p>
+      </div>
+      <div class="pc-chakra__wheel" aria-hidden="true">
+        <img class="pc-wheel pc-wheel--outer" src={ac('zodiac_wheel.webp')} alt="" width="1280" height="1280" />
+        <img class="pc-wheel pc-wheel--center" src={ac('zodiac_wheel.webp')} alt="" width="1280" height="1280" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Zodiac grid -->
+  <section class="pc-section" id="signs">
+    <div class="pc-wrap">
+      <div class="pc-section__head">
+        <div class="pc-flourish" style="max-width:340px;margin:0 auto 14px;">ඔබේ ආත්මීය ලකුණ</div>
+        <h2 class="pc-section__title pc-gold-text">ඔබ උපන්නේ කුමන තාරකාවක සෙවණේද?</h2>
+        <p class="pc-section__sub">එකිනෙකට වෙනස් වූ ශක්තීන්ගෙන් පිරුණු රාශි දොළහෙන්, ඔබගේ ජීවිතයට හිමිවූ අපූරු දායාදයන් සහ අභියෝගයන් හඳුනාගන්න.</p>
+      </div>
+      <div class="pc-zodiac">
+        {zodiacSi.map((z) => (
+          <a class="pc-card pc-sign" href={`${base}/features/zodiac-signs.html#${z.slug}`}>
+            <img class="pc-sign__ico" src={ac(`z_${z.slug}.webp`)} alt={z.name} width="512" height="512" loading="lazy" />
+            <div class="pc-sign__name pc-gold-text">{z.name}</div>
+            <div class="pc-sign__key">{z.key}</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Knowledge panels -->
+  <section class="pc-section" id="knowledge">
+    <div class="pc-wrap">
+      <div class="pc-section__head">
+        <p class="pc-eyebrow">අඳුරින් ආලෝකයට · නොදන්නා දෙයින් දන්නා දෙයට</p>
+        <h2 class="pc-section__title pc-gold-text">ඥානයේ ගැඹුර ස්පර්ශ කරන්න</h2>
+      </div>
+      <div class="pc-knowledge">
+        {glyphGroups.map((g) => (
+          <div class="pc-card pc-panel">
+            <h3 class="pc-panel__title">{g.title}</h3>
+            <p class="pc-panel__sub">{g.sub}</p>
+            <div class="pc-glyphs">
+              {g.items.map((it) => (
+                <div class="pc-glyph">
+                  <span class="pc-glyph__disc"><svg class="pc-ico"><use href={`#${it.icon}`}/></svg></span>
+                  <span class="pc-glyph__label">{it.label}{it.sub && <small>{it.sub}</small>}</span>
+                </div>
+              ))}
+            </div>
+            <a class="pc-panel__more" href={g.more}>සියල්ල බලන්න</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Value ladder -->
+  <section class="pc-section" id="unlock">
+    <div class="pc-wrap">
+      <div class="pc-section__head">
+        <div class="pc-flourish" style="max-width:280px;margin:0 auto 12px;">මාවත තෝරාගන්න</div>
+        <h2 class="pc-section__title pc-gold-text">ඔබේ සත්‍යය සොයා යන ගමන අරඹමුද?</h2>
+        <p class="pc-section__sub">මුලික පියවරයන් සඳහා අපෙන් ඔබට කිසිදු බාධාවක් නැත. එහෙත් ජීවිතයේ සියලු රහස් අගුළු හැරීමට, අපගේ විශේෂිත සේවාවන් වෙත පිවිසෙන්න.</p>
+      </div>
+      <div class="pc-tiers">
+        <div class="pc-card pc-tier">
+          <img class="pc-tier__emblem" src={ac('tier_web.webp')} alt="" width="512" height="512" loading="lazy" />
+          <h3 class="pc-tier__name">ප්‍රවේශය <small>(වෙබ් අවකාශය)</small></h3>
+          <p class="pc-tier__price">සම්පූර්ණයෙන්ම නොමිලේ <small>· ලියාපදිංචියක් අනවශ්‍යයි</small></p>
+          <ul class="pc-tier__list">
+            <li>අද දවසේ සුබ මුහුර්ත සහ බලපෑම්</li>
+            <li>රාශියට හිමි දෛනික මඟපෙන්වීම</li>
+            <li>කේන්දරයේ මූලික සටහන සහ සරල ගැළපීම්</li>
+            <li>ජ්‍යොතිෂයේ මූලික සිද්ධාන්ත දැනගැනීමට</li>
+          </ul>
+          <span class="pc-tier__here">ඔබ මෙහි</span>
+        </div>
+
+        <div class="pc-card pc-tier pc-tier--mid">
+          <img class="pc-tier__emblem" src={ac('tier_app.webp')} alt="" width="512" height="512" loading="lazy" />
+          <h3 class="pc-tier__name">ඔබේ අතැති මාලිමාව</h3>
+          <p class="pc-tier__price">නොමිලේ <small>· Google Play</small></p>
+          <ul class="pc-tier__list">
+            <li>වෙබ් අඩවියේ ඇති සියලු දේ සමඟින්...</li>
+            <li>උපන් මොහොතටම සකසන ලද <em>අතිශය පෞද්ගලික</em> කේන්දරය</li>
+            <li>පොදු රාශි පලාපල වෙනුවට ඔබේ ග්‍රහයන්ටම වෙන්වූ මඟපෙන්වීම</li>
+            <li>ජංගම දුරකථනයටම එන සුබ නැකැත් සිහිකැඳවීම්</li>
+          </ul>
+          <a class="pc-btn-gold pc-tier__cta" href={PLAY_URL} target="_blank" rel="noopener">යෙදුම ඔබගේ කරගන්න</a>
+        </div>
+
+        <div class="pc-card pc-tier pc-tier--pro">
+          <span class="pc-tier__badge">Pro</span>
+          <img class="pc-tier__emblem" src={ac('tier_pro.webp')} alt="" width="512" height="512" loading="lazy" />
+          <h3 class="pc-tier__name">පූර්ණ ආලෝකය <small>(Pro)</small></h3>
+          <p class="pc-tier__price">රු. 490<small>/මාසය</small></p>
+          <p class="pc-tier__price-alt">ශ්‍රී ලංකාවෙන් පිටත $4.99/මාසය</p>
+          <ul class="pc-tier__list">
+            <li>සියලු සීමාවන්ගෙන් තොරව, තවද...</li>
+            <li>වසර 25ක සම්පූර්ණ ජීවන වාර්තාව සහ දශා පෙරනිමිති</li>
+            <li>සැකයක් ඇති ඕනෑම විටෙක පෞද්ගලික ජ්‍යොතිෂ උපදේශන</li>
+            <li>නවාංශකය ඇතුළු සියලුම සූක්ෂම වර්ග කේන්දර</li>
+            <li>විවාහ, දරු සම්පත් සහ සියලුම ජීවිත මුහුර්තයන්</li>
+          </ul>
+          <a class="pc-btn-gold pc-tier__cta" href={PLAY_URL} target="_blank" rel="noopener">පූර්ණ ඥානය වෙත පිවිසෙන්න</a>
+          <p class="pc-tier__note">ජීවිතයටම එක් වරක් පමණක් ගෙවා මේ සියල්ල සදහටම ඔබේ කරගන්නටත් පුළුවන් — සම්පූර්ණ වාර්තාව රු.999 ($3.99) · විවාහ පොරොන්දම් රු.990 ($4.99) · දරු කේන්දරය රු.1,490 ($6.99)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wisdom CTA -->
+  <section class="pc-section" id="wisdom">
+    <div class="pc-wrap">
+      <div class="pc-card pc-wisdom">
+        <div class="pc-wisdom__body">
+          <h2 class="pc-wisdom__title pc-gold-text">පැරණි ඍෂි ඥානයෙන්<br>ඔබේ හෙට දවස ආලෝකවත් කරන්න.</h2>
+          <p class="pc-wisdom__sub">තරු වියන යට අපි කිසිවිටෙකත් තනි වී නැත. සොබාදහමේ රිද්මයට අනුගතව, සැකයෙන් තොරව ඔබගේ ඊළඟ පියවර තබන්න.</p>
+          <a class="pc-btn-gold" href={PLAY_URL} target="_blank" rel="noopener">ඔබේ කේන්දරය දිගහරින්න</a>
+        </div>
+        <div class="pc-wisdom__media">
+          <img src={ac('sage_panel.webp')} alt="ඉටිපන්දම් එළියෙන් ග්‍රන්ථ ලියන වේද මුනිවරයෙක්" width="768" height="512" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust band -->
+  <div class="pc-trustband">
+    <div class="pc-wrap pc-trustband__row">
+      {trustBandSi.map((t) => (
+        <div class="pc-trustband__item">
+          <span class="pc-trustband__ico"><svg class="pc-ico"><use href={`#${t.icon}`}/></svg></span>
+          <div><div class="pc-trustband__t">{t.t}</div><div class="pc-trustband__d">{t.d}</div></div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <Footer lang="si" />
+</BaseLayout>

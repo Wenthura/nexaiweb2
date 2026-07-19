@@ -1,0 +1,19 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import content from '../../partials/features/zodiac-signs.html?raw';
+const jsonld = "{\r\n    \"@context\": \"https://schema.org\",\r\n    \"@type\": \"WebPage\",\r\n    \"name\": \"12 Vedic Zodiac Signs (Rashis) — Grahachara\",\r\n    \"description\": \"Explore all 12 Vedic zodiac signs with sidereal dates, ruling planets, personality traits, and compatibility.\",\r\n    \"url\": \"https://grahachara.com/features/zodiac-signs\",\r\n    \"isPartOf\": { \"@type\": \"WebSite\", \"name\": \"Grahachara\", \"url\": \"https://grahachara.com\" },\r\n    \"breadcrumb\": {\r\n      \"@type\": \"BreadcrumbList\",\r\n      \"itemListElement\": [\r\n        { \"@type\": \"ListItem\", \"position\": 1, \"name\": \"Home\", \"item\": \"https://grahachara.com\" },\r\n        { \"@type\": \"ListItem\", \"position\": 2, \"name\": \"Features\", \"item\": \"https://grahachara.com/features/\" },\r\n        { \"@type\": \"ListItem\", \"position\": 3, \"name\": \"Zodiac Signs\" }\r\n      ]\r\n    }\r\n  }";
+---
+<ArticleLayout
+  title="12 Vedic Zodiac Signs (Rashis) — Dates, Traits & Compatibility | Grahachara"
+  description="Explore all 12 Vedic zodiac signs (Rashis) with sidereal dates, ruling planets, personality traits, compatible signs & element classifications. Discover your true Vedic sun sign."
+  canonical="https://grahachara.com/features/zodiac-signs"
+  eyebrow="Feature"
+  heroTitle="The 12 Vedic Zodiac Signs"
+  heroSub="Explore every Rashi — from fiery Mesha to dreamy Meena. Discover your true Vedic sun sign, personality traits, ruling planet, and cosmic compatibility."
+  breadcrumb={[{"label":"Home","href":"../index.html"},{"label":"Features","href":"../index.html#explore"},{"label":"Zodiac Signs"}]}
+  bg="page_hero_features.webp"
+  active="Panchanga"
+  jsonld={jsonld}
+>
+  <Fragment set:html={content} />
+</ArticleLayout>

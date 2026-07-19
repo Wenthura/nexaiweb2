@@ -1,0 +1,12 @@
+# build output
+dist/
+.astro/
+# deps
+node_modules/
+# os / editor
+.DS_Store
+*.log
+# local preview + scratch
+.playwright-mcp/
+# agent-local (design gen, backups, secrets)
+.claude/

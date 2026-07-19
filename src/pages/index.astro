@@ -1,0 +1,283 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import IconSprite from '../components/IconSprite.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Footer from '../components/Footer.astro';
+import TarotCanvas from '../components/islands/TarotCanvas.jsx';
+import KendaraTool from '../components/islands/KendaraTool.jsx';
+import PorondamTool from '../components/islands/PorondamTool.jsx';
+import TodaySky from '../components/islands/TodaySky.jsx';
+import DailyReading from '../components/islands/DailyReading.jsx';
+import {
+  featureCards, zodiac, featureSections, elements, modalities, planets, trustBand, PLAY_URL,
+} from '../data/site.js';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const ac = (p) => `${base}/assets/cosmos/${p}`;
+
+const glyphGroups = [
+  { title: 'The Elements', sub: 'The building blocks of cosmic energy.', items: elements, more: `${base}/features/zodiac-signs.html` },
+  { title: 'The Modalities', sub: 'The modes that shape how energy moves.', items: modalities, more: `${base}/blog/what-is-vedic-astrology.html` },
+  { title: 'Planetary Influences', sub: 'The celestial forces that guide and shape.', items: planets, more: `${base}/blog/what-is-nakshatra.html` },
+];
+---
+<BaseLayout bodyClass="portal-page">
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline set:html={`[
+      {"@context":"https://schema.org","@type":"SoftwareApplication","name":"Grahachara","alternateName":"Grahachara Vedic Astrology","description":"Grahachara is a Vedic astrology app that uses NASA-grade planetary calculations to generate personalized birth charts, 25-year life predictions, compatibility matching, and daily horoscopes based on the ancient Jyotish tradition.","url":"https://grahachara.com","applicationCategory":"LifestyleApplication","applicationSubCategory":"Astrology","operatingSystem":"Android","downloadUrl":"${PLAY_URL}","installUrl":"${PLAY_URL}","softwareVersion":"1.0","inLanguage":["en","si"],"offers":[{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Free download with basic features"},{"@type":"Offer","price":"4.99","priceCurrency":"USD","description":"Monthly subscription for full access"},{"@type":"Offer","price":"2.99","priceCurrency":"USD","description":"Compatibility matching report"},{"@type":"Offer","price":"3.99","priceCurrency":"USD","description":"Full life prediction report"}],"featureList":["Vedic birth chart analysis","Nakshatra identification","Dasha period predictions","25-year life report","Compatibility matching","Daily personalized horoscope","Dream interpretation","NASA-grade planetary calculations"],"screenshot":"https://grahachara.com/assets/og-card.png","creator":{"@type":"Organization","name":"Wenthura Solutions Pvt Ltd","url":"https://grahachara.com"}},
+      {"@context":"https://schema.org","@type":"Organization","name":"Grahachara","legalName":"Wenthura Solutions Pvt Ltd","url":"https://grahachara.com","logo":"https://grahachara.com/assets/logo.png","sameAs":["https://www.facebook.com/share/1FBBur8QZf/","https://www.instagram.com/grahachara_astro","https://www.tiktok.com/@grahachara_astro","${PLAY_URL}"],"contactPoint":{"@type":"ContactPoint","url":"https://grahachara.com/legal/contact.html","contactType":"customer support"}},
+      {"@context":"https://schema.org","@type":"WebSite","name":"Grahachara","url":"https://grahachara.com"}
+    ]`} />
+  </Fragment>
+
+  <IconSprite />
+
+  <div class="pc-cosmos" aria-hidden="true"></div>
+  <div class="pc-starfield" aria-hidden="true"></div>
+  <div class="pc-vignette" aria-hidden="true"></div>
+  <div class="pc-grain" aria-hidden="true"></div>
+
+  <Nav active="Home" lang="en" />
+
+  <div class="seo-block" role="complementary" aria-label="About Grahachara">
+    <div class="container">
+      <p><strong>Grahachara</strong> turns real planetary calculations into clear Sinhala &amp; English guidance — daily nakath and rahu kalaya, your complete kendara (birth chart), porondam and marriage compatibility, career/love/health/money life reports, a personal astrologer chat, keepsake baby kendara, and wedding muhurtha timing. Every calculation is tuned to your exact city and time zone, worldwide.</p>
+    </div>
+  </div>
+
+  <Hero />
+
+  <!-- Feature cards -->
+  <section class="pc-section" id="explore">
+    <div class="pc-wrap">
+      <div class="pc-features">
+        {featureCards.map((f) => (
+          <a class="pc-card pc-feature" href={PLAY_URL} target="_blank" rel="noopener">
+            <img class="pc-feature__ico" src={ac(`${f.icon}.webp`)} alt={`${f.title} emblem`} width="512" height="512" loading="lazy" />
+            <h3 class="pc-feature__title pc-gold-text">{f.title}</h3>
+            <p class="pc-feature__desc">{f.desc}</p>
+            <span class="pc-feature__cta">View Now</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- App feature walkthroughs (relit tarot art) -->
+  <div class="pc-appfeatures">
+    <section class="features-intro" id="features">
+      <div class="container">
+        <p class="section-eyebrow" data-reveal="up">Features</p>
+        <h2 class="section-title" data-reveal="up">Everything in your chart.<br>Revealed.</h2>
+        <p class="section-subtitle" data-reveal="up">Daily nakath, rahu kalaya, your full kendara and porondam matching — real planetary calculations turned into clear guidance you can act on today.</p>
+      </div>
+    </section>
+
+    {featureSections.map((s, i) => {
+      const content = (
+        <div class="feature__content" data-reveal={s.side === 'left' ? 'right' : 'left'}>
+          <span class="feature__badge">{s.badge}</span>
+          <h3 class="feature__title" set:html={s.title}></h3>
+          <p class="feature__desc">{s.desc}</p>
+          <ul class="feature__list">{s.list.map((li) => <li>{li}</li>)}</ul>
+        </div>
+      );
+      const visuals = (
+        <div class="feature__visuals" data-reveal={s.side === 'left' ? 'left' : 'right'}>
+          <div class="feature__art">
+            <TarotCanvas client:visible slug={s.art} base={base} index={i} alt={s.label} />
+            <span class="feature__art-label">{s.num} · {s.label}</span>
+          </div>
+        </div>
+      );
+      return (
+        <section class={`feature feature--${s.side}`} id={s.id}>
+          <div class={`container feature__grid${s.side === 'left' ? ' feature__grid--reverse' : ''}`}>
+            {s.side === 'left' ? <>{visuals}{content}</> : <>{content}{visuals}</>}
+          </div>
+        </section>
+      );
+    })}
+  </div>
+
+  <!-- Your Daily Reading — the reason to return every day -->
+  <section class="pc-section" id="daily">
+    <div class="pc-wrap">
+      <DailyReading client:visible base={base} />
+    </div>
+  </section>
+
+  <!-- Today's Sky — live panchanga over a heavenly visual -->
+  <section class="pc-todaysky" id="today" aria-label="Today's Sky">
+    <img class="pc-todaysky__bg" src={ac('today_night.webp')} alt="" width="2048" height="1024" aria-hidden="true" />
+    <div class="pc-todaysky__veil" aria-hidden="true"></div>
+    <div class="pc-wrap" style="position:relative;z-index:2;">
+      <TodaySky client:visible />
+    </div>
+  </section>
+
+  <!-- Try it free — live preview tools that convert to the app -->
+  <section class="pc-section" id="try">
+    <div class="pc-wrap">
+      <div class="pc-section__head">
+        <div class="pc-flourish" style="max-width:300px;margin:0 auto 14px;">Try It Free</div>
+        <h2 class="pc-section__title pc-gold-text">A taste of your chart</h2>
+        <p class="pc-section__sub">Real Vedic calculations, right here — then unlock the full reading in the app.</p>
+      </div>
+      <div class="pc-tools">
+        <KendaraTool client:visible />
+        <PorondamTool client:visible />
+      </div>
+    </div>
+  </section>
+
+  <!-- Rashi Chakra centrepiece -->
+  <section class="pc-chakra" id="chakra" aria-label="The Rashi Chakra">
+    <img class="pc-chakra__bg" src={ac('hero_nebula.webp')} alt="" width="2048" height="1536" aria-hidden="true" />
+    <div class="pc-chakra__veil" aria-hidden="true"></div>
+    <div class="pc-wrap pc-chakra__inner">
+      <div class="pc-chakra__copy">
+        <div class="pc-flourish" style="max-width:320px;margin:0 auto 14px;">The Cosmic Wheel</div>
+        <h2 class="pc-section__title pc-gold-text">The Rashi Chakra</h2>
+        <p class="pc-section__sub">Twelve signs forever turning around the still, radiant heart of the sun.</p>
+      </div>
+      <div class="pc-chakra__wheel" aria-hidden="true">
+        <img class="pc-wheel pc-wheel--outer" src={ac('zodiac_wheel.webp')} alt="" width="1280" height="1280" />
+        <img class="pc-wheel pc-wheel--center" src={ac('zodiac_wheel.webp')} alt="" width="1280" height="1280" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Zodiac grid -->
+  <section class="pc-section" id="signs">
+    <div class="pc-wrap">
+      <div class="pc-section__head">
+        <div class="pc-flourish" style="max-width:340px;margin:0 auto 14px;">The Twelve Signs</div>
+        <h2 class="pc-section__title pc-gold-text">Read the Zodiac</h2>
+        <p class="pc-section__sub">Each sign a hand-carved emblem of the sky — its nature, its gift, its lesson.</p>
+      </div>
+      <div class="pc-zodiac">
+        {zodiac.map((z) => (
+          <a class="pc-card pc-sign" href={`${base}/features/zodiac-signs.html#${z.slug}`}>
+            <img class="pc-sign__ico" src={ac(`z_${z.slug}.webp`)} alt={z.name} width="512" height="512" loading="lazy" />
+            <div class="pc-sign__name pc-gold-text">{z.name}</div>
+            <div class="pc-sign__key">{z.key}</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Knowledge panels -->
+  <section class="pc-section" id="knowledge">
+    <div class="pc-wrap">
+      <div class="pc-section__head">
+        <p class="pc-eyebrow">As above, so below · As within, so without</p>
+        <h2 class="pc-section__title pc-gold-text">The Language of the Sky</h2>
+      </div>
+      <div class="pc-knowledge">
+        {glyphGroups.map((g) => (
+          <div class="pc-card pc-panel">
+            <h3 class="pc-panel__title">{g.title}</h3>
+            <p class="pc-panel__sub">{g.sub}</p>
+            <div class="pc-glyphs">
+              {g.items.map((it) => (
+                <div class="pc-glyph">
+                  <span class="pc-glyph__disc"><svg class="pc-ico"><use href={`#${it.icon}`}/></svg></span>
+                  <span class="pc-glyph__label">{it.label}{it.sub && <small>{it.sub}</small>}</span>
+                </div>
+              ))}
+            </div>
+            <a class="pc-panel__more" href={g.more}>View All</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Value ladder — free here → free app → Pro -->
+  <section class="pc-section" id="unlock">
+    <div class="pc-wrap">
+      <div class="pc-section__head">
+        <div class="pc-flourish" style="max-width:280px;margin:0 auto 12px;">Free to start</div>
+        <h2 class="pc-section__title pc-gold-text">How far do you want to see?</h2>
+        <p class="pc-section__sub">Everything here is free. The app reads your own chart — the subscription opens the whole vault.</p>
+      </div>
+      <div class="pc-tiers">
+        <div class="pc-card pc-tier">
+          <img class="pc-tier__emblem" src={ac('tier_web.webp')} alt="" width="512" height="512" loading="lazy" />
+          <h3 class="pc-tier__name">On the web</h3>
+          <p class="pc-tier__price">Free <small>· no sign-up</small></p>
+          <ul class="pc-tier__list">
+            <li>Today's nakath &amp; rahu kalaya</li>
+            <li>Your daily sign reading</li>
+            <li>Kendara preview &amp; quick porondam</li>
+            <li>The twelve rashi &amp; panchanga basics</li>
+          </ul>
+          <span class="pc-tier__here">You're here</span>
+        </div>
+
+        <div class="pc-card pc-tier pc-tier--mid">
+          <img class="pc-tier__emblem" src={ac('tier_app.webp')} alt="" width="512" height="512" loading="lazy" />
+          <h3 class="pc-tier__name">The free app</h3>
+          <p class="pc-tier__price">Free <small>· Google Play</small></p>
+          <ul class="pc-tier__list">
+            <li>Everything on the web, plus…</li>
+            <li>Your <em>exact</em> kendara from birth time &amp; place</li>
+            <li>Daily guidance from <em>your</em> chart — not just your sign</li>
+            <li>Nakath alerts &amp; your saved chart</li>
+          </ul>
+          <a class="pc-btn-gold pc-tier__cta" href={PLAY_URL} target="_blank" rel="noopener">Download free</a>
+        </div>
+
+        <div class="pc-card pc-tier pc-tier--pro">
+          <span class="pc-tier__badge">Pro</span>
+          <img class="pc-tier__emblem" src={ac('tier_pro.webp')} alt="" width="512" height="512" loading="lazy" />
+          <h3 class="pc-tier__name">Grahachara Pro</h3>
+          <p class="pc-tier__price">LKR 490<small>/month</small></p>
+          <p class="pc-tier__price-alt">$4.99/month outside Sri Lanka</p>
+          <ul class="pc-tier__list">
+            <li>Everything, unlocked, plus…</li>
+            <li>Full 25-year life report &amp; dasha timeline</li>
+            <li>Unlimited personal astrologer chat</li>
+            <li>Navamsha &amp; all divisional charts</li>
+            <li>Complete porondam, baby kendara &amp; muhurtha</li>
+          </ul>
+          <a class="pc-btn-gold pc-tier__cta" href={PLAY_URL} target="_blank" rel="noopener">Start free, go Pro anytime</a>
+          <p class="pc-tier__note">Or buy once — Full report LKR 999 ($3.99) · Marriage porondam LKR 990 ($4.99) · Baby kendara LKR 1,490 ($6.99)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wisdom CTA -->
+  <section class="pc-section" id="wisdom">
+    <div class="pc-wrap">
+      <div class="pc-card pc-wisdom">
+        <div class="pc-wisdom__body">
+          <h2 class="pc-wisdom__title pc-gold-text">Timeless wisdom for modern times.</h2>
+          <p class="pc-wisdom__sub">Walk the path. Live in alignment. Let five thousand years of Jyotish light your way.</p>
+          <a class="pc-btn-gold" href={PLAY_URL} target="_blank" rel="noopener">Explore Vedic Wisdom</a>
+        </div>
+        <div class="pc-wisdom__media">
+          <img src={ac('sage_panel.webp')} alt="A Vedic sage writing scripture by candlelight" width="768" height="512" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust band -->
+  <div class="pc-trustband">
+    <div class="pc-wrap pc-trustband__row">
+      {trustBand.map((t) => (
+        <div class="pc-trustband__item">
+          <span class="pc-trustband__ico"><svg class="pc-ico"><use href={`#${t.icon}`}/></svg></span>
+          <div><div class="pc-trustband__t">{t.t}</div><div class="pc-trustband__d">{t.d}</div></div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <Footer />
+</BaseLayout>

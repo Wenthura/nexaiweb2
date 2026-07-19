@@ -1,0 +1,31 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import KendaraTool from '../../components/islands/KendaraTool.jsx';
+import content from '../../partials/features/birth-chart-si.html?raw';
+const jsonld = '{"@context":"https://schema.org","@type":"WebPage","name":"වේද කේන්දර විශ්ලේෂණය — ග්‍රහචාර","url":"https://grahachara.com/features/birth-chart-si","inLanguage":"si","isPartOf":{"@type":"WebSite","name":"Grahachara","url":"https://grahachara.com"}}';
+---
+<ArticleLayout
+  lang="si"
+  title="වේද කේන්දර විශ්ලේෂණය — ග්‍රහචාර | නිවැරදි ජන්ම කේන්දරය"
+  description="ග්‍රහචාර යෙදුමෙන් ඔබේ සම්පූර්ණ වේද කේන්දරය (ජන්ම කුණ්ඩලිය) NASA මට්ටමේ ග්‍රහ ගණනයෙන් සකසාගන්න. භාව දොළහ, නක්ෂත්‍ර, දශා කාල සහ ග්‍රහ පිහිටීම් — ඔබට පෞද්ගලිකව පැහැදිලි කර."
+  canonical="https://grahachara.com/features/birth-chart-si"
+  eyebrow="විශේෂාංගය"
+  heroTitle="වේද කේන්දර විශ්ලේෂණය"
+  heroSub="ඔබේ සම්පූර්ණ ජන්ම කුණ්ඩලිය — NASA මට්ටමේ නිරවද්‍යතාවෙන් ගණනය කර, භාව අනුව පැහැදිලි කර. තරු අතර ලියැවුණු ඔබේ ඉරණමේ සිතියම."
+  breadcrumb={[{"label":"මුල් පිටුව","href":"../si.html"},{"label":"විශේෂාංග","href":"../si.html#explore"},{"label":"කේන්දරය"}]}
+  bg="page_hero_kendara.webp"
+  active="කේන්දරය"
+  jsonld={jsonld}
+>
+  <section class="pc-toolband" slot="tool">
+    <div class="pc-wrap">
+      <div class="pc-section__head">
+        <div class="pc-flourish" style="max-width:300px;margin:0 auto 14px;">නොමිලේ අත්හදා බලන්න</div>
+        <h2 class="pc-section__title pc-gold-text">දැන්ම ඔබේ කේන්දරය සාදන්න</h2>
+        <p class="pc-section__sub">ඔබේ උපත් තොරතුරු ඇතුළත් කර, තබා ගැනීමට හා බෙදා ගැනීමට නියම කේන්දරයක් ලබාගන්න — සම්පූර්ණ අවුරුදු 25 පලාපල යෙදුමේ.</p>
+      </div>
+      <KendaraTool client:visible lang="si" />
+    </div>
+  </section>
+  <Fragment set:html={content} />
+</ArticleLayout>

@@ -1,0 +1,19 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import content from '../../partials/legal/delete-account.html?raw';
+const jsonld = "";
+---
+<ArticleLayout
+  title="Delete Account — Grahachara"
+  description="Request deletion of your Grahachara account and associated data."
+  canonical=""
+  eyebrow="Legal"
+  heroTitle="Delete Your Account"
+  heroSub="Grahachara (ග්‍රහචාර) — Account Deletion Request"
+  breadcrumb={[{"label":"Home","href":"../index.html"},{"label":"Delete Your Account"}]}
+  bg="bg_stars.webp"
+  active=""
+  jsonld={jsonld}
+>
+  <Fragment set:html={content} />
+</ArticleLayout>

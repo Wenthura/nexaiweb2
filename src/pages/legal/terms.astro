@@ -1,0 +1,19 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import content from '../../partials/legal/terms.html?raw';
+const jsonld = "";
+---
+<ArticleLayout
+  title="Terms of Service — Grahachara"
+  description="Terms of Service for Grahachara — Sri Lanka's #1 Vedic Astrology App."
+  canonical=""
+  eyebrow="Legal"
+  heroTitle="Terms of Service"
+  heroSub="Last updated: March 25, 2026 · Effective: March 25, 2026"
+  breadcrumb={[{"label":"Home","href":"../index.html"},{"label":"Terms of Service"}]}
+  bg="bg_stars.webp"
+  active=""
+  jsonld={jsonld}
+>
+  <Fragment set:html={content} />
+</ArticleLayout>

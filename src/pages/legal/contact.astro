@@ -1,0 +1,19 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import content from '../../partials/legal/contact.html?raw';
+const jsonld = "";
+---
+<ArticleLayout
+  title="Contact Us — Grahachara"
+  description="Get in touch with the Grahachara team. Questions, feedback, partnerships — we'd love to hear from you."
+  canonical=""
+  eyebrow="Legal"
+  heroTitle="Contact Us"
+  heroSub="We'd love to hear from you — questions, feedback, or just to say hello"
+  breadcrumb={[{"label":"Home","href":"../index.html"},{"label":"Contact Us"}]}
+  bg="bg_stars.webp"
+  active=""
+  jsonld={jsonld}
+>
+  <Fragment set:html={content} />
+</ArticleLayout>

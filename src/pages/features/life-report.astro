@@ -1,0 +1,19 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import content from '../../partials/features/life-report.html?raw';
+const jsonld = "{\"@context\":\"https://schema.org\",\"@type\":\"WebPage\",\"name\":\"25-Year Vedic Life Report — Grahachara\",\"url\":\"https://grahachara.com/features/life-report\",\"isPartOf\":{\"@type\":\"WebSite\",\"name\":\"Grahachara\",\"url\":\"https://grahachara.com\"},\"breadcrumb\":{\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://grahachara.com/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Features\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Life Report\"}]}}";
+---
+<ArticleLayout
+  title="25-Year Vedic Life Report App — Grahachara | Dasha-Based Life Predictions"
+  description="Get your personalized 25-year Vedic life report. Dasha-based chapter predictions covering career, relationships, health & wealth — mapped to your exact planetary periods."
+  canonical="https://grahachara.com/features/life-report"
+  eyebrow="Feature"
+  heroTitle="25-Year Life Report"
+  heroSub="Your next quarter century, mapped through the lens of Vimshottari Dasha. Every planetary period decoded into actionable life chapters."
+  breadcrumb={[{"label":"Home","href":"../index.html"},{"label":"Features","href":"../index.html#features"},{"label":"Life Report"}]}
+  bg="page_hero_features.webp"
+  active=""
+  jsonld={jsonld}
+>
+  <Fragment set:html={content} />
+</ArticleLayout>

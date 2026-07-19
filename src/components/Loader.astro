@@ -1,0 +1,56 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const a = (p) => `${base}/assets/cosmos/${p}`;
+---
+<div class="pc-loader" id="pcLoader" role="status" aria-label="Loading Grahachara">
+  <img class="pc-loader__neb" src={a('hero_nebula.webp')} alt="" aria-hidden="true" data-depth="5" />
+  <div class="pc-loader__stars" aria-hidden="true" data-depth="3"></div>
+  <div class="pc-loader__planet pc-loader__planet--j" aria-hidden="true" data-depth="22"><img src={a('planet_jupiter.webp')} alt="" width="768" height="768" /></div>
+  <div class="pc-loader__planet pc-loader__planet--m" aria-hidden="true" data-depth="30"><img src={`${base}/assets/cosmos/moon.webp`} alt="" width="512" height="512" /></div>
+
+  <div class="pc-loader__core" data-depth="9">
+    <span class="pc-loader__halo" aria-hidden="true"></span>
+    <img class="pc-loader__portal" src={a('loader_portal.webp')} alt="" aria-hidden="true" />
+    <img class="pc-loader__logo" src={`${base}/assets/logo.png`} alt="Grahachara" width="120" height="120" />
+  </div>
+
+  <div class="pc-loader__brand">
+    <span class="pc-loader__name">GRAHACHARA</span>
+    <span class="pc-loader__tag">Reading the stars…</span>
+    <span class="pc-loader__bar"><i></i></span>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var el = document.getElementById('pcLoader');
+    if (!el) return;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var start = Date.now(), MIN = 3000, CAP = 8000, done = false;   // guaranteed 3s minimum
+    function finish() {
+      if (done) return; done = true;
+      el.classList.add('is-done');
+      document.documentElement.style.overflow = '';
+      setTimeout(function () { if (el && el.parentNode) el.parentNode.removeChild(el); }, 1000);
+    }
+    // hold at least MIN, and until the page has finished loading, whichever is later (capped)
+    function ready() { setTimeout(finish, Math.max(0, MIN - (Date.now() - start))); }
+    document.documentElement.style.overflow = 'hidden';
+    if (document.readyState === 'complete') ready(); else window.addEventListener('load', ready);
+    setTimeout(finish, CAP);
+    if (!reduce) {
+      var layers = el.querySelectorAll('[data-depth]'), raf = null, tx = 0, ty = 0;
+      function apply() {
+        raf = null;
+        for (var i = 0; i < layers.length; i++) {
+          var d = parseFloat(layers[i].getAttribute('data-depth')) || 0;
+          layers[i].style.translate = (-tx * d).toFixed(1) + 'px ' + (-ty * d).toFixed(1) + 'px';
+        }
+      }
+      el.addEventListener('mousemove', function (e) {
+        tx = e.clientX / window.innerWidth - 0.5; ty = e.clientY / window.innerHeight - 0.5;
+        if (!raf) raf = requestAnimationFrame(apply);
+      }, { passive: true });
+    }
+  })();
+</script>

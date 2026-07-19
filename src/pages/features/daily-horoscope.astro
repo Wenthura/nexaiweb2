@@ -1,0 +1,19 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import content from '../../partials/features/daily-horoscope.html?raw';
+const jsonld = "{\"@context\":\"https://schema.org\",\"@type\":\"WebPage\",\"name\":\"Vedic Daily Horoscope — Grahachara\",\"url\":\"https://grahachara.com/features/daily-horoscope\",\"isPartOf\":{\"@type\":\"WebSite\",\"name\":\"Grahachara\",\"url\":\"https://grahachara.com\"},\"breadcrumb\":{\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://grahachara.com/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Features\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Daily Horoscope\"}]}}";
+---
+<ArticleLayout
+  title="Personalized Vedic Daily Horoscope App — Grahachara | Transit-Based Predictions"
+  description="Get your personalized Vedic daily horoscope based on real-time planetary transits to your birth chart. Moon Nakshatra, daily Dasha insights & actionable guidance."
+  canonical="https://grahachara.com/features/daily-horoscope"
+  eyebrow="Feature"
+  heroTitle="Personalized Daily Horoscope"
+  heroSub="Not a generic sun-sign paragraph. Your daily guidance calculated from real-time planetary transits to your exact birth chart."
+  breadcrumb={[{"label":"Home","href":"../index.html"},{"label":"Features","href":"../index.html#features"},{"label":"Daily Horoscope"}]}
+  bg="page_hero_features.webp"
+  active="Daily Horoscope"
+  jsonld={jsonld}
+>
+  <Fragment set:html={content} />
+</ArticleLayout>

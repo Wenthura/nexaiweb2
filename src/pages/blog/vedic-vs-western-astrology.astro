@@ -1,0 +1,19 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import content from '../../partials/blog/vedic-vs-western-astrology.html?raw';
+const jsonld = "{\"@context\":\"https://schema.org\",\"@type\":\"Article\",\"headline\":\"Vedic vs Western Astrology: Key Differences Explained\",\"author\":{\"@type\":\"Organization\",\"name\":\"Grahachara\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Grahachara\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://grahachara.com/assets/logo.png\"}},\"datePublished\":\"2025-02-01\",\"dateModified\":\"2025-06-01\",\"mainEntityOfPage\":\"https://grahachara.com/blog/vedic-vs-western-astrology\",\"description\":\"Comprehensive comparison of Vedic and Western astrology systems.\"}";
+---
+<ArticleLayout
+  title="Vedic vs Western Astrology: Key Differences Explained | Grahachara"
+  description="Vedic vs Western astrology — what's the difference? Compare sidereal vs tropical zodiac, Moon vs Sun signs, Nakshatras vs degrees, Dasha vs transits in this detailed guide."
+  canonical="https://grahachara.com/blog/vedic-vs-western-astrology"
+  eyebrow="Learn"
+  heroTitle="Vedic vs Western Astrology"
+  heroSub="Two ancient traditions. Different frameworks. Both valuable. Here's how they compare — and why your signs might differ between them."
+  breadcrumb={[{"label":"Home","href":"../index.html"},{"label":"Blog","href":"../blog/"},{"label":"Vedic vs Western Astrology"}]}
+  bg="page_hero_learn.webp"
+  active="Learn"
+  jsonld={jsonld}
+>
+  <Fragment set:html={content} />
+</ArticleLayout>

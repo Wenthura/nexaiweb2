@@ -1,0 +1,19 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import content from '../../partials/blog/what-is-vedic-astrology.html?raw';
+const jsonld = "{\"@context\":\"https://schema.org\",\"@type\":\"Article\",\"headline\":\"What Is Vedic Astrology? Complete Beginner's Guide\",\"author\":{\"@type\":\"Organization\",\"name\":\"Grahachara\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Grahachara\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://grahachara.com/assets/logo.png\"}},\"datePublished\":\"2025-01-15\",\"dateModified\":\"2025-06-01\",\"mainEntityOfPage\":\"https://grahachara.com/blog/what-is-vedic-astrology\",\"description\":\"Comprehensive guide to Vedic astrology covering sidereal zodiac, 9 planets, 12 houses, 27 Nakshatras, and Dasha timing systems.\"}";
+---
+<ArticleLayout
+  title="What Is Vedic Astrology? Complete Beginner's Guide to Jyotish | Grahachara"
+  description="Learn what Vedic astrology (Jyotish) is — the sidereal zodiac, 9 planets, 12 houses, 27 Nakshatras & Dasha timing system. Comprehensive beginner's guide with origins and modern applications."
+  canonical="https://grahachara.com/blog/what-is-vedic-astrology"
+  eyebrow="Learn"
+  heroTitle="What Is Vedic Astrology?"
+  heroSub="A complete beginner's guide to Jyotish Shastra — the ancient Indian science of light that maps your life through the stars."
+  breadcrumb={[{"label":"Home","href":"../index.html"},{"label":"Blog","href":"../blog/"},{"label":"What Is Vedic Astrology?"}]}
+  bg="page_hero_learn.webp"
+  active="Learn"
+  jsonld={jsonld}
+>
+  <Fragment set:html={content} />
+</ArticleLayout>

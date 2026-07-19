@@ -1,0 +1,101 @@
+---
+import '../styles/styles.css';
+import '../styles/portal.css';
+import Loader from '../components/Loader.astro';
+
+const {
+  title = 'Grahachara — Best Vedic Astrology App | Birth Chart, Horoscope & Life Predictions',
+  description = 'Grahachara is the #1 Vedic astrology app using NASA-grade calculations. Get your personalized birth chart (Kundali), Nakshatra analysis, compatibility matching, 25-year life predictions & daily horoscope. Available worldwide.',
+  lang = 'en',
+  canonical = 'https://grahachara.com/',
+  ogTitle = 'Grahachara — Your Destiny, Decoded',
+  ogDescription = 'Vedic astrology, deeply personal. Birth chart analysis, compatibility matching, life reports & daily cosmic guidance.',
+  bodyClass = '',
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<!DOCTYPE html>
+<html lang={lang} dir="ltr" prefix="og: https://ogp.me/ns#">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="author" content="Wenthura Solutions Pvt Ltd" />
+  <meta name="theme-color" content="#05060f" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="application-name" content="Grahachara" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Grahachara" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <link rel="canonical" href={canonical} />
+  <link rel="alternate" hreflang="en" href="https://grahachara.com/" />
+  <link rel="alternate" hreflang="si" href="https://grahachara.com/si.html" />
+  <link rel="alternate" hreflang="x-default" href="https://grahachara.com/" />
+  <meta name="google-site-verification" content="4c698284df612df3" />
+
+  <meta property="og:site_name" content="Grahachara" />
+  <meta property="og:title" content={ogTitle} />
+  <meta property="og:description" content={ogDescription} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content="https://grahachara.com/assets/og-card.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={ogTitle} />
+  <meta name="twitter:description" content={ogDescription} />
+  <meta name="twitter:image" content="https://grahachara.com/assets/og-card.png" />
+
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+  <link rel="manifest" href={`${base}/manifest.json`} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+
+  <link rel="icon" type="image/png" sizes="192x192" href={`${base}/assets/android-chrome-192x192.png`} />
+  <link rel="icon" type="image/png" sizes="32x32" href={`${base}/assets/favicon-32x32.png`} />
+  <link rel="icon" type="image/png" sizes="16x16" href={`${base}/assets/favicon-16x16.png`} />
+  <link rel="icon" type="image/x-icon" href={`${base}/assets/favicon.ico`} />
+  <link rel="apple-touch-icon" sizes="180x180" href={`${base}/assets/apple-touch-icon.png`} />
+
+  <slot name="head" />
+</head>
+<body class={bodyClass}>
+  <Loader />
+  <script is:inline>
+    /* Language preference + auto-Sinhala for Sri Lankan visitors (home only). */
+    (function () {
+      try {
+        var KEY = 'gc-lang';
+        var pref = null; try { pref = localStorage.getItem(KEY); } catch (e) {}
+        var p = location.pathname;
+        var onSi = /\/si\.html$/.test(p);
+        var onEnHome = /\/$/.test(p) || /\/index\.html$/.test(p);
+        if (pref === 'si' && onEnHome) { location.replace('si.html'); return; }
+        if (pref === 'en' && onSi) { location.replace('index.html'); return; }
+        if (!pref && onEnHome) {
+          var ls = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || ''];
+          var wantsSi = ls.some(function (l) { return /^si\b/i.test(l); });
+          var tz = ''; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
+          if (wantsSi || tz === 'Asia/Colombo') { location.replace('si.html'); return; }
+        }
+      } catch (e) {}
+      /* Remember the visitor's explicit choice when they use the toggle. */
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('[data-lang]');
+        if (a) { try { localStorage.setItem('gc-lang', a.getAttribute('data-lang')); } catch (_) {} }
+      }, true);
+    })();
+  </script>
+  <slot />
+</body>
+</html>

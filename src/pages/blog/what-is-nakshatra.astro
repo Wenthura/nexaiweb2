@@ -1,0 +1,19 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import content from '../../partials/blog/what-is-nakshatra.html?raw';
+const jsonld = "{\"@context\":\"https://schema.org\",\"@type\":\"Article\",\"headline\":\"What Is Nakshatra? All 27 Lunar Mansions Explained\",\"author\":{\"@type\":\"Organization\",\"name\":\"Grahachara\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Grahachara\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://grahachara.com/assets/logo.png\"}},\"datePublished\":\"2025-02-15\",\"dateModified\":\"2025-06-01\",\"mainEntityOfPage\":\"https://grahachara.com/blog/what-is-nakshatra\",\"description\":\"Complete guide to all 27 Nakshatras in Vedic astrology with ruling planets, deities, and personality profiles.\"}";
+---
+<ArticleLayout
+  title="What Is Nakshatra? All 27 Lunar Mansions Explained | Grahachara"
+  description="Discover all 27 Nakshatras — the lunar mansions of Vedic astrology. Each Nakshatra's ruler, deity, symbol, personality traits & compatibility explained in this complete guide."
+  canonical="https://grahachara.com/blog/what-is-nakshatra"
+  eyebrow="Learn"
+  heroTitle="What Is Nakshatra?"
+  heroSub="The 27 lunar mansions — Vedic astrology's most precise tool for personality, timing, and destiny. Your birth star reveals what your sign cannot."
+  breadcrumb={[{"label":"Home","href":"../index.html"},{"label":"Blog","href":"../blog/"},{"label":"What Is Nakshatra?"}]}
+  bg="page_hero_learn.webp"
+  active="Learn"
+  jsonld={jsonld}
+>
+  <Fragment set:html={content} />
+</ArticleLayout>

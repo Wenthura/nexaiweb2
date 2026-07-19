@@ -1,0 +1,83 @@
+---
+import HeroNebula from './islands/HeroNebula.jsx';
+import { PLAY_URL } from '../data/site.js';
+const { lang = 'en' } = Astro.props;
+const si = lang === 'si';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const a = (p) => `${base}/assets/cosmos/${p}`;
+const T = si ? {
+  eyebrow: 'පෞරාණික ප්‍රඥාව · විශ්වීය මඟපෙන්වීම · ආත්මීය බැඳීම',
+  title: 'විශ්වයේ රහස්<br>විවර කරන්න.<br>ඔබේ ඉරණම<br>ආලෝකවත් කරන්න.',
+  sub: 'විශ්වය ඔබට නිවැරදිම මාවත පෙන්වයි. ජීවිතයේ ඒ සුන්දර ගමන ඔබ යන්න.',
+  trust: ['පැරණි ඍෂි ඥානයෙන් කියැවෙන නිවැරදිම පලාපල', 'ජීවිතයේ සෑම හැරවුම් ලක්ෂ්‍යයකටම විශ්වාසවන්ත මඟපෙන්වීම', 'නව යුගයේ ඔබේ ගමනට ගැළපෙන ජීවන මාලිමාව'],
+  cta: 'ඔබේ ඉරණම දිගහරින්න', 
+  learn: 'වේද ජ්‍යොතිෂයේ ගැඹුර සොයායන්න',
+  learnHref: `${base}/blog/what-is-vedic-astrology.html`,
+} : {
+  eyebrow: 'Ancient Wisdom · Cosmic Guidance · Soulful Living',
+  title: 'Read the<br>Cosmos.<br>Align Your<br>Destiny.',
+  sub: 'Vedic wisdom reveals the map. You walk the path.',
+  trust: ['Accurate readings rooted in tradition', 'Personalized guidance for every life stage', 'Timeless wisdom for modern times'],
+  cta: 'Explore Your Chart', learn: 'Learn Vedic Astrology',
+  learnHref: `${base}/blog/what-is-vedic-astrology.html`,
+};
+const trustIcons = ['#i-star', '#i-lotus', '#i-sun'];
+---
+<section class="pc-hero" id="hero">
+  <div class="pc-hero__stage" id="heroStage">
+    <HeroNebula client:visible base={base} />
+    <div class="pc-moonrays" aria-hidden="true" data-depth="8"></div>
+    <div class="pc-moon" aria-hidden="true"><img src={a('moon.webp')} alt="" width="512" height="512" /></div>
+    <img class="pc-cloud pc-cloud--high" src={a('cloud_mid.webp')} alt="" width="1536" height="640" aria-hidden="true" />
+    <img class="pc-cloud pc-cloud--mid" src={a('cloud_mid.webp')} alt="" width="1536" height="640" aria-hidden="true" data-depth="14" />
+    <div class="pc-planet pc-planet--saturn" aria-hidden="true"><img src={a('planet_saturn.webp')} alt="" width="896" height="768" /></div>
+    <div class="pc-planet pc-planet--mars" aria-hidden="true"><span class="pc-globe"><img src={a('planet_mars.webp')} alt="" width="512" height="512" /></span><span class="pc-globe__shade"></span></div>
+    <div class="pc-planet pc-planet--jupiter" aria-hidden="true"><span class="pc-globe"><img src={a('planet_jupiter.webp')} alt="" width="768" height="768" /></span><span class="pc-globe__shade"></span></div>
+    <div class="pc-flickstars" aria-hidden="true" data-depth="18"></div>
+    <img class="pc-cloud pc-cloud--front" src={a('cloud_front.webp')} alt="" width="1536" height="640" aria-hidden="true" data-depth="46" />
+  </div>
+  <div class="pc-hero__scrim" aria-hidden="true"></div>
+  <div class="pc-wrap">
+    <div class="pc-hero__inner">
+      <div class="pc-hero__eyebrow pc-flourish">{T.eyebrow}</div>
+      <h1 class="pc-hero__title pc-gold-text" set:html={T.title}></h1>
+      <p class="pc-hero__sub">{T.sub}</p>
+      <div class="pc-trust">
+        {T.trust.map((item, i) => (
+          <div class="pc-trust__item"><span class="pc-trust__ico"><svg class="pc-ico"><use href={trustIcons[i]}/></svg></span> {item}</div>
+        ))}
+      </div>
+      <div class="pc-hero__actions">
+        <a class="pc-btn-gold" href={PLAY_URL} target="_blank" rel="noopener">{T.cta}</a>
+        <a class="pc-link-arrow" href={T.learnHref}>{T.learn}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Pointer parallax for the hero depth layers (composes with CSS float/rotate via the `translate` property)
+  (function () {
+    var hero = document.getElementById('hero');
+    var stage = document.getElementById('heroStage');
+    var fine = matchMedia('(pointer:fine)').matches;
+    var ok = !matchMedia('(prefers-reduced-motion:reduce)').matches;
+    if (!hero || !stage || !fine || !ok) return;
+    var els = stage.querySelectorAll('[data-depth]');
+    var tx = 0, ty = 0, raf = null;
+    function apply() {
+      raf = null;
+      els.forEach(function (el) {
+        var d = parseFloat(el.getAttribute('data-depth')) || 0;
+        el.style.translate = (-tx * d).toFixed(1) + 'px ' + (-ty * d).toFixed(1) + 'px';
+      });
+    }
+    hero.addEventListener('mousemove', function (e) {
+      var r = hero.getBoundingClientRect();
+      tx = (e.clientX - r.left) / r.width - 0.5;
+      ty = (e.clientY - r.top) / r.height - 0.5;
+      if (!raf) raf = requestAnimationFrame(apply);
+    });
+    hero.addEventListener('mouseleave', function () { tx = 0; ty = 0; if (!raf) raf = requestAnimationFrame(apply); });
+  })();
+</script>

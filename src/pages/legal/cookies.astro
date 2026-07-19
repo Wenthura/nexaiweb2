@@ -1,0 +1,19 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import content from '../../partials/legal/cookies.html?raw';
+const jsonld = "";
+---
+<ArticleLayout
+  title="Cookie Policy — Grahachara"
+  description="Cookie Policy for Grahachara — Learn how we use cookies and similar technologies."
+  canonical=""
+  eyebrow="Legal"
+  heroTitle="Cookie Policy"
+  heroSub="Last updated: March 25, 2026 · Effective: March 25, 2026"
+  breadcrumb={[{"label":"Home","href":"../index.html"},{"label":"Cookie Policy"}]}
+  bg="bg_stars.webp"
+  active=""
+  jsonld={jsonld}
+>
+  <Fragment set:html={content} />
+</ArticleLayout>

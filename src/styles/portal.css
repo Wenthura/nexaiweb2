@@ -1,0 +1,1308 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Grahachara — Cosmic Portal Redesign  (homepage only: index.html + si.html)
+   "A digital cathedral for the cosmos"
+   Layered OVER styles.css + the WebGL cosmos engine. Scoped to .portal-page.
+   Art direction: deep midnight indigo · candle-warm gold · linocut + oil paint
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Fonts: high-contrast serif display + quiet serif body ──────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+.portal-page {
+  --pc-void: #05060f;
+  --pc-ink: #0a0b18;
+  --pc-panel: rgba(10, 12, 26, 0.62);
+  --pc-panel-solid: #0b0d1c;
+  --pc-line: rgba(212, 175, 55, 0.22);
+  --pc-line-soft: rgba(212, 175, 55, 0.12);
+  --pc-gold: #d9b45a;
+  --pc-gold-bright: #f2d886;
+  --pc-gold-deep: #a67c2b;
+  --pc-amber: #c8892f;
+  --pc-violet: #6a4fa0;
+  --pc-silver: #cdd3e6;
+  --pc-teal: #6fb3a6;
+  --pc-text: #e9e3d3;
+  --pc-text-soft: rgba(226, 219, 200, 0.72);
+  --pc-text-mute: rgba(196, 188, 168, 0.5);
+  --pc-serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  --pc-body: 'EB Garamond', Georgia, serif;
+  --pc-max: 1360px;
+}
+
+/* Warm, low-key canvas grain over the whole page */
+.portal-page {
+  background: var(--pc-void);
+  font-family: var(--pc-body);
+  color: var(--pc-text);
+}
+.portal-page .pc-grain {
+  position: fixed; inset: 0; z-index: 3; pointer-events: none;
+  background-image: url('/assets/cosmos/canvas_texture.webp');
+  background-size: 480px 480px;
+  opacity: 0.42; mix-blend-mode: soft-light;
+}
+.portal-page .pc-vignette {
+  position: fixed; inset: 0; z-index: 2; pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 8%, transparent 46%, rgba(3,3,9,0.55) 100%),
+    radial-gradient(80% 60% at 50% 120%, rgba(3,3,9,0.8) 0%, transparent 60%);
+}
+
+/* Verification hook: #nomotion freezes all motion for a stable screenshot */
+.nomotion .portal-page *, .nomotion .portal-page *::before, .nomotion .portal-page *::after { animation: none !important; }
+
+/* Kill only the heavy legacy effects; keep the tasteful ambient ones */
+.portal-page .footer__zodiac-track,
+.portal-page .footer__orbit-ring,
+.portal-page .footer__orbit-dot,
+.portal-page .cta__particles,
+.portal-page .cta__ring { animation: none !important; }
+/* Reveal-on-scroll content is always visible (no JS needed) */
+.portal-page [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+/* ── Living starfield background — layered parallax twinkle ─────────── */
+.portal-page .pc-starfield {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-color: transparent;
+  background-image:
+    radial-gradient(ellipse 60% 45% at 72% 18%, rgba(69,49,128,0.24), transparent 60%),
+    radial-gradient(ellipse 55% 45% at 20% 72%, rgba(27,33,81,0.32), transparent 62%),
+    radial-gradient(ellipse 42% 35% at 86% 82%, rgba(120,80,40,0.12), transparent 60%);
+  background-repeat: no-repeat;
+}
+.portal-page .pc-starfield::before,
+.portal-page .pc-starfield::after {
+  content: ""; position: absolute; inset: -50%; pointer-events: none;
+  background-repeat: repeat;
+}
+.portal-page .pc-starfield::before {
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, #fff8e0, transparent 60%),
+    radial-gradient(1.5px 1.5px at 78% 12%, #dce4ff, transparent 60%),
+    radial-gradient(1.6px 1.6px at 62% 78%, #ffecc4, transparent 60%),
+    radial-gradient(1.3px 1.3px at 8% 74%, #fff4d6, transparent 60%),
+    radial-gradient(1.4px 1.4px at 40% 46%, #ffffff, transparent 60%);
+  background-size: 380px 380px, 460px 460px, 520px 520px, 500px 500px, 420px 420px;
+  animation: pc-twinkle 4.2s ease-in-out infinite;
+}
+.portal-page .pc-starfield::after {
+  background-image:
+    radial-gradient(1px 1px at 32% 62%, rgba(255,255,255,0.85), transparent 60%),
+    radial-gradient(1px 1px at 88% 54%, rgba(210,220,255,0.8), transparent 60%),
+    radial-gradient(1px 1px at 46% 24%, rgba(255,255,255,0.75), transparent 60%),
+    radial-gradient(1px 1px at 70% 40%, rgba(255,246,220,0.8), transparent 60%),
+    radial-gradient(1px 1px at 22% 88%, rgba(255,255,255,0.7), transparent 60%);
+  background-size: 260px 260px, 300px 300px, 240px 240px, 320px 320px, 280px 280px;
+  animation: pc-twinkle 6.5s ease-in-out infinite reverse;
+  opacity: 0.7;
+}
+@keyframes pc-twinkle { 0%,100% { opacity: 0.35; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .portal-page .pc-starfield::before,
+  .portal-page .pc-starfield::after { animation: none !important; opacity: 0.7; }
+}
+
+/* ── Shared display helpers ────────────────────────────────────────── */
+.portal-page .pc-wrap { width: min(92%, var(--pc-max)); margin-inline: auto; }
+.portal-page .pc-serif { font-family: var(--pc-serif); }
+.portal-page .pc-flourish {
+  display: flex; align-items: center; gap: 14px; color: var(--pc-gold);
+  font-family: var(--pc-serif); letter-spacing: 0.34em; text-transform: uppercase;
+  font-size: 0.72rem; font-weight: 600;
+}
+.portal-page .pc-flourish::before,
+.portal-page .pc-flourish::after {
+  content: ""; height: 1px; flex: 1;
+  background: linear-gradient(90deg, transparent, var(--pc-line), transparent);
+}
+.portal-page .pc-eyebrow {
+  font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.3em;
+  font-size: 0.74rem; font-weight: 600; color: var(--pc-gold);
+}
+/* Inline SVG icons (replace all emoji glyphs) */
+.portal-page .pc-ico { width: 1em; height: 1em; display: inline-block; vertical-align: -0.14em; fill: none; }
+.portal-page .pc-trust__ico .pc-ico { width: 17px; height: 17px; }
+.portal-page .pc-gold-text {
+  background: linear-gradient(180deg, var(--pc-gold-bright) 0%, var(--pc-gold) 55%, var(--pc-amber) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* Ornate dark card w/ gold hairline + corner rivets */
+.portal-page .pc-card {
+  position: relative; background: var(--pc-panel);
+  border: 1px solid var(--pc-line); border-radius: 4px;
+  backdrop-filter: blur(3px); overflow: hidden;
+  transition: transform .5s var(--ease-out, ease), border-color .5s ease, box-shadow .5s ease;
+}
+.portal-page .pc-card::before {
+  content: ""; position: absolute; inset: 5px; border: 1px solid var(--pc-line-soft);
+  border-radius: 2px; pointer-events: none;
+}
+.portal-page .pc-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(212,175,55,0.5);
+  box-shadow: 0 24px 60px -30px rgba(0,0,0,0.9), 0 0 30px -10px rgba(216,160,64,0.28);
+}
+
+/* ═══ NAVIGATION ══════════════════════════════════════════════════ */
+.portal-page .nav { background: transparent; }
+.portal-page .pc-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  border-bottom: 1px solid var(--pc-line-soft);
+  background: linear-gradient(180deg, rgba(5,6,15,0.92) 0%, rgba(5,6,15,0.55) 100%);
+  backdrop-filter: blur(10px);
+  transition: background .4s ease;
+}
+.portal-page .pc-nav__inner {
+  width: min(96%, 1500px); margin-inline: auto;
+  display: flex; align-items: center; gap: 20px;
+  height: 74px;
+}
+.portal-page .pc-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.portal-page .pc-brand__mark { width: 42px; height: 42px; object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(216,160,64,0.4)); }
+.portal-page .pc-brand__name {
+  font-family: var(--pc-serif); font-weight: 600; letter-spacing: 0.22em;
+  font-size: 1.42rem; line-height: 1; text-transform: uppercase;
+}
+.portal-page .pc-brand__sub {
+  display: block; font-family: var(--pc-serif); font-size: 0.58rem;
+  letter-spacing: 0.42em; color: var(--pc-text-mute); text-transform: uppercase;
+  margin-top: 3px;
+}
+.portal-page .pc-brand__sub::before,
+.portal-page .pc-brand__sub::after { content: "◆ "; color: var(--pc-line); font-size: 0.5rem; }
+.portal-page .pc-brand__sub::after { content: " ◆"; }
+
+.portal-page .pc-nav__links {
+  display: flex; align-items: stretch; gap: 4px; margin-inline: auto;
+}
+.portal-page .pc-nav__link {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; padding: 6px 10px; text-decoration: none; white-space: nowrap;
+  font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.12em;
+  font-size: 0.82rem; font-weight: 600; color: var(--pc-text-soft);
+  border-bottom: 2px solid transparent; transition: color .3s ease, border-color .3s ease;
+}
+.portal-page .pc-nav__link small {
+  font-family: var(--pc-body); font-size: 0.6rem; letter-spacing: 0.02em;
+  text-transform: none; color: var(--pc-text-mute); font-weight: 400;
+}
+.portal-page .pc-nav__link:hover,
+.portal-page .pc-nav__link.is-active { color: var(--pc-gold-bright); border-color: var(--pc-gold); }
+.portal-page .pc-nav__link:hover small { color: var(--pc-gold); }
+
+.portal-page .pc-nav__right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+
+/* ═══ HERO ════════════════════════════════════════════════════════ */
+.portal-page .pc-hero {
+  position: relative; z-index: 5; overflow: hidden;
+  min-height: 100vh; display: flex; align-items: center;
+  padding-top: 96px; padding-bottom: 60px;
+}
+/* Parallax stage holds the depth layers (single stacking context so the wheel can screen-blend the nebula) */
+.portal-page .pc-hero__stage { position: absolute; inset: 0; z-index: 1; }
+.portal-page .pc-hero > .pc-wrap { position: relative; z-index: 3; }
+.portal-page .pc-hero__scrim { z-index: 2; }
+.portal-page .pc-hero__bg {
+  position: absolute; inset: -5%; width: 110%; height: 110%; max-width: none; object-fit: cover;
+  z-index: 0; will-change: translate;
+}
+/* Zodiac wheel — two layers: static centre + rotating outer ring, masked (no box) */
+.portal-page .pc-hero__wheelwrap {
+  position: absolute; right: 1%; width: min(540px, 46vw); aspect-ratio: 1;
+  top: calc(50% - min(270px, 23vw));
+  pointer-events: none;
+}
+.portal-page .pc-wheel {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  mix-blend-mode: screen;
+}
+/* Outer ring — rotates; masked to the wheel art with a soft edge (no box) */
+.portal-page .pc-wheel--outer {
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 35%, #000 41%, #000 93%, rgba(0,0,0,0) 99.5%);
+          mask-image: radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 35%, #000 41%, #000 93%, rgba(0,0,0,0) 99.5%);
+  animation: pc-rotate 200s linear infinite;
+}
+/* Centre — the sun face, stays perfectly still */
+.portal-page .pc-wheel--center {
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 36%, rgba(0,0,0,0) 43%);
+          mask-image: radial-gradient(circle at 50% 50%, #000 36%, rgba(0,0,0,0) 43%);
+}
+/* Relief overlay — domes the wheel for a 3D / tactile look */
+.portal-page .pc-wheel__relief {
+  position: absolute; inset: 6%; border-radius: 50%; pointer-events: none;
+  background:
+    radial-gradient(circle at 36% 30%, rgba(255,242,205,0.22), transparent 46%),
+    radial-gradient(circle at 68% 74%, rgba(0,0,0,0.45), transparent 60%);
+  mix-blend-mode: overlay;
+}
+
+/* Floating 3D planets over the nebula */
+.portal-page .pc-planet { position: absolute; pointer-events: none; }
+.portal-page .pc-planet img { display: block; width: 100%; height: auto; }
+/* Realistic axial spin: the sphere stays lit in place while its surface
+   texture slides across the globe (like a planet turning on its axis) */
+.portal-page .pc-globe {
+  display: block; position: relative; aspect-ratio: 1; border-radius: 50%; overflow: hidden;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 58%, rgba(0,0,0,0.6) 68%, transparent 74%);
+          mask-image: radial-gradient(circle at 50% 50%, #000 58%, rgba(0,0,0,0.6) 68%, transparent 74%);
+}
+.portal-page .pc-globe img {
+  height: 100%; width: 175%; max-width: none; object-fit: cover;
+  animation: pc-axial 70s linear infinite alternate;
+}
+@keyframes pc-axial { from { transform: translateX(0); } to { transform: translateX(-42%); } }
+/* fixed day/night shading so the light stays put while the surface turns */
+.portal-page .pc-globe__shade {
+  position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+  background:
+    radial-gradient(circle at 32% 30%, rgba(255,244,214,0.28) 0%, transparent 45%),
+    radial-gradient(circle at 74% 72%, rgba(0,0,0,0.62) 0%, transparent 65%);
+}
+/* Jupiter — below the nav, upper sky */
+.portal-page .pc-planet--jupiter { width: min(150px, 14%); top: max(17%, 130px); left: 40%;
+  filter: drop-shadow(0 16px 34px rgba(0,0,0,0.55));
+  animation: pc-float 20s ease-in-out infinite; }
+.portal-page .pc-planet--jupiter .pc-globe img { animation-duration: 80s; }
+/* Saturn — rings: screen-blend to drop black, elliptical mask hides the frame */
+.portal-page .pc-planet--saturn { width: min(240px, 22%); right: 5%; bottom: 6%;
+  animation: pc-float 26s ease-in-out infinite reverse; }
+.portal-page .pc-planet--saturn img {
+  mix-blend-mode: screen; opacity: 0.95;
+  -webkit-mask-image: radial-gradient(ellipse 62% 50% at 50% 50%, #000 62%, transparent 88%);
+          mask-image: radial-gradient(ellipse 62% 50% at 50% 50%, #000 62%, transparent 88%);
+}
+/* Mars — small ember sphere mid-sky */
+.portal-page .pc-planet--mars { width: min(84px, 8%); right: 24%; top: 42%;
+  filter: drop-shadow(0 10px 22px rgba(0,0,0,0.55));
+  animation: pc-float 17s ease-in-out infinite; }
+.portal-page .pc-planet--mars .pc-globe img { animation-duration: 55s; }
+
+/* ── Full moon — luminous, slow float, screen-blended halo ─────────── */
+.portal-page .pc-moon {
+  position: absolute; left: 53%; top: max(24%, 150px); width: min(118px, 11%);
+  pointer-events: none;
+  animation: pc-float 30s ease-in-out infinite;
+}
+.portal-page .pc-moon img {
+  display: block; width: 100%; height: auto;
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 55%, rgba(0,0,0,0.4) 72%, transparent 92%);
+          mask-image: radial-gradient(circle at 50% 50%, #000 55%, rgba(0,0,0,0.4) 72%, transparent 92%);
+}
+.portal-page .pc-moon::after {
+  content: ""; position: absolute; inset: -45%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(230,225,205,0.22) 0%, rgba(216,200,150,0.08) 45%, transparent 70%);
+  mix-blend-mode: screen;
+  animation: pc-pulse 9s ease-in-out infinite;
+}
+@keyframes pc-pulse { 0%,100% { opacity: 0.55; } 50% { opacity: 1; } }
+
+/* ── Cloud layers (screen-blended gilded strips, slow drift) ───────── */
+.portal-page .pc-cloud {
+  position: absolute; max-width: none; pointer-events: none;
+  mix-blend-mode: screen; will-change: transform, translate;
+}
+.portal-page .pc-cloud--high {
+  width: 120%; left: -8%; top: 2%; opacity: 0.22;
+  transform: scaleX(-1);
+  filter: sepia(0.3) saturate(1.1) brightness(0.85);
+  animation: pc-cloud-drift-flip 170s ease-in-out infinite alternate;
+}
+.portal-page .pc-cloud--mid {
+  width: 125%; left: -14%; top: 20%; opacity: 0.32;
+  filter: sepia(0.35) saturate(1.15) brightness(0.9);
+  animation: pc-cloud-drift 110s ease-in-out infinite alternate;
+}
+.portal-page .pc-cloud--front {
+  width: 145%; left: -24%; bottom: -14%; opacity: 0.55;
+  filter: sepia(0.4) saturate(1.2) brightness(0.85);
+  animation: pc-cloud-drift 75s ease-in-out infinite alternate-reverse;
+}
+@keyframes pc-cloud-drift {
+  from { transform: translateX(0) translateY(0); }
+  50%  { transform: translateX(5%) translateY(-1.2%); }
+  to   { transform: translateX(10%) translateY(0.6%); }
+}
+@keyframes pc-cloud-drift-flip {
+  from { transform: scaleX(-1) translateX(0); }
+  to   { transform: scaleX(-1) translateX(9%); }
+}
+
+/* ── Moon rays — soft beams from the crescent, slow shimmer ────────── */
+.portal-page .pc-moonrays {
+  position: absolute; top: -26%; right: -8%; width: 64%; aspect-ratio: 1;
+  pointer-events: none; mix-blend-mode: screen; opacity: 0.5;
+  background:
+    conic-gradient(from 118deg at 62% 34%,
+      transparent 0deg, rgba(240,220,160,0.16) 7deg, transparent 15deg,
+      transparent 24deg, rgba(230,214,170,0.10) 31deg, transparent 39deg,
+      transparent 50deg, rgba(240,220,160,0.14) 58deg, transparent 67deg,
+      transparent 78deg, rgba(230,210,160,0.08) 85deg, transparent 94deg,
+      transparent 360deg);
+  -webkit-mask-image: radial-gradient(circle at 62% 34%, #000 8%, rgba(0,0,0,0.5) 38%, transparent 68%);
+          mask-image: radial-gradient(circle at 62% 34%, #000 8%, rgba(0,0,0,0.5) 38%, transparent 68%);
+  animation: pc-rays 11s ease-in-out infinite;
+}
+@keyframes pc-rays { 0%,100% { opacity: 0.32; } 50% { opacity: 0.6; } }
+
+/* ── Flickering glow stars (hero-local sparkles) ───────────────────── */
+.portal-page .pc-flickstars { position: absolute; inset: 0; pointer-events: none; }
+.portal-page .pc-flickstars::before,
+.portal-page .pc-flickstars::after {
+  content: ""; position: absolute; inset: 0; mix-blend-mode: screen;
+  background-repeat: no-repeat;
+}
+.portal-page .pc-flickstars::before {
+  background-image:
+    radial-gradient(circle 3px at 58% 22%, #fff8e0 0%, rgba(240,214,140,0.5) 35%, transparent 70%),
+    radial-gradient(circle 2px at 71% 48%, #ffffff 0%, rgba(214,224,255,0.5) 40%, transparent 70%),
+    radial-gradient(circle 3px at 47% 61%, #ffecc4 0%, rgba(240,206,130,0.45) 35%, transparent 70%),
+    radial-gradient(circle 2px at 88% 66%, #fff4d6 0%, rgba(244,216,143,0.5) 40%, transparent 70%);
+  animation: pc-flick 3.7s ease-in-out infinite;
+}
+.portal-page .pc-flickstars::after {
+  background-image:
+    radial-gradient(circle 2px at 64% 33%, #ffffff 0%, rgba(255,246,220,0.5) 40%, transparent 70%),
+    radial-gradient(circle 3px at 79% 18%, #fff8e0 0%, rgba(240,214,140,0.45) 35%, transparent 70%),
+    radial-gradient(circle 2px at 52% 44%, #dce4ff 0%, rgba(200,214,255,0.4) 40%, transparent 70%),
+    radial-gradient(circle 3px at 92% 40%, #ffecc4 0%, rgba(236,200,116,0.5) 35%, transparent 70%);
+  animation: pc-flick 5.3s ease-in-out infinite reverse;
+}
+@keyframes pc-flick {
+  0%, 100% { opacity: 0.25; }
+  12% { opacity: 0.9; } 24% { opacity: 0.4; } 41% { opacity: 1; }
+  57% { opacity: 0.35; } 73% { opacity: 0.85; } 88% { opacity: 0.5; }
+}
+@keyframes pc-rotate { to { transform: rotate(360deg); } }
+@keyframes pc-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+@media (prefers-reduced-motion: reduce) {
+  .portal-page .pc-wheel,
+  .portal-page .pc-planet,
+  .portal-page .pc-planet img,
+  .portal-page .pc-cloud,
+  .portal-page .pc-moonrays,
+  .portal-page .pc-flickstars::before,
+  .portal-page .pc-flickstars::after { animation: none !important; }
+}
+.portal-page .pc-hero__scrim {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(5,6,15,0.95) 0%, rgba(5,6,15,0.82) 34%, rgba(5,6,15,0.45) 58%, rgba(5,6,15,0.05) 82%, transparent 100%),
+    linear-gradient(0deg, rgba(5,6,15,0.9) 0%, transparent 42%),
+    radial-gradient(120% 90% at 50% 6%, transparent 55%, rgba(3,3,9,0.5) 100%);
+}
+.portal-page .pc-hero__inner {
+  position: relative; z-index: 3; max-width: 640px; margin-right: auto;
+}
+.portal-page .pc-hero__titles { display: block; }
+.portal-page .pc-hero__col-si {
+  margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--pc-line-soft);
+}
+.portal-page .pc-hero__eyebrow { margin-bottom: 24px; }
+.portal-page .pc-hero__title {
+  font-family: var(--pc-serif); font-weight: 600; line-height: 0.98;
+  font-size: clamp(2.6rem, 5.4vw, 4.6rem); text-transform: uppercase; letter-spacing: 0.01em;
+  margin-bottom: 16px; text-shadow: 0 2px 24px rgba(0,0,0,0.6);
+}
+.portal-page .pc-hero__title--si { text-transform: none; letter-spacing: 0; line-height: 1.4;
+  font-size: clamp(1.4rem, 2.4vw, 2rem); margin-bottom: 10px; }
+.portal-page .pc-hero__sub {
+  font-size: 1.08rem; color: var(--pc-text-soft); max-width: 40ch; line-height: 1.5;
+}
+.portal-page .pc-hero__sub--si { font-size: 0.98rem; }
+
+.portal-page .pc-trust {
+  display: flex; gap: 26px; flex-wrap: wrap; margin: 30px 0 32px;
+}
+.portal-page .pc-trust__item {
+  display: flex; align-items: center; gap: 10px; font-size: 0.82rem;
+  color: var(--pc-text-soft); max-width: 20ch; line-height: 1.25;
+}
+.portal-page .pc-trust__ico { color: var(--pc-gold); flex-shrink: 0; }
+.portal-page .pc-trust__item + .pc-trust__item { border-left: 1px solid var(--pc-line-soft); padding-left: 26px; }
+
+.portal-page .pc-hero__actions { display: flex; align-items: center; gap: 30px; flex-wrap: wrap; }
+.portal-page .pc-btn-gold {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 1px;
+  padding: 16px 40px; text-decoration: none; border-radius: 3px;
+  font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.18em;
+  font-size: 0.98rem; font-weight: 700; color: #1a1206;
+  background: linear-gradient(180deg, #f4d88f 0%, var(--pc-gold) 45%, var(--pc-amber) 100%);
+  border: 1px solid rgba(255,240,200,0.5);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.4), 0 14px 34px -14px rgba(216,160,64,0.7),
+    inset 0 1px 1px rgba(255,255,255,0.5);
+  position: relative; transition: transform .3s ease, box-shadow .3s ease;
+}
+.portal-page .pc-btn-gold small { font-family: var(--pc-body); text-transform: none;
+  letter-spacing: 0; font-size: 0.68rem; font-weight: 500; opacity: 0.85; }
+.portal-page .pc-btn-gold:hover { transform: translateY(-2px);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.4), 0 20px 44px -14px rgba(216,160,64,0.85), inset 0 1px 1px rgba(255,255,255,0.6); }
+.portal-page .pc-link-arrow {
+  display: inline-flex; flex-direction: column; text-decoration: none;
+  font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.16em;
+  font-size: 0.86rem; font-weight: 600; color: var(--pc-gold); line-height: 1.2;
+}
+.portal-page .pc-link-arrow small { font-family: var(--pc-body); text-transform: none;
+  letter-spacing: 0; font-size: 0.66rem; color: var(--pc-text-mute); }
+.portal-page .pc-link-arrow::after { content: " →"; }
+
+/* ═══ RASHI CHAKRA — cosmic wheel centrepiece band ════════════════ */
+/* isolation keeps the wheel's screen-blend contained to this band; no z-index on
+   children (source order stacks bg < veil < inner) so the wheel blends the nebula */
+.portal-page .pc-chakra {
+  position: relative; z-index: 5; overflow: hidden; isolation: isolate;
+  padding: 90px 0 96px;
+}
+.portal-page .pc-chakra__bg {
+  position: absolute; inset: 0; width: 100%; height: 100%; max-width: none;
+  object-fit: cover; object-position: 50% 40%;
+}
+.portal-page .pc-chakra__veil {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(rgba(5,6,15,0.5), rgba(5,6,15,0.5)),
+    radial-gradient(52% 70% at 50% 58%, transparent 0%, transparent 34%, rgba(5,6,15,0.9) 82%);
+}
+.portal-page .pc-chakra__inner { position: relative; text-align: center; }
+.portal-page .pc-chakra__copy { margin-bottom: 22px; }
+.portal-page .pc-chakra__wheel {
+  position: relative; width: min(560px, 88vw); aspect-ratio: 1; margin: 0 auto;
+}
+
+/* ═══ SECTION HEADS ═══════════════════════════════════════════════ */
+.portal-page .pc-section { position: relative; z-index: 5; padding: 60px 0; }
+.portal-page .pc-section__head { text-align: center; margin-bottom: 40px; }
+.portal-page .pc-section__title {
+  font-family: var(--pc-serif); font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; font-size: clamp(1.8rem, 3.4vw, 2.7rem); margin: 10px 0;
+}
+.portal-page .pc-section__sub { color: var(--pc-text-soft); max-width: 52ch; margin: 0 auto; }
+
+/* ═══ FEATURE CARDS (4) ═══════════════════════════════════════════ */
+.portal-page .pc-features {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px;
+}
+.portal-page .pc-feature { padding: 28px 24px; text-align: left; text-decoration: none; display: block; }
+.portal-page .pc-feature__ico {
+  width: 92px; height: 92px; border-radius: 50%; object-fit: cover; margin-bottom: 18px;
+  border: 1px solid var(--pc-line); box-shadow: 0 0 24px -6px rgba(216,160,64,0.4);
+}
+.portal-page .pc-feature__title {
+  font-family: var(--pc-serif); font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.05em; font-size: 1.5rem; line-height: 1.05;
+}
+.portal-page .pc-feature__si { color: var(--pc-text-mute); font-size: 0.9rem; margin-bottom: 12px; }
+.portal-page .pc-feature__desc { color: var(--pc-text-soft); font-size: 0.96rem; line-height: 1.45; margin-bottom: 18px; }
+.portal-page .pc-feature__cta {
+  font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.16em;
+  font-size: 0.78rem; font-weight: 600; color: var(--pc-gold);
+}
+.portal-page .pc-feature:hover .pc-feature__cta { color: var(--pc-gold-bright); }
+.portal-page .pc-feature__cta::after { content: " →"; }
+
+/* ═══ ZODIAC GRID (12) ════════════════════════════════════════════ */
+.portal-page .pc-zodiac {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px;
+}
+.portal-page .pc-sign { padding: 20px 12px 18px; text-align: center; }
+.portal-page .pc-sign__ico {
+  width: 100%; max-width: 120px; margin: 0 auto 12px; aspect-ratio: 1; object-fit: contain;
+  filter: drop-shadow(0 4px 14px rgba(0,0,0,0.6));
+}
+.portal-page .pc-sign__name {
+  font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.14em;
+  font-weight: 600; font-size: 1.05rem;
+}
+.portal-page .pc-sign__si { color: var(--pc-text-mute); font-size: 0.82rem; margin-bottom: 6px; }
+.portal-page .pc-sign__glyph { color: var(--pc-gold); font-size: 1.2rem; line-height: 1; }
+.portal-page .pc-sign__key { color: var(--pc-text-soft); font-size: 0.8rem; margin-top: 8px; line-height: 1.3; }
+
+/* ═══ KNOWLEDGE PANELS (Elements / Modalities / Planets) ══════════ */
+.portal-page .pc-knowledge {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+}
+.portal-page .pc-panel { padding: 26px 24px; }
+.portal-page .pc-panel__title {
+  font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.1em;
+  font-weight: 600; font-size: 1.3rem; display: flex; align-items: center; gap: 8px;
+}
+.portal-page .pc-panel__sub { color: var(--pc-text-soft); font-size: 0.9rem; margin: 6px 0 20px; }
+.portal-page .pc-glyphs { display: flex; flex-wrap: wrap; gap: 16px 10px; }
+.portal-page .pc-glyph { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 62px; }
+.portal-page .pc-glyph__disc {
+  width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--pc-line);
+  display: grid; place-items: center; color: var(--pc-gold); font-size: 1.2rem;
+  background: radial-gradient(circle at 50% 30%, rgba(216,160,64,0.14), transparent 70%);
+  transition: border-color .3s ease, color .3s ease, box-shadow .3s ease;
+}
+.portal-page .pc-glyph__disc .pc-ico { width: 22px; height: 22px; }
+.portal-page .pc-glyph:hover .pc-glyph__disc {
+  border-color: var(--pc-gold); color: var(--pc-gold-bright);
+  box-shadow: 0 0 18px -4px rgba(216,160,64,0.6);
+}
+.portal-page .pc-trustband__ico .pc-ico { width: 22px; height: 22px; }
+.portal-page .pc-glyph__label {
+  font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.08em;
+  font-size: 0.66rem; font-weight: 600; color: var(--pc-text-soft); text-align: center;
+}
+.portal-page .pc-glyph__label small { display: block; font-family: var(--pc-body);
+  text-transform: none; letter-spacing: 0; font-size: 0.62rem; color: var(--pc-text-mute); }
+.portal-page .pc-panel__more {
+  display: inline-block; margin-top: 20px; text-decoration: none;
+  font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.16em;
+  font-size: 0.74rem; font-weight: 600; color: var(--pc-gold);
+}
+.portal-page .pc-panel__more::after { content: " →"; }
+
+/* ═══ APP FEATURE SECTIONS (kept from original, harmonized) ═══════ */
+.portal-page .pc-appfeatures { position: relative; z-index: 5; }
+.portal-page .pc-appfeatures .features-intro,
+.portal-page .pc-appfeatures .feature { position: relative; z-index: 5; background: transparent; }
+.portal-page .pc-appfeatures .section-eyebrow { color: var(--pc-gold); font-family: var(--pc-serif); letter-spacing: 0.28em; }
+.portal-page .pc-appfeatures .section-title,
+.portal-page .pc-appfeatures .feature__title {
+  font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.02em;
+  background: linear-gradient(180deg, var(--pc-gold-bright), var(--pc-gold) 55%, var(--pc-amber));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.portal-page .pc-appfeatures .feature__badge {
+  font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--pc-gold); border: 1px solid var(--pc-line); background: rgba(216,160,64,0.06);
+}
+.portal-page .pc-appfeatures .feature__desc,
+.portal-page .pc-appfeatures .section-subtitle { color: var(--pc-text-soft); font-family: var(--pc-body); }
+.portal-page .pc-appfeatures .feature__list li { color: var(--pc-text-soft); font-family: var(--pc-body); }
+/* Feature artworks — tarot cards with living light */
+.portal-page .feature__art {
+  position: relative; width: min(380px, 80%); margin: 0 auto;
+  border-radius: 14px; overflow: hidden;
+  border: 2px solid rgba(212, 175, 55, 0.45);
+  background: #0a0b18;
+  box-shadow:
+    0 0 0 5px #0a0b18, 0 0 0 6px rgba(212, 175, 55, 0.3),
+    0 30px 70px -30px rgba(0,0,0,0.85), 0 0 40px -12px rgba(216,160,64,0.25);
+  animation: pc-art-glow 9s ease-in-out infinite;
+}
+/* inner tarot frame line */
+.portal-page .feature__art::before {
+  content: ""; position: absolute; inset: 9px; border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 8px; pointer-events: none; z-index: 3;
+}
+/* relight canvas fills the card under the frame */
+.portal-page .feature__art canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1;
+}
+/* tarot title banner */
+.portal-page .feature__art-label {
+  position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%);
+  z-index: 4; white-space: nowrap;
+  font-family: var(--pc-serif); font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.22em; font-size: 0.78rem; color: var(--pc-gold-bright);
+  padding: 7px 20px; border-radius: 3px;
+  background: rgba(8, 9, 20, 0.82); border: 1px solid rgba(212, 175, 55, 0.4);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.8);
+}
+/* slow ken-burns breath on the painting itself (img fallback + relit canvas) */
+.portal-page .feature__art img {
+  display: block; width: 100%; height: auto;
+}
+.portal-page .feature__art img,
+.portal-page .feature__art canvas {
+  animation: pc-art-breathe 26s ease-in-out infinite alternate;
+}
+/* periodic gilded light sweep across the artwork */
+.portal-page .feature__art::after {
+  content: ""; position: absolute; inset: -40%; z-index: 2; pointer-events: none;
+  background: linear-gradient(115deg, transparent 42%, rgba(255,240,200,0.14) 50%, transparent 58%);
+  mix-blend-mode: screen;
+  animation: pc-art-sheen 8.5s ease-in-out infinite;
+}
+@keyframes pc-art-breathe {
+  from { transform: scale(1) translateY(0); }
+  to   { transform: scale(1.06) translateY(-1.5%); }
+}
+@keyframes pc-art-sheen {
+  0%, 55% { transform: translateX(-55%); }
+  85%, 100% { transform: translateX(55%); }
+}
+@keyframes pc-art-glow {
+  0%, 100% { box-shadow: 0 30px 70px -30px rgba(0,0,0,0.85), 0 0 34px -12px rgba(216,160,64,0.2); }
+  50%      { box-shadow: 0 30px 70px -30px rgba(0,0,0,0.85), 0 0 52px -10px rgba(216,160,64,0.42); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portal-page .feature__art,
+  .portal-page .feature__art img,
+  .portal-page .feature__art canvas,
+  .portal-page .feature__art::after { animation: none !important; }
+}
+
+/* ═══ WISDOM / SAGE CTA ═══════════════════════════════════════════ */
+.portal-page .pc-wisdom {
+  display: grid; grid-template-columns: 1.3fr 1fr; align-items: stretch; gap: 0;
+  overflow: hidden;
+}
+.portal-page .pc-wisdom__body { padding: 44px 46px; display: flex; flex-direction: column; justify-content: center; }
+.portal-page .pc-wisdom__title { font-family: var(--pc-serif); font-style: italic;
+  font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 500; line-height: 1.1; }
+.portal-page .pc-wisdom__sub { color: var(--pc-text-soft); margin: 14px 0 26px; font-size: 1.05rem; }
+.portal-page .pc-wisdom__media { position: relative; min-height: 260px; }
+.portal-page .pc-wisdom__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%); mask-image: linear-gradient(90deg, transparent, #000 30%); }
+
+/* ═══ TRUST BAND (footer top) ═════════════════════════════════════ */
+.portal-page .pc-trustband {
+  position: relative; z-index: 5; border-top: 1px solid var(--pc-line-soft);
+  border-bottom: 1px solid var(--pc-line-soft); padding: 26px 0;
+}
+.portal-page .pc-trustband__row { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.portal-page .pc-trustband__item { display: flex; align-items: center; gap: 12px; }
+.portal-page .pc-trustband__ico { color: var(--pc-gold); }
+.portal-page .pc-trustband__t { font-family: var(--pc-serif); text-transform: uppercase;
+  letter-spacing: 0.08em; font-weight: 600; font-size: 0.86rem; }
+.portal-page .pc-trustband__d { color: var(--pc-text-mute); font-size: 0.76rem; }
+
+/* ═══ RESPONSIVE ══════════════════════════════════════════════════ */
+@media (max-width: 1080px) {
+  .portal-page .pc-hero__grid { grid-template-columns: 1fr; }
+  .portal-page .pc-scene { max-width: 560px; margin: 0 auto; }
+  .portal-page .pc-features { grid-template-columns: repeat(2, 1fr); }
+  .portal-page .pc-knowledge { grid-template-columns: 1fr; }
+  .portal-page .pc-zodiac { grid-template-columns: repeat(4, 1fr); }
+  .portal-page .pc-wisdom { grid-template-columns: 1fr; }
+  .portal-page .pc-wisdom__media { min-height: 220px; }
+  .portal-page .pc-wisdom__media img { -webkit-mask-image: linear-gradient(0deg, transparent, #000 40%); mask-image: linear-gradient(0deg, transparent, #000 40%); }
+  .portal-page .pc-nav__links { display: none; }
+}
+@media (max-width: 680px) {
+  .portal-page .pc-hero__titles { flex-direction: column; gap: 20px; }
+  .portal-page .pc-hero__col-si { border-left: none; padding-left: 0; border-top: 1px solid var(--pc-line-soft); padding-top: 20px; }
+  .portal-page .pc-features { grid-template-columns: 1fr; }
+  .portal-page .pc-zodiac { grid-template-columns: repeat(2, 1fr); }
+  .portal-page .pc-trust__item + .pc-trust__item { border-left: none; padding-left: 0; }
+  .portal-page .pc-brand__sub { display: none; }
+}
+
+/* ═══ TRY-IT-FREE TOOLS (Kendara + Porondam preview → app funnel) ═════ */
+.portal-page .pc-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.portal-page .pc-tool { padding: 30px 28px; }
+.portal-page .pc-tool__head { margin-bottom: 20px; }
+.portal-page .pc-tool__title { font-family: var(--pc-serif); font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.05em; font-size: 1.55rem; line-height: 1.05; }
+.portal-page .pc-tool__sub { color: var(--pc-text-soft); font-size: 0.94rem; margin-top: 4px; }
+.portal-page .pc-tool__form { display: flex; flex-wrap: wrap; gap: 14px; align-items: end; }
+.portal-page .pc-tool__form--couple { display: block; }
+.portal-page .pc-tool label, .portal-page .pc-tool legend {
+  display: flex; flex-direction: column; gap: 6px; font-family: var(--pc-serif);
+  text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.68rem; color: var(--pc-gold);
+}
+.portal-page .pc-tool__person { border: 1px solid var(--pc-line-soft); border-radius: 4px;
+  padding: 14px 16px 16px; margin-bottom: 14px; display: flex; gap: 14px; flex-wrap: wrap; }
+.portal-page .pc-tool__person legend { padding: 0 8px; }
+.portal-page .pc-tool input:not(.pc-birth__num):not(.pc-birth__time) {
+  background: rgba(5,6,15,0.6); border: 1px solid var(--pc-line); border-radius: 3px;
+  color: var(--pc-text); font-family: var(--pc-body); font-size: 0.95rem; padding: 9px 12px;
+  color-scheme: dark; min-width: 150px;
+}
+.portal-page .pc-tool input:not(.pc-birth__num):not(.pc-birth__time):focus { outline: none; border-color: var(--pc-gold); }
+.portal-page .pc-tool__form .pc-btn-gold { padding: 12px 26px; }
+.portal-page .pc-tool__form--couple .pc-btn-gold { width: 100%; margin-top: 4px; }
+.portal-page .pc-tool__result { margin-top: 22px; border-top: 1px solid var(--pc-line-soft); padding-top: 20px; }
+.portal-page .pc-tool__row { display: flex; justify-content: space-between; gap: 14px; padding: 8px 0;
+  border-bottom: 1px dashed var(--pc-line-soft); }
+.portal-page .pc-tool__k { font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.08em;
+  font-size: 0.74rem; color: var(--pc-text-mute); }
+.portal-page .pc-tool__v { font-family: var(--pc-serif); font-size: 1.05rem; color: var(--pc-text); text-align: right; }
+.portal-page .pc-tool__v em { color: var(--pc-gold); font-style: normal; }
+.portal-page .pc-tool__archetype { text-align: center; margin-bottom: 8px; }
+.portal-page .pc-tool__band { font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.2em;
+  font-size: 0.7rem; color: var(--pc-gold); }
+.portal-page .pc-tool__arch-name { font-family: var(--pc-serif); font-size: 2rem; font-weight: 600; line-height: 1.05; margin: 4px 0 8px; }
+.portal-page .pc-tool__arch-essence { color: var(--pc-text-soft); font-size: 1rem; max-width: 40ch; margin: 0 auto; }
+.portal-page .pc-tool__gift { margin-top: 14px; color: var(--pc-text-soft); font-size: 0.95rem; text-align: center; }
+.portal-page .pc-tool__gift strong { color: var(--pc-gold); }
+.portal-page .pc-tool__locked { margin-top: 18px; padding: 16px 18px; border: 1px solid var(--pc-line);
+  border-radius: 4px; background: rgba(216,160,64,0.05); }
+.portal-page .pc-tool__locked-h { font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.12em;
+  font-size: 0.74rem; color: var(--pc-gold); }
+.portal-page .pc-tool__locked ul { list-style: none; margin: 10px 0 0; padding: 0; }
+.portal-page .pc-tool__locked li { position: relative; padding-left: 24px; color: var(--pc-text-soft);
+  font-size: 0.9rem; line-height: 1.9; }
+.portal-page .pc-tool__locked li::before { content: "🔒"; position: absolute; left: 0; filter: grayscale(1) opacity(0.6); font-size: 0.8rem; }
+.portal-page .pc-tool__cta { margin-top: 18px; width: 100%; text-align: center; }
+.portal-page .pc-tool__note { margin-top: 10px; font-size: 0.78rem; color: var(--pc-text-mute); text-align: center; }
+.portal-page .pc-tool__err { margin-top: 16px; color: var(--pc-rose, #c9a0a0); font-size: 0.9rem; }
+@media (max-width: 900px) { .portal-page .pc-tools { grid-template-columns: 1fr; } }
+
+/* ═══ SHAREABLE KENDARA CHART ═════════════════════════════════════════ */
+.portal-page .pc-chart { margin-bottom: 22px; }
+.portal-page .pc-chart__langrow { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 0 0 14px; }
+.portal-page .pc-chart__langlabel { font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; color: var(--pc-text-mute); }
+.portal-page .pc-chart__langrow .pc-lang__opt { cursor: pointer; background: transparent; border: 0; font: inherit; }
+.portal-page .pc-chart__svg {
+  display: block; width: 100%; max-width: 420px; margin: 0 auto; height: auto;
+  border-radius: 6px; box-shadow: 0 24px 60px -30px rgba(0,0,0,0.9), 0 0 40px -14px rgba(216,160,64,0.3);
+}
+.portal-page .pc-chart__actions { display: flex; gap: 12px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+.portal-page .pc-chart__actions .pc-btn-gold { padding: 12px 28px; }
+.portal-page .pc-chart__dl {
+  background: none; border: 1px solid var(--pc-line); color: var(--pc-gold);
+  font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.14em;
+  font-size: 0.8rem; font-weight: 600; padding: 12px 24px; border-radius: 3px; cursor: pointer;
+  transition: border-color .3s ease, color .3s ease;
+}
+.portal-page .pc-chart__dl:hover { border-color: var(--pc-gold); color: var(--pc-gold-bright); }
+.portal-page .pc-tool__rows { margin-bottom: 4px; }
+
+/* ═══ TODAY'S SKY BAND ════════════════════════════════════════════════ */
+.portal-page .pc-todaysky { position: relative; z-index: 5; overflow: hidden; isolation: isolate; padding: 84px 0 90px; }
+.portal-page .pc-todaysky__bg {
+  position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 50% 40%;
+}
+/* the night image is already dark & on-theme — a light veil for text legibility */
+.portal-page .pc-todaysky__bg { opacity: 0.9; }
+.portal-page .pc-todaysky__veil {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(rgba(5,6,15,0.5), rgba(5,6,15,0.62)),
+    radial-gradient(70% 80% at 50% 45%, transparent 30%, rgba(3,3,9,0.7) 100%);
+}
+.portal-page .pc-sky__head { text-align: center; margin-bottom: 34px; }
+.portal-page .pc-sky__date { color: var(--pc-text-soft); font-size: 1rem; margin-top: 6px; font-style: italic; }
+.portal-page .pc-sky__grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); gap: 16px; max-width: 980px; margin: 0 auto;
+}
+.portal-page .pc-sky__card {
+  display: flex; flex-direction: column; gap: 5px; text-align: center; padding: 24px 16px;
+}
+.portal-page .pc-sky__card--warn { border-color: rgba(200,120,70,0.45); }
+.portal-page .pc-sky__card--warn::before { border-color: rgba(200,120,70,0.22); }
+.portal-page .pc-sky__k { font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.72rem; color: var(--pc-text-mute); }
+.portal-page .pc-sky__v { font-family: var(--pc-serif); font-size: 1.4rem; font-weight: 600; line-height: 1.1; }
+.portal-page .pc-sky__card--warn .pc-sky__v { color: #eab48a; }
+.portal-page .pc-sky__si { font-size: 0.8rem; color: var(--pc-text-soft); }
+.portal-page .pc-sky__cta { display: block; width: max-content; max-width: 94%; margin: 32px auto 0; text-align: center; }
+.portal-page .pc-sky__note { text-align: center; color: var(--pc-text-mute); font-size: 0.8rem; margin-top: 12px; }
+
+/* ═══ DAILY READING (return hook) ═════════════════════════════════════ */
+.portal-page .pc-daily__streak { color: var(--pc-gold); font-family: var(--pc-serif); letter-spacing: 0.08em; margin-top: 8px; }
+.portal-page .pc-daily__picker { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; max-width: 900px; margin: 0 auto; }
+.portal-page .pc-daily__sign {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 8px 12px; cursor: pointer;
+  background: var(--pc-panel); color: var(--pc-text);
+}
+.portal-page .pc-daily__sign img { width: 66px; height: 66px; object-fit: contain; }
+.portal-page .pc-daily__sign span { font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.72rem; color: var(--pc-text-soft); }
+.portal-page .pc-daily__sign:hover span { color: var(--pc-gold-bright); }
+.portal-page .pc-daily__card { max-width: 620px; margin: 0 auto; padding: 30px 32px; }
+.portal-page .pc-daily__overall {
+  display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center;
+  padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid var(--pc-line-soft);
+}
+.portal-page .pc-daily__overall-k { font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.72rem; color: var(--pc-text-mute); }
+.portal-page .pc-daily__overall-v { font-family: var(--pc-serif); font-size: 2rem; font-weight: 700; color: var(--mood, var(--pc-gold)); }
+.portal-page .pc-daily__rows { display: flex; flex-direction: column; gap: 12px; }
+.portal-page .pc-daily__rows > div { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.portal-page .pc-daily__k { font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.74rem; color: var(--pc-text-mute); }
+.portal-page .pc-daily__v { font-family: var(--pc-serif); font-size: 1.15rem; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
+.portal-page .pc-daily__swatch { width: 15px; height: 15px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.25); display: inline-block; }
+.portal-page .pc-daily__foot { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 24px; }
+.portal-page .pc-daily__change { background: none; border: none; color: var(--pc-text-mute); font-family: var(--pc-serif); letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.72rem; cursor: pointer; }
+.portal-page .pc-daily__change:hover { color: var(--pc-gold); }
+
+/* ═══ VALUE LADDER (Free → App → Pro) ═════════════════════════════════ */
+.portal-page .pc-tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch; }
+.portal-page .pc-tier { position: relative; padding: 32px 28px; display: flex; flex-direction: column; overflow: visible; }
+.portal-page .pc-tier--pro { border-color: rgba(212,175,55,0.55); box-shadow: 0 0 0 1px rgba(212,175,55,0.25), 0 30px 70px -34px rgba(0,0,0,0.9), 0 0 44px -14px rgba(216,160,64,0.35); }
+.portal-page .pc-tier__badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(180deg, var(--pc-gold-bright), var(--pc-amber)); color: #1a1206; font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.7rem; font-weight: 700; padding: 4px 16px; border-radius: 3px; }
+.portal-page .pc-tier__name { font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.06em; font-size: 1.35rem; }
+.portal-page .pc-tier__price { font-family: var(--pc-serif); font-size: 1.9rem; font-weight: 700; color: var(--pc-gold-bright); margin: 4px 0 18px; }
+.portal-page .pc-tier__price small { font-size: 0.9rem; color: var(--pc-text-mute); font-weight: 400; }
+.portal-page .pc-tier__list { list-style: none; display: flex; flex-direction: column; gap: 11px; flex: 1; margin: 0 0 22px; }
+.portal-page .pc-tier__list li { position: relative; padding-left: 24px; color: var(--pc-text-soft); font-family: var(--pc-body); line-height: 1.35; }
+.portal-page .pc-tier__list li::before { content: "✦"; position: absolute; left: 0; top: 1px; color: var(--pc-gold); font-size: 0.8rem; }
+.portal-page .pc-tier__list em { color: var(--pc-text); font-style: italic; }
+.portal-page .pc-tier__cta { text-align: center; }
+.portal-page .pc-tier__here { text-align: center; font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.78rem; color: var(--pc-text-mute); border: 1px dashed var(--pc-line); border-radius: 3px; padding: 12px; }
+.portal-page .pc-tier__note { text-align: center; color: var(--pc-text-mute); font-size: 0.78rem; margin-top: 10px; }
+
+@media (max-width: 900px) {
+  .portal-page .pc-tiers { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; }
+  .portal-page .pc-daily__picker { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 520px) { .portal-page .pc-daily__picker { grid-template-columns: repeat(3, 1fr); } }
+
+.portal-page .pc-tier__price-alt { color: var(--pc-text-mute); font-size: 0.82rem; margin: -12px 0 16px; }
+
+/* ═══ CHART ORNAMENT FRAME (feature-card feel) ════════════════════════ */
+.portal-page .pc-chart__frame { position: relative; width: min(430px, 100%); margin: 0 auto; padding: 8px; }
+.portal-page .pc-chart__frame .pc-chart__svg { max-width: none; width: 100%; }
+.portal-page .pc-chart__corner { position: absolute; width: 92px; height: 92px; pointer-events: none; z-index: 3; opacity: 0.92; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6)); }
+.portal-page .pc-chart__corner--tl { top: -10px; left: -10px; }
+.portal-page .pc-chart__corner--tr { top: -10px; right: -10px; transform: scaleX(-1); }
+.portal-page .pc-chart__corner--br { bottom: -10px; right: -10px; transform: scale(-1, -1); }
+.portal-page .pc-chart__corner--bl { bottom: -10px; left: -10px; transform: scaleY(-1); }
+
+/* ═══ BIRTH PICKER — fast typed DD/MM/YYYY + time ═════════════════════ */
+.portal-page .pc-birth { display: flex; flex-direction: column; gap: 8px; }
+.portal-page .pc-birth__label { font-family: var(--pc-serif); text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.74rem; color: var(--pc-gold); }
+.portal-page .pc-birth__row { display: flex; gap: 10px; flex-wrap: wrap; align-items: stretch; }
+.portal-page .pc-birth__date {
+  display: flex; align-items: center; gap: 2px; flex: 2; min-width: 180px;
+  background: rgba(8,9,20,0.7); border: 1px solid var(--pc-line); border-radius: 4px; padding: 4px 12px;
+  transition: border-color .3s ease;
+}
+.portal-page .pc-birth__date:focus-within { border-color: var(--pc-gold); }
+.portal-page .pc-birth__num {
+  appearance: none; -webkit-appearance: none; background: none; border: none;
+  color: var(--pc-text); font-family: var(--pc-body); font-size: 1.15rem; text-align: center; padding: 9px 0;
+}
+.portal-page .pc-birth__num:focus { outline: none; color: var(--pc-gold-bright); }
+.portal-page .pc-birth__num::placeholder { color: var(--pc-text-mute); letter-spacing: 0.05em; }
+.portal-page .pc-birth__num--d, .portal-page .pc-birth__num--m { width: 2.8ch; }
+.portal-page .pc-birth__num--y { width: 4.8ch; }
+.portal-page .pc-birth__sep { color: var(--pc-text-mute); font-size: 1.1rem; }
+.portal-page .pc-birth__time {
+  flex: 1; min-width: 116px; appearance: none; -webkit-appearance: none;
+  background: rgba(8,9,20,0.7); color: var(--pc-text); border: 1px solid var(--pc-line); border-radius: 4px;
+  font-family: var(--pc-body); font-size: 1rem; padding: 11px 12px; color-scheme: dark; transition: border-color .3s ease;
+}
+.portal-page .pc-birth__time:focus { outline: none; border-color: var(--pc-gold); }
+@media (max-width: 480px) {
+  .portal-page .pc-birth__date, .portal-page .pc-birth__time { flex: 1 1 100%; }
+}
+
+/* tier emblems */
+.portal-page .pc-tier__emblem {
+  width: 96px; height: 96px; object-fit: cover; border-radius: 50%; margin: 0 auto 16px;
+  border: 1px solid var(--pc-line); box-shadow: 0 0 26px -6px rgba(216,160,64,0.45);
+}
+.portal-page .pc-tier { align-items: stretch; }
+.portal-page .pc-tier__name, .portal-page .pc-tier__price, .portal-page .pc-tier__price-alt { text-align: center; }
+.portal-page .pc-tier--pro .pc-tier__emblem { width: 108px; height: 108px; box-shadow: 0 0 34px -6px rgba(216,160,64,0.6); }
+
+/* ═══ KENDARA CARD — chart-first, flat (no 3D tilt / no glow) ═══════════ */
+.portal-page .pc-kcard-wrap { width: min(400px, 100%); margin: 0 auto 4px; }
+.portal-page .pc-kcard {
+  position: relative; aspect-ratio: 896 / 1152; border-radius: 12px; overflow: hidden;
+  box-shadow: 0 24px 60px -30px rgba(0,0,0,0.8);
+}
+
+/* chart-first kendara card: relit ornate frame (PBR maps) behind + chart overlay */
+.portal-page .pc-kcard--chart { aspect-ratio: 896 / 1152; background: #070812; border-radius: 14px; }
+.portal-page .pc-kframe { position: absolute; inset: 0; z-index: 0; }
+.portal-page .pc-kframe img,
+.portal-page .pc-kframe canvas { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; display: block; }
+.portal-page .pc-kcard--chart .pc-chart__overlay {
+  position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%;
+  max-width: none; margin: 0; box-shadow: none; background: transparent; pointer-events: none;
+}
+
+/* ═══ AMBIENT COSMOS ART — painterly nebula behind the whole page ═══════ */
+.portal-page .pc-cosmos {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: url('/assets/cosmos/bg_stars.webp') center center / cover no-repeat;
+  opacity: 0.55;
+}
+.portal-page .pc-cosmos::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(120% 80% at 50% 0%, transparent 40%, rgba(5,6,15,0.6) 100%),
+    linear-gradient(180deg, rgba(5,6,15,0.35), rgba(5,6,15,0.55));
+}
+
+/* ═══ FOOTER — temple art + gold portal styling ════════════════════════ */
+.portal-page .pc-footer { position: relative; margin-top: 40px; border-top: 1px solid var(--pc-line); }
+
+/* Temple art continues behind the links */
+.portal-page .pc-footer__body { position: relative; isolation: isolate; overflow: hidden; padding: clamp(72px, 10vw, 120px) 0 40px; }
+.portal-page .pc-footer__art--temples {
+  position: absolute; inset: 0; width: 100%; height: 100%; max-width: none;
+  object-fit: cover; object-position: center bottom; z-index: -2;
+}
+.portal-page .pc-footer__veil {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    linear-gradient(180deg, var(--pc-void) 0%, var(--pc-void) 44%, rgba(6,7,17,0.82) 68%, rgba(5,6,14,0.92) 100%);
+}
+.portal-page .pc-footer__inner { position: relative; z-index: 1; }
+
+.portal-page .pc-footer__cta { text-align: center; max-width: 640px; margin: 0 auto clamp(48px, 7vw, 84px); }
+.portal-page .pc-footer__logo {
+  width: 76px; height: 76px; display: block; margin: 0 auto 22px;
+  filter: drop-shadow(0 6px 22px rgba(0,0,0,0.6)) drop-shadow(0 0 28px rgba(216,180,90,0.4));
+}
+.portal-page .pc-footer__statement {
+  font-family: var(--pc-serif); font-weight: 600;
+  font-size: clamp(2rem, 5.4vw, 3.4rem); line-height: 1.08; letter-spacing: 0.5px;
+  margin: 0 0 16px;
+  background: linear-gradient(180deg, #fbe7b6 0%, #e7c66e 52%, #c8892f 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  text-shadow: 0 2px 30px rgba(0,0,0,0.45);
+}
+.portal-page .pc-footer__tagline {
+  color: var(--pc-text-soft); font-size: clamp(1rem, 2.2vw, 1.18rem);
+  line-height: 1.6; margin: 0 auto 28px; max-width: 460px;
+}
+.portal-page .pc-footer__dl { padding: 14px 40px; font-size: 1.02rem; }
+
+.portal-page .pc-footer__socials { display: flex; gap: 14px; justify-content: center; margin-top: 26px; }
+.portal-page .pc-footer__socials a {
+  width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%;
+  color: var(--pc-gold); border: 1px solid var(--pc-line);
+  background: rgba(10,12,26,0.5); backdrop-filter: blur(4px);
+  transition: color .2s, border-color .2s, transform .2s, background .2s;
+}
+.portal-page .pc-footer__socials a:hover {
+  color: #08090f; background: var(--pc-gold-bright); border-color: var(--pc-gold-bright);
+  transform: translateY(-3px);
+}
+
+.portal-page .pc-footer__grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 32px 24px;
+  padding: clamp(30px, 5vw, 48px) 0; max-width: 1080px; margin: 0 auto;
+  border-top: 1px solid var(--pc-line-soft);
+}
+.portal-page .pc-footer__col { display: flex; flex-direction: column; gap: 11px; }
+.portal-page .pc-footer__heading {
+  font-family: var(--pc-serif); font-size: 0.82rem; letter-spacing: 2.4px; text-transform: uppercase;
+  color: var(--pc-gold); margin: 0 0 6px; font-weight: 600;
+}
+.portal-page .pc-footer__col a {
+  color: var(--pc-text-soft); text-decoration: none; font-size: 0.95rem; line-height: 1.35;
+  transition: color .18s, padding-left .18s; width: fit-content;
+}
+.portal-page .pc-footer__col a:hover { color: var(--pc-gold-bright); padding-left: 4px; }
+
+.portal-page .pc-footer__bottom {
+  display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap;
+  max-width: 1080px; margin: 0 auto; padding-top: 26px;
+  border-top: 1px solid var(--pc-line-soft);
+  color: var(--pc-text-mute); font-size: 0.85rem;
+}
+.portal-page .pc-footer__saying { font-family: var(--pc-serif); font-style: italic; color: var(--pc-text-soft); }
+
+@media (max-width: 860px) {
+  .portal-page .pc-footer__grid { grid-template-columns: repeat(2, 1fr); gap: 28px 20px; }
+}
+@media (max-width: 520px) {
+  .portal-page .pc-footer__grid { grid-template-columns: 1fr 1fr; }
+  .portal-page .pc-footer__bottom { flex-direction: column; text-align: center; }
+}
+
+/* ═══ INNER PAGES — page hero banner + prose content ═══════════════════ */
+.portal-page .pc-phero {
+  position: relative; isolation: isolate; overflow: hidden;
+  padding: clamp(150px, 22vh, 240px) 0 clamp(44px, 6vw, 72px);
+  border-bottom: 1px solid var(--pc-line);
+  text-align: center;
+}
+.portal-page .pc-phero__bg {
+  position: absolute; inset: 0; width: 100%; height: 100%; max-width: none;
+  object-fit: cover; object-position: center; z-index: -2;
+}
+.portal-page .pc-phero__veil {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(5,6,15,0.86) 0%, rgba(6,7,17,0.5) 42%, rgba(5,6,14,0.92) 100%),
+    radial-gradient(90% 80% at 50% 40%, rgba(216,180,90,0.12), transparent 60%);
+}
+.portal-page .pc-phero__inner { position: relative; z-index: 1; max-width: 820px; }
+.portal-page .pc-phero__eyebrow { margin: 0 auto 16px; max-width: 300px; }
+.portal-page .pc-phero__title {
+  font-family: var(--pc-serif); font-weight: 600; margin: 0 0 16px;
+  font-size: clamp(2.1rem, 5vw, 3.6rem); line-height: 1.06; letter-spacing: 0.5px;
+}
+.portal-page .pc-phero__sub {
+  color: var(--pc-text-soft); font-size: clamp(1.02rem, 2.2vw, 1.24rem); line-height: 1.6;
+  max-width: 660px; margin: 0 auto;
+}
+.portal-page .pc-crumb {
+  display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap;
+  margin: 0 0 22px; font-size: 0.82rem; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--pc-text-mute);
+}
+.portal-page .pc-crumb a { color: var(--pc-text-soft); text-decoration: none; transition: color .18s; }
+.portal-page .pc-crumb a:hover { color: var(--pc-gold-bright); }
+.portal-page .pc-crumb__sep { color: var(--pc-gold-deep); }
+
+/* Prose column */
+.portal-page .pc-article { position: relative; z-index: 1; padding: clamp(44px, 7vw, 84px) 0 clamp(48px, 8vw, 96px); }
+.portal-page .pc-prose { max-width: 880px; }
+.portal-page .pc-prose h2 {
+  font-family: var(--pc-serif); font-weight: 600; color: var(--pc-gold-bright);
+  font-size: clamp(1.5rem, 3.4vw, 2.1rem); line-height: 1.2; margin: 0 0 16px; letter-spacing: 0.3px;
+}
+.portal-page .pc-prose h3 {
+  font-family: var(--pc-serif); font-weight: 600; color: var(--pc-text);
+  font-size: clamp(1.15rem, 2.6vw, 1.4rem); margin: 24px 0 10px;
+}
+.portal-page .pc-prose h4 { font-family: var(--pc-serif); color: var(--pc-gold); font-size: 1.05rem; margin: 18px 0 8px; }
+.portal-page .pc-prose p { color: var(--pc-text-soft); line-height: 1.75; margin: 0 0 16px; font-size: 1.04rem; }
+.portal-page .pc-prose strong { color: var(--pc-text); font-weight: 600; }
+.portal-page .pc-prose a { color: var(--pc-gold-bright); text-decoration: none; border-bottom: 1px solid var(--pc-line); transition: border-color .18s; }
+.portal-page .pc-prose a:hover { border-color: var(--pc-gold-bright); }
+.portal-page .pc-prose ul, .portal-page .pc-prose ol { margin: 0 0 18px; padding-left: 4px; list-style: none; }
+.portal-page .pc-prose ol { counter-reset: pcli; }
+.portal-page .pc-prose li { color: var(--pc-text-soft); line-height: 1.7; margin: 0 0 10px; padding-left: 26px; position: relative; }
+.portal-page .pc-prose ul li::before { content: "\2726"; position: absolute; left: 0; top: 0; color: var(--pc-gold); font-size: 0.82em; }
+.portal-page .pc-prose ol li { counter-increment: pcli; }
+.portal-page .pc-prose ol li::before {
+  content: counter(pcli); position: absolute; left: 0; top: 1px;
+  width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 0.72rem; color: var(--pc-gold-bright); border: 1px solid var(--pc-line);
+}
+.portal-page .pc-prose table { width: 100%; border-collapse: collapse; margin: 0 0 20px; font-size: 0.96rem; }
+.portal-page .pc-prose th, .portal-page .pc-prose td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--pc-line-soft); color: var(--pc-text-soft); }
+.portal-page .pc-prose th { color: var(--pc-gold); font-family: var(--pc-serif); font-weight: 600; }
+.portal-page .pc-prose blockquote { border-left: 2px solid var(--pc-gold); margin: 0 0 18px; padding: 4px 0 4px 18px; color: var(--pc-text-soft); font-style: italic; }
+.portal-page .pc-prose img { max-width: 100%; height: auto; border-radius: 10px; }
+
+/* Content cards & dividers (extracted classes) */
+.portal-page .pc-prose .feature-page__glass-card,
+.portal-page .pc-prose .legal-section,
+.portal-page .pc-prose .legal-card {
+  background: var(--pc-panel); border: 1px solid var(--pc-line);
+  border-radius: 16px; padding: clamp(22px, 3.5vw, 34px); margin: 0 0 22px;
+  backdrop-filter: blur(6px);
+}
+.portal-page .pc-prose .feature-page__glass-card > :last-child,
+.portal-page .pc-prose .legal-section > :last-child { margin-bottom: 0; }
+.portal-page .pc-prose .blog-article__intro { font-size: 1.16rem; line-height: 1.7; color: var(--pc-text); margin: 0 0 26px; }
+.portal-page .pc-prose .section-divider { height: 1px; margin: 30px 0; background: linear-gradient(90deg, transparent, var(--pc-line), transparent); }
+.portal-page .pc-prose .section-num {
+  display: inline-grid; place-items: center; width: 30px; height: 30px; margin-right: 10px;
+  border-radius: 50%; border: 1px solid var(--pc-line); color: var(--pc-gold-bright);
+  font-size: 0.9rem; vertical-align: middle;
+}
+.portal-page .pc-prose .legal-header__meta, .portal-page .pc-prose .legal-updated { color: var(--pc-text-mute); font-size: 0.9rem; }
+.portal-page .pc-prose .legal-highlight { background: rgba(216,180,90,0.08); border: 1px solid var(--pc-line); border-radius: 12px; padding: 16px 20px; margin: 0 0 18px; }
+.portal-page .pc-prose .legal-card__icon { font-size: 1.4rem; margin-bottom: 8px; }
+
+/* Feature CTA block */
+.portal-page .pc-prose .feature-page__cta {
+  text-align: center; background:
+    radial-gradient(120% 100% at 50% 0%, rgba(216,180,90,0.14), transparent 70%), var(--pc-panel);
+  border: 1px solid var(--pc-line); border-radius: 18px;
+  padding: clamp(28px, 4vw, 44px); margin: 28px 0 0;
+}
+.portal-page .pc-prose .feature-page__cta h3 { color: var(--pc-gold-bright); font-size: clamp(1.3rem, 3vw, 1.7rem); }
+.portal-page .pc-prose .feature-page__cta .btn { display: inline-flex; align-items: center; gap: 10px; }
+
+/* Related / explore-more grid */
+.portal-page .pc-prose .pc-related { margin-top: 40px; }
+.portal-page .pc-prose .pc-related h2 { text-align: center; font-size: clamp(1.3rem, 3vw, 1.8rem); margin-bottom: 22px; }
+.portal-page .pc-prose .feature-page__related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.portal-page .pc-prose .feature-page__related-card {
+  display: block; background: var(--pc-panel); border: 1px solid var(--pc-line);
+  border-radius: 14px; padding: 22px; text-decoration: none; transition: border-color .2s, transform .2s;
+}
+.portal-page .pc-prose .feature-page__related-card:hover { border-color: var(--pc-gold); transform: translateY(-3px); }
+.portal-page .pc-prose .feature-page__related-card h3 { color: var(--pc-gold-bright); margin: 0 0 6px; }
+.portal-page .pc-prose .feature-page__related-card p { margin: 0; font-size: 0.95rem; }
+
+/* Zodiac signs grid */
+.portal-page .pc-prose .pc-zgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; margin: 0 0 20px; }
+.portal-page .pc-prose .zodiac-card { background: var(--pc-panel); border: 1px solid var(--pc-line); border-radius: 16px; padding: 24px; text-align: center; transition: border-color .2s, transform .2s; }
+.portal-page .pc-prose .zodiac-card:hover { border-color: var(--pc-gold); transform: translateY(-3px); }
+.portal-page .pc-prose .zodiac-card__img img { width: 96px; height: 96px; object-fit: contain; margin: 0 auto 10px; filter: drop-shadow(0 4px 14px rgba(0,0,0,0.5)); }
+.portal-page .pc-prose .zodiac-card__name { font-family: var(--pc-serif); color: var(--pc-gold-bright); font-size: 1.5rem; margin: 0 0 6px; }
+.portal-page .pc-prose .zodiac-card__dates { font-size: 0.85rem; color: var(--pc-text-mute); line-height: 1.5; margin-bottom: 10px; }
+.portal-page .pc-prose .zodiac-card__meta { display: flex; gap: 8px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap; }
+.portal-page .pc-prose .zodiac-card__tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; color: var(--pc-gold); border: 1px solid var(--pc-line); border-radius: 999px; padding: 3px 12px; }
+.portal-page .pc-prose .zodiac-card__tag .pc-ico { width: 13px; height: 13px; color: var(--pc-gold); flex: none; }
+.portal-page .pc-prose .zodiac-card__desc { font-size: 0.95rem; margin-bottom: 12px; }
+.portal-page .pc-prose .zodiac-card__traits { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
+.portal-page .pc-prose .zodiac-card__trait { font-size: 0.78rem; color: var(--pc-text-soft); background: rgba(255,255,255,0.04); border-radius: 6px; padding: 3px 9px; }
+.portal-page .pc-prose .zodiac-card__compat { font-size: 0.85rem; color: var(--pc-text-mute); margin: 0; }
+
+/* neutralise stray legacy wrappers inside prose */
+.portal-page .pc-prose .container { width: auto; max-width: none; margin: 0; padding: 0; }
+.portal-page .pc-prose > section { margin: 0 0 22px; }
+
+/* ═══ Language toggle (EN / සිං) ═══════════════════════════════════════ */
+.portal-page .pc-lang {
+  display: inline-flex; align-items: center; border: 1px solid var(--pc-line);
+  border-radius: 999px; overflow: hidden; background: rgba(10, 12, 26, 0.55);
+}
+.portal-page .pc-lang__opt {
+  padding: 5px 13px; font-size: 0.8rem; letter-spacing: 0.6px; line-height: 1;
+  color: var(--pc-text-soft); text-decoration: none; transition: background .18s, color .18s;
+}
+.portal-page .pc-lang__opt.is-active { background: var(--pc-gold); color: #0a0b16; font-weight: 700; }
+.portal-page .pc-lang__opt:not(.is-active):hover { color: var(--pc-gold-bright); }
+.portal-page .pc-lang--mobile { width: 100%; justify-content: center; margin-bottom: 14px; }
+.portal-page .pc-lang--mobile .pc-lang__opt { flex: 1; text-align: center; padding: 11px; font-size: 0.95rem; }
+
+/* ═══ Inner-page tool band (Kendara / Porondam try) ════════════════════ */
+.portal-page .pc-toolband { position: relative; padding: clamp(40px, 6vw, 72px) 0; border-bottom: 1px solid var(--pc-line-soft); }
+.portal-page .pc-toolband .pc-section__head { margin-bottom: 26px; }
+.portal-page .pc-toolband .pc-tool { max-width: 640px; margin: 0 auto; }
+
+/* ═══ Porondam result — 3 shown + locked + guide ═══════════════════════ */
+.portal-page .pc-poro-result { margin-top: 20px; }
+.portal-page .pc-poro-arch { text-align: center; margin-bottom: 14px; }
+.portal-page .pc-poro-arch__band { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: var(--pc-gold); }
+.portal-page .pc-poro-arch__name { font-family: var(--pc-serif); font-size: 1.5rem; margin: 2px 0; }
+.portal-page .pc-poro-arch__essence { color: var(--pc-text-soft); font-size: 0.9rem; margin: 0; }
+
+.portal-page .pc-poro-score { display: flex; align-items: center; gap: 16px; margin: 4px 0 10px; }
+.portal-page .pc-poro-gauge {
+  flex: none; width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center; position: relative;
+  background: conic-gradient(var(--pc-gold) calc(var(--pct) * 1%), rgba(255,255,255,0.08) 0);
+}
+.portal-page .pc-poro-gauge::before { content: ""; position: absolute; inset: 6px; border-radius: 50%; background: var(--pc-panel-solid); }
+.portal-page .pc-poro-gauge span { position: relative; font-family: var(--pc-serif); font-weight: 700; font-size: 1.35rem; color: var(--pc-gold-bright); }
+.portal-page .pc-poro-gauge small { font-size: 0.72rem; }
+.portal-page .pc-poro-score__verdict { font-family: var(--pc-serif); font-size: 1.3rem; line-height: 1.2; }
+.portal-page .pc-poro-score__sub { color: var(--pc-text-mute); font-size: 0.85rem; }
+
+.portal-page .pc-poro-group__label { font-family: var(--pc-serif); font-size: 0.76rem; letter-spacing: 2px; text-transform: uppercase; color: var(--pc-gold); margin: 16px 0 8px; }
+.portal-page .pc-poro-list { list-style: none; margin: 0 0 6px; padding: 0; display: grid; gap: 8px; }
+.portal-page .pc-poro-list--locked { grid-template-columns: repeat(2, 1fr); }
+.portal-page .pc-poro {
+  display: flex; align-items: flex-start; gap: 12px; padding: 11px 14px;
+  border: 1px solid var(--pc-line-soft); border-radius: 12px; background: rgba(10, 12, 26, 0.4);
+}
+.portal-page .pc-poro__mark { flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 0.9rem; }
+.portal-page .pc-poro.is-ok .pc-poro__mark { color: #7dd3a8; border: 1px solid rgba(125,211,168,0.4); background: rgba(125,211,168,0.1); }
+.portal-page .pc-poro.is-warn .pc-poro__mark { color: #e0b060; border: 1px solid rgba(224,176,96,0.4); background: rgba(224,176,96,0.1); }
+.portal-page .pc-poro.is-locked { opacity: 0.66; }
+.portal-page .pc-poro.is-locked .pc-poro__mark { color: var(--pc-text-mute); border: 1px solid var(--pc-line-soft); }
+.portal-page .pc-poro__body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.portal-page .pc-poro__name { font-family: var(--pc-serif); color: var(--pc-text); font-weight: 600; display: flex; gap: 8px; align-items: baseline; }
+.portal-page .pc-poro__name em { font-style: normal; font-size: 0.8rem; color: var(--pc-gold); }
+.portal-page .pc-poro__note { font-size: 0.84rem; color: var(--pc-text-soft); line-height: 1.4; }
+.portal-page .pc-poro--more { grid-column: 1 / -1; justify-content: center; border-style: dashed; opacity: 0.8; }
+.portal-page .pc-poro--more .pc-poro__name { color: var(--pc-gold); }
+
+.portal-page .pc-poro-guide {
+  border: 1px solid var(--pc-line); border-radius: 14px; padding: 16px 18px; margin: 14px 0 16px;
+  background: radial-gradient(120% 100% at 0 0, rgba(216,180,90,0.09), transparent 62%);
+}
+.portal-page .pc-poro-guide__title { display: block; font-family: var(--pc-serif); font-size: 0.98rem; margin-bottom: 6px; }
+.portal-page .pc-poro-guide p { margin: 0; color: var(--pc-text-soft); font-size: 0.92rem; line-height: 1.62; }
+
+@media (max-width: 460px) { .portal-page .pc-poro-list--locked { grid-template-columns: 1fr; } }
+
+/* ═══ MAJESTIC LOADER / SPLASH ════════════════════════════════════════ */
+.pc-loader {
+  position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; overflow: hidden;
+  background: radial-gradient(circle at 50% 42%, #0c0e26 0%, #070814 55%, #04050d 100%);
+  transition: opacity .9s ease, visibility .9s ease;
+}
+.pc-loader.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
+.splash-done .pc-loader { display: none; }
+
+.pc-loader__neb {
+  position: absolute; top: -8%; left: -8%; width: 116%; height: 116%; object-fit: cover; max-width: none;
+  opacity: 0.38; filter: saturate(0.9) brightness(0.9); animation: pcl-drift 34s ease-in-out infinite alternate;
+}
+.pc-loader__stars {
+  position: absolute; inset: -20%; pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,240,200,0.9), transparent 60%),
+    radial-gradient(1.5px 1.5px at 75% 65%, rgba(255,240,200,0.8), transparent 60%),
+    radial-gradient(1px 1px at 45% 80%, rgba(255,240,200,0.7), transparent 60%),
+    radial-gradient(1px 1px at 85% 22%, rgba(255,240,200,0.7), transparent 60%),
+    radial-gradient(1.5px 1.5px at 12% 70%, rgba(255,240,200,0.8), transparent 60%),
+    radial-gradient(1px 1px at 62% 14%, rgba(255,240,200,0.6), transparent 60%);
+  background-repeat: repeat; background-size: 520px 520px; animation: pcl-tw 4s ease-in-out infinite;
+}
+.pc-loader__planet { position: absolute; opacity: 0.7; }
+.pc-loader__planet img { display: block; width: 100%; height: auto; max-width: none; border-radius: 50%; mix-blend-mode: screen; filter: drop-shadow(0 6px 24px rgba(0,0,0,0.5)); }
+.pc-loader__planet--j { top: 12%; left: 9%; width: clamp(80px, 11vw, 150px); animation: pcl-float 10s ease-in-out infinite; }
+.pc-loader__planet--m { bottom: 13%; right: 11%; width: clamp(60px, 8vw, 110px); opacity: 0.85; animation: pcl-float 13s ease-in-out infinite reverse; }
+
+.pc-loader__core { position: relative; width: min(72vw, 440px); aspect-ratio: 1; display: grid; place-items: center; }
+.pc-loader__halo { position: absolute; width: 78%; height: 78%; border-radius: 50%; background: radial-gradient(circle, rgba(216,180,90,0.28), transparent 62%); filter: blur(18px); animation: pcl-pulse 4.5s ease-in-out infinite; }
+.pc-loader__portal {
+  position: absolute; width: 100%; height: 100%; object-fit: contain; max-width: none;
+  animation: pcl-spin 120s linear infinite, pcl-breathe 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 46px rgba(216,180,90,0.4));
+  -webkit-mask-image: radial-gradient(circle closest-side, #000 90%, transparent 100%);
+  mask-image: radial-gradient(circle closest-side, #000 90%, transparent 100%);
+}
+.pc-loader__logo { position: relative; z-index: 2; width: 20%; filter: drop-shadow(0 0 22px rgba(216,180,90,0.7)); animation: pcl-logo 4.5s ease-in-out infinite; }
+
+.pc-loader__brand { position: absolute; bottom: clamp(44px, 11vh, 110px); left: 0; right: 0; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; z-index: 3; }
+.pc-loader__name {
+  font-family: var(--pc-serif); font-size: clamp(1.3rem, 4.4vw, 2.1rem); font-weight: 600; letter-spacing: 0.5em; padding-left: 0.5em;
+  background: linear-gradient(180deg, #fbe7b6, #e7c66e 55%, #c8892f); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.pc-loader__tag { font-family: var(--pc-body); color: var(--pc-text-soft); letter-spacing: 0.28em; text-transform: uppercase; font-size: 0.74rem; }
+.pc-loader__bar { position: relative; width: 170px; height: 2px; border-radius: 2px; overflow: hidden; background: rgba(216,180,90,0.14); }
+.pc-loader__bar i { position: absolute; top: 0; left: -45%; width: 45%; height: 100%; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--pc-gold-bright), transparent); animation: pcl-load 1.5s ease-in-out infinite; }
+
+@keyframes pcl-spin { to { transform: rotate(360deg); } }
+@keyframes pcl-breathe { 0%, 100% { opacity: 0.92; } 50% { opacity: 1; } }
+@keyframes pcl-pulse { 0%, 100% { opacity: 0.55; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.06); } }
+@keyframes pcl-logo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes pcl-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+@keyframes pcl-drift { 0% { transform: scale(1) translate(0, 0); } 100% { transform: scale(1.08) translate(-2%, -1%); } }
+@keyframes pcl-tw { 0%, 100% { opacity: 0.5; } 50% { opacity: 0.9; } }
+@keyframes pcl-load { 0% { left: -45%; } 100% { left: 110%; } }
+@media (prefers-reduced-motion: reduce) { .pc-loader__neb, .pc-loader__stars, .pc-loader__planet, .pc-loader__halo, .pc-loader__portal, .pc-loader__logo, .pc-loader__bar i { animation: none !important; } }
+
+/* ═══ MOBILE NAV — portal full-screen menu ════════════════════════════ */
+.portal-page .pc-burger {
+  width: 46px; height: 46px; border: 1px solid var(--pc-line); border-radius: 50%;
+  background: rgba(10,12,26,0.45); display: none; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  cursor: pointer; transition: border-color .2s, background .2s; -webkit-tap-highlight-color: transparent;
+}
+.portal-page .pc-burger:hover, .portal-page .pc-burger:focus-visible { border-color: var(--pc-gold); background: rgba(216,180,90,0.08); }
+.portal-page .pc-burger span { width: 20px; height: 2px; background: var(--pc-gold-bright); border-radius: 2px; transition: transform .3s ease, opacity .2s ease; }
+.portal-page .pc-burger.is-active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.portal-page .pc-burger.is-active span:nth-child(2) { opacity: 0; }
+.portal-page .pc-burger.is-active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.portal-page .pc-mnav {
+  position: fixed; inset: 0; z-index: 250; visibility: hidden; opacity: 0;
+  transition: opacity .45s ease, visibility .45s ease; overflow-y: auto; -webkit-overflow-scrolling: touch;
+}
+.portal-page .pc-mnav.is-open { visibility: visible; opacity: 1; }
+.portal-page .pc-mnav__bg { position: absolute; inset: 0; z-index: -2; background: linear-gradient(180deg, #080a1a 0%, #04050d 100%); }
+.portal-page .pc-mnav__bg::after { content: ""; position: absolute; inset: 0; background: url('/assets/cosmos/bg_stars.webp') center center / cover no-repeat; opacity: 0.5; }
+.portal-page .pc-mnav__glow {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(90% 55% at 50% 0%, rgba(216,180,90,0.16), transparent 62%),
+    radial-gradient(75% 50% at 50% 102%, rgba(106,79,160,0.22), transparent 60%);
+}
+.portal-page .pc-mnav__inner { position: relative; min-height: 100%; display: flex; flex-direction: column; padding: 16px clamp(22px, 7vw, 48px) 36px; }
+.portal-page .pc-mnav__top { display: flex; align-items: center; justify-content: space-between; min-height: 60px; }
+.portal-page .pc-mnav__brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.portal-page .pc-mnav__brand img { width: 36px; height: 36px; }
+.portal-page .pc-mnav__brand span { font-family: var(--pc-serif); font-size: 1.15rem; letter-spacing: 0.14em; color: var(--pc-text); text-transform: uppercase; }
+.portal-page .pc-mnav__close { width: 44px; height: 44px; border: 1px solid var(--pc-line); border-radius: 50%; background: rgba(10,12,26,0.5); color: var(--pc-gold-bright); display: grid; place-items: center; cursor: pointer; transition: border-color .2s, transform .2s; }
+.portal-page .pc-mnav__close:hover { border-color: var(--pc-gold); transform: rotate(90deg); }
+
+.portal-page .pc-mnav__links { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 20px 0; }
+.portal-page .pc-mnav__link {
+  display: flex; align-items: center; gap: 16px; padding: 15px 4px; text-decoration: none;
+  border-bottom: 1px solid var(--pc-line-soft); color: var(--pc-text);
+}
+.portal-page .pc-mnav.is-open .pc-mnav__link { animation: pc-mnav-in .5s cubic-bezier(.2,.7,.3,1) backwards; animation-delay: calc(.1s + var(--i) * .05s); }
+.portal-page .pc-mnav__num { font-family: var(--pc-body); font-size: 0.74rem; color: var(--pc-gold-deep); letter-spacing: 0.1em; min-width: 1.8em; }
+.portal-page .pc-mnav__label { flex: 1; font-family: var(--pc-serif); font-weight: 500; font-size: clamp(1.5rem, 6.4vw, 2.15rem); line-height: 1.15; }
+.portal-page .pc-mnav__arrow { color: var(--pc-gold); opacity: 0; transform: translateX(-6px); transition: opacity .2s, transform .2s; }
+.portal-page .pc-mnav__link.is-active { color: var(--pc-gold-bright); }
+.portal-page .pc-mnav__link.is-active .pc-mnav__num { color: var(--pc-gold); }
+.portal-page .pc-mnav__link.is-active .pc-mnav__arrow,
+.portal-page .pc-mnav__link:hover .pc-mnav__arrow { opacity: 1; transform: translateX(0); }
+.portal-page .pc-mnav__link:hover, .portal-page .pc-mnav__link:active { color: var(--pc-gold-bright); }
+
+.portal-page .pc-mnav__foot { display: flex; flex-direction: column; gap: 16px; padding-top: 10px; }
+.portal-page .pc-mnav__cta { text-align: center; padding: 14px; }
+
+@keyframes pc-mnav-in { from { opacity: 0; transform: translateX(-18px); } to { opacity: 1; transform: translateX(0); } }
+@media (prefers-reduced-motion: reduce) { .portal-page .pc-mnav.is-open .pc-mnav__link { animation: none; } }
+
+@media (max-width: 1080px) {
+  .portal-page .pc-burger { display: flex; }
+  .portal-page .pc-nav__right .pc-lang:not(.pc-lang--mobile) { display: none; }
+}
+@media (min-width: 1081px) { .portal-page .pc-mnav { display: none; } }

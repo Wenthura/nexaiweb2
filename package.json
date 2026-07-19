@@ -1,0 +1,18 @@
+{
+  "name": "grahachara",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/react": "^6.0.1",
+    "astro": "^7.1.1",
+    "astronomy-engine": "^2.1.19",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  }
+}

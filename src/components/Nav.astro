@@ -1,0 +1,100 @@
+---
+import { navLinks, navLinksSi, PLAY_URL } from '../data/site.js';
+const { active = 'Home', lang = 'en' } = Astro.props;
+const si = lang === 'si';
+const links = si ? navLinksSi : navLinks;
+const brandSub = si ? 'වේද ජ්‍යොතිෂය' : 'Vedic Astrology';
+const ctaLabel = si ? 'ඔබේ පලාපල අරඹන්න' : 'Begin Your Reading';
+const home = si ? 'si.html' : 'index.html';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const url = (h) => (h.startsWith('#') || h.startsWith('http') ? h : `${base}/${h}`);
+---
+<nav class="nav pc-nav" id="nav">
+  <div class="pc-nav__inner">
+    <a href={`${base}/${home}`} class="pc-brand">
+      <img src={`${base}/assets/cosmos/logo_emblem.png`} alt="Grahachara" class="pc-brand__mark" width="42" height="42" />
+      <span>
+        <span class="pc-brand__name">Grahachara</span>
+        <span class="pc-brand__sub">{brandSub}</span>
+      </span>
+    </a>
+    <div class="pc-nav__links" id="navLinks">
+      {links.map((l) => (
+        <a href={url(l.href)} class={`pc-nav__link${l.label === active ? ' is-active' : ''}`}>{l.label}</a>
+      ))}
+    </div>
+    <div class="pc-nav__right nav__right">
+      <div class="pc-lang" role="group" aria-label="Language / භාෂාව">
+        <a class={`pc-lang__opt${lang === 'en' ? ' is-active' : ''}`} href={`${base}/index.html`} data-lang="en" hreflang="en" aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
+        <a class={`pc-lang__opt${lang === 'si' ? ' is-active' : ''}`} href={`${base}/si.html`} data-lang="si" hreflang="si" aria-current={lang === 'si' ? 'true' : undefined}>සිං</a>
+      </div>
+      <button class="pc-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="pc-mnav" id="mobileNav" aria-hidden="true">
+  <div class="pc-mnav__bg" aria-hidden="true"></div>
+  <div class="pc-mnav__glow" aria-hidden="true"></div>
+  <div class="pc-mnav__inner">
+    <div class="pc-mnav__top">
+      <a class="pc-mnav__brand" href={`${base}/${home}`}>
+        <img src={`${base}/assets/cosmos/logo_emblem.png`} alt="" width="40" height="40" />
+        <span>Grahachara</span>
+      </a>
+      <button class="pc-mnav__close" id="navClose" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <nav class="pc-mnav__links" aria-label="Primary">
+      {links.map((l, i) => (
+        <a href={url(l.href)} class={`pc-mnav__link${l.label === active ? ' is-active' : ''}`} style={`--i:${i}`}>
+          <span class="pc-mnav__num">{String(i + 1).padStart(2, '0')}</span>
+          <span class="pc-mnav__label">{l.label}</span>
+          <svg class="pc-mnav__arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+        </a>
+      ))}
+    </nav>
+
+    <div class="pc-mnav__foot">
+      <div class="pc-lang pc-lang--mobile" role="group" aria-label="Language / භාෂාව">
+        <a class={`pc-lang__opt${lang === 'en' ? ' is-active' : ''}`} href={`${base}/index.html`} data-lang="en" hreflang="en">English</a>
+        <a class={`pc-lang__opt${lang === 'si' ? ' is-active' : ''}`} href={`${base}/si.html`} data-lang="si" hreflang="si">සිංහල</a>
+      </div>
+      <a href={PLAY_URL} target="_blank" rel="noopener" class="pc-btn-gold pc-mnav__cta">{ctaLabel}</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var burger = document.getElementById('navBurger');
+    var closeBtn = document.getElementById('navClose');
+    var mnav = document.getElementById('mobileNav');
+    var navEl = document.getElementById('nav');
+    function open() {
+      mnav.classList.add('is-open'); burger.classList.add('is-active');
+      burger.setAttribute('aria-expanded', 'true'); mnav.setAttribute('aria-hidden', 'false');
+      document.documentElement.style.overflow = 'hidden';
+    }
+    function close() {
+      mnav.classList.remove('is-open'); burger.classList.remove('is-active');
+      burger.setAttribute('aria-expanded', 'false'); mnav.setAttribute('aria-hidden', 'true');
+      document.documentElement.style.overflow = '';
+    }
+    if (burger && mnav) {
+      burger.addEventListener('click', function () { mnav.classList.contains('is-open') ? close() : open(); });
+      closeBtn && closeBtn.addEventListener('click', close);
+      mnav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function (e) { if (!e.target.closest('.pc-lang')) close(); }); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    }
+    if (navEl) {
+      var onScroll = function () { navEl.classList.toggle('nav--solid', window.scrollY > 40); };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+  })();
+</script>

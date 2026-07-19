@@ -74,15 +74,8 @@ export default function TarotCanvas({ slug, base = '', index = 0, alt = '' }) {
     let loaded = 0, dead = false, raf = 0, io = null, running = false, visible = false, t0 = 0;
     const phase = index * 1.9;
     let px = 0, py = 0, hasPointer = false, lastMove = 0;
-    let tX = 0, tY = 0, hasTilt = false, lastTilt = 0;
 
     const onMove = (e) => { px = e.clientX; py = e.clientY; hasPointer = true; lastMove = performance.now(); };
-    const onTilt = (e) => {
-      if (e.beta == null || e.gamma == null) return;
-      tX = Math.min(1.4, Math.max(-0.4, (e.gamma + 45) / 90));
-      tY = Math.min(1.4, Math.max(-0.4, (e.beta - 10) / 70));
-      hasTilt = true; lastTilt = performance.now();
-    };
 
     const srcs = [
       { url: `${base}/assets/cosmos/${slug}.webp`, unit: 0, u: 'uBase' },
@@ -102,7 +95,8 @@ export default function TarotCanvas({ slug, base = '', index = 0, alt = '' }) {
       if (!t0) t0 = now;
       const r = canvas.getBoundingClientRect();
       let lx = 0.5, ly = 0.4, idle = 1;
-      if (hasTilt && now - lastTilt < 4000) { lx = tX; ly = tY; idle = 0; }
+      const T = window.__gcTilt;
+      if (T && T.active) { lx = 0.5 + T.x * 0.85; ly = 0.42 + T.y * 0.85; idle = 0; }   // calibrated phone tilt
       else if (hasPointer && now - lastMove < 3000 && r.width > 0) { lx = (px - r.left) / r.width; ly = (py - r.top) / r.height; idle = 0; }
       gl.uniform2f(U.uLight, lx, ly);
       gl.uniform1f(U.uTime, (now - t0) / 1000);
@@ -120,7 +114,6 @@ export default function TarotCanvas({ slug, base = '', index = 0, alt = '' }) {
       resize();
       window.addEventListener('resize', resize);
       document.addEventListener('mousemove', onMove, { passive: true });
-      window.addEventListener('deviceorientation', onTilt, { passive: true });
       if ('IntersectionObserver' in window) {
         io = new IntersectionObserver((es) => { visible = es[0].isIntersecting; visible ? play() : pause(); }, { rootMargin: '100px' });
         io.observe(canvas);
@@ -151,7 +144,6 @@ export default function TarotCanvas({ slug, base = '', index = 0, alt = '' }) {
       dead = true; pause();
       window.removeEventListener('resize', resize);
       document.removeEventListener('mousemove', onMove);
-      window.removeEventListener('deviceorientation', onTilt);
       if (io) io.disconnect();
     };
   }, [slug, base, index]);

@@ -82,7 +82,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <slot name="head" />
 </head>
 <body class={bodyClass}>
-  <Loader />
   <script is:inline>
     /* iOS 13+ needs a user gesture to unlock the gyroscope; grant it on first touch
        so the hero/loader depth layers respond to phone flip & turn. */
@@ -96,6 +95,41 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       document.addEventListener('touchend', ask, { once: true, passive: true });
     })();
   </script>
+  <script is:inline>
+    /* ── Grahachara tilt engine (window.__gcTilt) ─────────────────────────
+       Turns raw gyroscope angles into a "magic window" signal:
+       • Calibrates to however the phone rests in the hand — the first readings
+         become the neutral pose, and the baseline slowly re-centres (~5s), so
+         lying in bed, standing, or flat on a desk all feel identical.
+       • Tiny deflections respond immediately (±18° = full swing).
+       • A spring-smoothed rAF loop gives weight and glide instead of jitter.
+       Subscribers: window.__gcTilt.on(fn(x, y)) with x,y in [-1, 1].          */
+    (function () {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var baseB = null, baseG = null, tgX = 0, tgY = 0, x = 0, y = 0;
+      var subs = [], api = { x: 0, y: 0, active: false, on: function (f) { subs.push(f); } };
+      window.__gcTilt = api;
+      window.addEventListener('deviceorientation', function (e) {
+        if (e.beta == null || e.gamma == null) return;
+        var b = e.beta, g = e.gamma;
+        // portrait-flip guard: keep gamma continuous when the phone passes vertical
+        if (baseB === null) { baseB = b; baseG = g; }
+        baseB += (b - baseB) * 0.006;   // slow re-centre → resting pose is always neutral
+        baseG += (g - baseG) * 0.006;
+        tgX = Math.max(-1, Math.min(1, (g - baseG) / 18));
+        tgY = Math.max(-1, Math.min(1, (b - baseB) / 18));
+        api.active = true;
+      }, { passive: true });
+      function tick() {
+        x += (tgX - x) * 0.085; y += (tgY - y) * 0.085;   // inertial glide
+        api.x = x; api.y = y;
+        if (api.active) for (var i = 0; i < subs.length; i++) subs[i](x, y);
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    })();
+  </script>
+  <Loader />
   <script is:inline>
     /* Language preference + auto-Sinhala for Sri Lankan visitors (home only). */
     (function () {

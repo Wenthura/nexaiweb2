@@ -80,12 +80,8 @@ const trustIcons = ['#i-star', '#i-lotus', '#i-sun'];
       });
       hero.addEventListener('mouseleave', function () { set(0, 0); });
     }
-    // Gyroscope tilt (Android + iOS after permission is granted via the shared helper).
-    window.addEventListener('deviceorientation', function (e) {
-      if (e.gamma == null || e.beta == null) return;
-      var x = Math.max(-1, Math.min(1, e.gamma / 32));       // left-right flip
-      var y = Math.max(-1, Math.min(1, (e.beta - 45) / 32)); // forward-back turn
-      set(x * 0.6, y * 0.6);
-    }, { passive: true });
+    // Calibrated gyroscope tilt — the shared engine makes any resting grip the
+    // neutral pose, so the sky glides with the phone's smallest movements.
+    if (window.__gcTilt) window.__gcTilt.on(function (x, y) { set(x * 0.9, y * 0.9); });
   })();
 </script>

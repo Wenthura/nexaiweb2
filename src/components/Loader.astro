@@ -10,8 +10,8 @@ const bust = (u) => `${u}?v=${V}`;
   <div class="pc-loader__planet pc-loader__planet--j" aria-hidden="true" data-depth="22"><img src={bust(a('planet_jupiter.webp'))} alt="" width="768" height="768" /></div>
   <div class="pc-loader__planet pc-loader__planet--m" aria-hidden="true" data-depth="30"><img src={bust(`${base}/assets/cosmos/moon.webp`)} alt="" width="512" height="512" /></div>
 
-  <div class="pc-loader__core" data-depth="9">
-    <span class="pc-loader__halo" aria-hidden="true"></span>
+  <div class="pc-loader__core" id="pcLoaderCore" data-depth="9">
+    <span class="pc-loader__halo" aria-hidden="true" data-depth="-26"></span>
     <img class="pc-loader__portal" src={bust(a('loader_portal.webp'))} alt="" aria-hidden="true" />
     <img class="pc-loader__logo" src={bust(`${base}/assets/logo.png`)} alt="Grahachara" width="120" height="120" />
   </div>
@@ -56,24 +56,23 @@ const bust = (u) => `${u}?v=${V}`;
     critical.forEach(function (u) { var im = new Image(); im.onload = tick; im.onerror = tick; im.src = u; });
     if (document.readyState === 'complete') tick(); else window.addEventListener('load', tick);
 
-    // Parallax — cursor on desktop, device tilt (flip/turn) on phones.
+    // Parallax — cursor on desktop, calibrated device tilt (via __gcTilt) on phones.
+    // The halo has a negative depth (light counter-moves) and the mandala core
+    // additionally tilts in 3D like a coin catching the light.
     if (!reduce) {
-      var layers = el.querySelectorAll('[data-depth]'), raf = null, tx = 0, ty = 0;
+      var layers = el.querySelectorAll('[data-depth]'), core = document.getElementById('pcLoaderCore');
+      var raf = null, tx = 0, ty = 0;
       function apply() {
         raf = null;
         for (var i = 0; i < layers.length; i++) {
           var d = parseFloat(layers[i].getAttribute('data-depth')) || 0;
           layers[i].style.translate = (-tx * d).toFixed(1) + 'px ' + (-ty * d).toFixed(1) + 'px';
         }
+        if (core) core.style.transform = 'perspective(700px) rotateY(' + (tx * 10).toFixed(2) + 'deg) rotateX(' + (-ty * 10).toFixed(2) + 'deg)';
       }
       function set(x, y) { tx = x; ty = y; if (!raf) raf = requestAnimationFrame(apply); }
       el.addEventListener('mousemove', function (e) { set(e.clientX / innerWidth - 0.5, e.clientY / innerHeight - 0.5); }, { passive: true });
-      window.addEventListener('deviceorientation', function (e) {
-        if (e.gamma == null || e.beta == null) return;
-        var x = Math.max(-1, Math.min(1, e.gamma / 32));        // left-right flip
-        var y = Math.max(-1, Math.min(1, (e.beta - 45) / 32));  // forward-back turn
-        set(x * 0.6, y * 0.6);
-      }, { passive: true });
+      if (window.__gcTilt) window.__gcTilt.on(function (x, y) { set(x, y); });
     }
   })();
 </script>

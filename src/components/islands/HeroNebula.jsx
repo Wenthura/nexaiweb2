@@ -112,6 +112,10 @@ export default function HeroNebula({ base = '' }) {
     const frame = (now) => {
       if (!running) return;
       if (!t0) t0 = now;
+      // Calibrated device tilt (shared engine): the warm light glides across the
+      // painting as the phone moves in the hand — priority over idle drift.
+      const T = window.__gcTilt;
+      if (T && T.active) { mouse[0] = 0.5 + T.x * 0.8; mouse[1] = 0.45 + T.y * 0.8; idle = 0; }
       gl.uniform1f(U.uTime, (now - t0) / 1000);
       gl.uniform2f(U.uMouse, mouse[0], mouse[1]);
       gl.uniform1f(U.uIdle, idle);
@@ -128,20 +132,12 @@ export default function HeroNebula({ base = '' }) {
       mouse[1] = (e.clientY - r.top) / r.height;
       wake();
     };
-    const onTilt = (e) => {
-      if (e.beta == null || e.gamma == null) return;
-      mouse[0] = Math.min(1.3, Math.max(-0.3, (e.gamma + 45) / 90));
-      mouse[1] = Math.min(1.3, Math.max(-0.3, (e.beta - 10) / 70));
-      wake();
-    };
-
     const start = () => {
       if (img) img.style.visibility = 'hidden';
       resize();
       window.addEventListener('resize', resize);
       const hero = canvas.closest('.pc-hero') || document;
       hero.addEventListener('mousemove', onMove, { passive: true });
-      window.addEventListener('deviceorientation', onTilt, { passive: true });
       if ('IntersectionObserver' in window) {
         io = new IntersectionObserver((es) => { visible = es[0].isIntersecting; visible ? play() : pause(); }, { rootMargin: '80px' });
         io.observe(canvas);
@@ -173,7 +169,6 @@ export default function HeroNebula({ base = '' }) {
     return () => {
       dead = true; pause();
       window.removeEventListener('resize', resize);
-      window.removeEventListener('deviceorientation', onTilt);
       if (io) io.disconnect();
       clearTimeout(idleTimer);
     };

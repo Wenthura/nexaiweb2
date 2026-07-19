@@ -1,17 +1,19 @@
 ---
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const a = (p) => `${base}/assets/cosmos/${p}`;
+const V = '3'; // asset cache-bust version
+const bust = (u) => `${u}?v=${V}`;
 ---
-<div class="pc-loader" id="pcLoader" role="status" aria-label="Loading Grahachara">
-  <img class="pc-loader__neb" src={a('hero_nebula.webp')} alt="" aria-hidden="true" data-depth="5" />
+<div class="pc-loader" id="pcLoader" role="status" aria-label="Loading Grahachara" data-base={base}>
+  <img class="pc-loader__neb" src={bust(a('hero_nebula.webp'))} alt="" aria-hidden="true" data-depth="5" />
   <div class="pc-loader__stars" aria-hidden="true" data-depth="3"></div>
-  <div class="pc-loader__planet pc-loader__planet--j" aria-hidden="true" data-depth="22"><img src={a('planet_jupiter.webp')} alt="" width="768" height="768" /></div>
-  <div class="pc-loader__planet pc-loader__planet--m" aria-hidden="true" data-depth="30"><img src={`${base}/assets/cosmos/moon.webp`} alt="" width="512" height="512" /></div>
+  <div class="pc-loader__planet pc-loader__planet--j" aria-hidden="true" data-depth="22"><img src={bust(a('planet_jupiter.webp'))} alt="" width="768" height="768" /></div>
+  <div class="pc-loader__planet pc-loader__planet--m" aria-hidden="true" data-depth="30"><img src={bust(`${base}/assets/cosmos/moon.webp`)} alt="" width="512" height="512" /></div>
 
   <div class="pc-loader__core" data-depth="9">
     <span class="pc-loader__halo" aria-hidden="true"></span>
-    <img class="pc-loader__portal" src={a('loader_portal.webp')} alt="" aria-hidden="true" />
-    <img class="pc-loader__logo" src={`${base}/assets/logo.png`} alt="Grahachara" width="120" height="120" />
+    <img class="pc-loader__portal" src={bust(a('loader_portal.webp'))} alt="" aria-hidden="true" />
+    <img class="pc-loader__logo" src={bust(`${base}/assets/logo.png`)} alt="Grahachara" width="120" height="120" />
   </div>
 
   <div class="pc-loader__brand">
@@ -26,18 +28,35 @@ const a = (p) => `${base}/assets/cosmos/${p}`;
     var el = document.getElementById('pcLoader');
     if (!el) return;
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var start = Date.now(), MIN = 3000, CAP = 8000, done = false;   // guaranteed 3s minimum
+    var base = el.getAttribute('data-base') || '';
+    var V = '3';
+    var start = Date.now(), MIN = 3000, CAP = 15000, done = false; // 3s min; wait for assets; hard cap
+    document.documentElement.style.overflow = 'hidden';
+
     function finish() {
       if (done) return; done = true;
       el.classList.add('is-done');
       document.documentElement.style.overflow = '';
       setTimeout(function () { if (el && el.parentNode) el.parentNode.removeChild(el); }, 1000);
     }
-    // hold at least MIN, and until the page has finished loading, whichever is later (capped)
-    function ready() { setTimeout(finish, Math.max(0, MIN - (Date.now() - start))); }
-    document.documentElement.style.overflow = 'hidden';
-    if (document.readyState === 'complete') ready(); else window.addEventListener('load', ready);
+    function whenReady() { setTimeout(finish, Math.max(0, MIN - (Date.now() - start))); }
     setTimeout(finish, CAP);
+
+    // Preload every above-the-fold asset so nothing pops in when the site is revealed.
+    var critical = [
+      'hero_nebula.webp', 'hero_nebula_normal.webp', 'hero_nebula_roughness.webp', 'hero_nebula_height.webp',
+      'moon.webp', 'planet_jupiter.webp', 'planet_saturn.webp', 'planet_mars.webp',
+      'cloud_front.webp', 'cloud_mid.webp', 'zodiac_wheel.webp', 'loader_portal.webp'
+    ].map(function (f) { return base + '/assets/cosmos/' + f + '?v=' + V; });
+    critical.push(base + '/assets/logo.png?v=' + V);
+    critical.push(base + '/assets/cosmos/logo_emblem.png?v=' + V);
+
+    var pending = critical.length + 1; // + the window 'load' event
+    function tick() { if (--pending <= 0) whenReady(); }
+    critical.forEach(function (u) { var im = new Image(); im.onload = tick; im.onerror = tick; im.src = u; });
+    if (document.readyState === 'complete') tick(); else window.addEventListener('load', tick);
+
+    // Parallax — cursor on desktop, device tilt (flip/turn) on phones.
     if (!reduce) {
       var layers = el.querySelectorAll('[data-depth]'), raf = null, tx = 0, ty = 0;
       function apply() {
@@ -47,9 +66,13 @@ const a = (p) => `${base}/assets/cosmos/${p}`;
           layers[i].style.translate = (-tx * d).toFixed(1) + 'px ' + (-ty * d).toFixed(1) + 'px';
         }
       }
-      el.addEventListener('mousemove', function (e) {
-        tx = e.clientX / window.innerWidth - 0.5; ty = e.clientY / window.innerHeight - 0.5;
-        if (!raf) raf = requestAnimationFrame(apply);
+      function set(x, y) { tx = x; ty = y; if (!raf) raf = requestAnimationFrame(apply); }
+      el.addEventListener('mousemove', function (e) { set(e.clientX / innerWidth - 0.5, e.clientY / innerHeight - 0.5); }, { passive: true });
+      window.addEventListener('deviceorientation', function (e) {
+        if (e.gamma == null || e.beta == null) return;
+        var x = Math.max(-1, Math.min(1, e.gamma / 32));        // left-right flip
+        var y = Math.max(-1, Math.min(1, (e.beta - 45) / 32));  // forward-back turn
+        set(x * 0.6, y * 0.6);
       }, { passive: true });
     }
   })();

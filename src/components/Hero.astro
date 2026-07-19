@@ -56,13 +56,13 @@ const trustIcons = ['#i-star', '#i-lotus', '#i-sun'];
 </section>
 
 <script>
-  // Pointer parallax for the hero depth layers (composes with CSS float/rotate via the `translate` property)
+  // Parallax for the hero depth layers — cursor on desktop, device tilt (flip/turn) on phones.
+  // Composes with CSS float/rotate via the `translate` property.
   (function () {
     var hero = document.getElementById('hero');
     var stage = document.getElementById('heroStage');
-    var fine = matchMedia('(pointer:fine)').matches;
     var ok = !matchMedia('(prefers-reduced-motion:reduce)').matches;
-    if (!hero || !stage || !fine || !ok) return;
+    if (!hero || !stage || !ok) return;
     var els = stage.querySelectorAll('[data-depth]');
     var tx = 0, ty = 0, raf = null;
     function apply() {
@@ -72,12 +72,20 @@ const trustIcons = ['#i-star', '#i-lotus', '#i-sun'];
         el.style.translate = (-tx * d).toFixed(1) + 'px ' + (-ty * d).toFixed(1) + 'px';
       });
     }
-    hero.addEventListener('mousemove', function (e) {
-      var r = hero.getBoundingClientRect();
-      tx = (e.clientX - r.left) / r.width - 0.5;
-      ty = (e.clientY - r.top) / r.height - 0.5;
-      if (!raf) raf = requestAnimationFrame(apply);
-    });
-    hero.addEventListener('mouseleave', function () { tx = 0; ty = 0; if (!raf) raf = requestAnimationFrame(apply); });
+    function set(x, y) { tx = x; ty = y; if (!raf) raf = requestAnimationFrame(apply); }
+    if (matchMedia('(pointer:fine)').matches) {
+      hero.addEventListener('mousemove', function (e) {
+        var r = hero.getBoundingClientRect();
+        set((e.clientX - r.left) / r.width - 0.5, (e.clientY - r.top) / r.height - 0.5);
+      });
+      hero.addEventListener('mouseleave', function () { set(0, 0); });
+    }
+    // Gyroscope tilt (Android + iOS after permission is granted via the shared helper).
+    window.addEventListener('deviceorientation', function (e) {
+      if (e.gamma == null || e.beta == null) return;
+      var x = Math.max(-1, Math.min(1, e.gamma / 32));       // left-right flip
+      var y = Math.max(-1, Math.min(1, (e.beta - 45) / 32)); // forward-back turn
+      set(x * 0.6, y * 0.6);
+    }, { passive: true });
   })();
 </script>

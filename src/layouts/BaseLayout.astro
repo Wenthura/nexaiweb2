@@ -61,16 +61,29 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
 
-  <link rel="icon" type="image/png" sizes="192x192" href={`${base}/assets/android-chrome-192x192.png`} />
-  <link rel="icon" type="image/png" sizes="32x32" href={`${base}/assets/favicon-32x32.png`} />
-  <link rel="icon" type="image/png" sizes="16x16" href={`${base}/assets/favicon-16x16.png`} />
-  <link rel="icon" type="image/x-icon" href={`${base}/assets/favicon.ico`} />
-  <link rel="apple-touch-icon" sizes="180x180" href={`${base}/assets/apple-touch-icon.png`} />
+  <link rel="icon" type="image/png" sizes="192x192" href={`${base}/assets/android-chrome-192x192.png?v=3`} />
+  <link rel="icon" type="image/png" sizes="32x32" href={`${base}/assets/favicon-32x32.png?v=3`} />
+  <link rel="icon" type="image/png" sizes="16x16" href={`${base}/assets/favicon-16x16.png?v=3`} />
+  <link rel="icon" type="image/x-icon" href={`${base}/assets/favicon.ico?v=3`} />
+  <link rel="apple-touch-icon" sizes="180x180" href={`${base}/assets/apple-touch-icon.png?v=3`} />
 
   <slot name="head" />
 </head>
 <body class={bodyClass}>
   <Loader />
+  <script is:inline>
+    /* iOS 13+ needs a user gesture to unlock the gyroscope; grant it on first touch
+       so the hero/loader depth layers respond to phone flip & turn. */
+    (function () {
+      var D = window.DeviceOrientationEvent;
+      if (!D || typeof D.requestPermission !== 'function') return;
+      function ask() {
+        document.removeEventListener('touchend', ask);
+        try { D.requestPermission().catch(function () {}); } catch (e) {}
+      }
+      document.addEventListener('touchend', ask, { once: true, passive: true });
+    })();
+  </script>
   <script is:inline>
     /* Language preference + auto-Sinhala for Sri Lankan visitors (home only). */
     (function () {

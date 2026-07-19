@@ -11,7 +11,15 @@ const {
   ogTitle = 'Grahachara — Your Destiny, Decoded',
   ogDescription = 'Vedic astrology, deeply personal. Birth chart analysis, compatibility matching, life reports & daily cosmic guidance.',
   bodyClass = '',
+  keywords = '',
+  altEn = '',        // English-language alternate of this page (defaults to canonical when lang=en)
+  altSi = '',        // Sinhala-language alternate of this page, if one exists
 } = Astro.props;
+
+const enUrl = altEn || (lang === 'en' ? canonical : '');
+const siUrl = altSi || (lang === 'si' ? canonical : '');
+const ogLocale = lang === 'si' ? 'si_LK' : 'en_US';
+const ogLocaleAlt = lang === 'si' ? 'en_US' : 'si_LK';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
@@ -23,6 +31,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   <title>{title}</title>
   <meta name="description" content={description} />
+  {keywords && <meta name="keywords" content={keywords} />}
   <meta name="author" content="Wenthura Solutions Pvt Ltd" />
   <meta name="theme-color" content="#05060f" />
   <meta name="color-scheme" content="dark" />
@@ -32,9 +41,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
   <link rel="canonical" href={canonical} />
-  <link rel="alternate" hreflang="en" href="https://grahachara.com/" />
-  <link rel="alternate" hreflang="si" href="https://grahachara.com/si.html" />
-  <link rel="alternate" hreflang="x-default" href="https://grahachara.com/" />
+  {enUrl && <link rel="alternate" hreflang="en" href={enUrl} />}
+  {siUrl && <link rel="alternate" hreflang="si" href={siUrl} />}
+  {siUrl && <link rel="alternate" hreflang="si-LK" href={siUrl} />}
+  <link rel="alternate" hreflang="x-default" href={enUrl || canonical} />
   <meta name="google-site-verification" content="4c698284df612df3" />
 
   <meta property="og:site_name" content="Grahachara" />
@@ -42,6 +52,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <meta property="og:description" content={ogDescription} />
   <meta property="og:type" content="website" />
   <meta property="og:url" content={canonical} />
+  <meta property="og:locale" content={ogLocale} />
+  <meta property="og:locale:alternate" content={ogLocaleAlt} />
   <meta property="og:image" content="https://grahachara.com/assets/og-card.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />

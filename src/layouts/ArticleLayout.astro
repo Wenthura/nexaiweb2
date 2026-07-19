@@ -15,6 +15,9 @@ const {
   breadcrumb = [],
   bg = 'page_hero_features.webp',
   jsonld = '',
+  keywords = '',
+  altEn = '',
+  altSi = '',
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -28,6 +31,9 @@ const bgUrl = `${base}/assets/cosmos/${bg}`;
   canonical={canonical}
   ogTitle={ogTitle || title}
   ogDescription={ogDescription || description}
+  keywords={keywords}
+  altEn={altEn}
+  altSi={altSi}
 >
   {jsonld && (
     <Fragment slot="head">

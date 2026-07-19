@@ -1306,3 +1306,22 @@
   .portal-page .pc-nav__right .pc-lang:not(.pc-lang--mobile) { display: none; }
 }
 @media (min-width: 1081px) { .portal-page .pc-mnav { display: none; } }
+
+/* ═══ FAQ accordion (SEO rich-results block) ═══════════════════════════ */
+.portal-page .pc-faq__list { max-width: 780px; margin: 0 auto; display: grid; gap: 12px; }
+.portal-page .pc-faq__item {
+  background: var(--pc-panel); border: 1px solid var(--pc-line); border-radius: 14px;
+  overflow: hidden; transition: border-color .2s;
+}
+.portal-page .pc-faq__item[open] { border-color: var(--pc-gold); }
+.portal-page .pc-faq__item summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 16px 20px; cursor: pointer; list-style: none;
+  font-family: var(--pc-serif); font-weight: 600; font-size: 1.08rem; color: var(--pc-text);
+}
+.portal-page .pc-faq__item summary::-webkit-details-marker { display: none; }
+.portal-page .pc-faq__item summary svg { flex: none; color: var(--pc-gold); transition: transform .25s; }
+.portal-page .pc-faq__item[open] summary svg { transform: rotate(180deg); }
+.portal-page .pc-faq__item summary:hover { color: var(--pc-gold-bright); }
+.portal-page .pc-faq__item p { margin: 0; padding: 0 20px 18px; color: var(--pc-text-soft); line-height: 1.7; }
+.portal-page .pc-faq__item a { color: var(--pc-gold-bright); }

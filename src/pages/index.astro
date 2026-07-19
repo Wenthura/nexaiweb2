@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Faq from '../components/Faq.astro';
 import IconSprite from '../components/IconSprite.astro';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
@@ -22,7 +23,14 @@ const glyphGroups = [
   { title: 'Planetary Influences', sub: 'The celestial forces that guide and shape.', items: planets, more: `${base}/blog/what-is-nakshatra.html` },
 ];
 ---
-<BaseLayout bodyClass="portal-page">
+<BaseLayout
+  bodyClass="portal-page"
+  title="Grahachara — Vedic Astrology App | Free Birth Chart (Kendara), Kundli, Porondam & Daily Horoscope"
+  description="Free Vedic birth chart (kendara/kundli), porondam & marriage compatibility, nakshatra analysis, 25-year life predictions and daily horoscope — NASA-grade planetary calculations, in English & Sinhala. Used in the USA, UK, Canada, Germany, Australia & Sri Lanka."
+  keywords="vedic astrology app, birth chart calculator, kundli, kendara, janma kendara, porondam, kundali matching, marriage compatibility, nakshatra, daily horoscope, rahu kalam, jyotish, sri lanka astrology, sinhala horoscope, free birth chart"
+  altEn="https://grahachara.com/"
+  altSi="https://grahachara.com/si.html"
+>
   <Fragment slot="head">
     <script type="application/ld+json" is:inline set:html={`[
       {"@context":"https://schema.org","@type":"SoftwareApplication","name":"Grahachara","alternateName":"Grahachara Vedic Astrology","description":"Grahachara is a Vedic astrology app that uses NASA-grade planetary calculations to generate personalized birth charts, 25-year life predictions, compatibility matching, and daily horoscopes based on the ancient Jyotish tradition.","url":"https://grahachara.com","applicationCategory":"LifestyleApplication","applicationSubCategory":"Astrology","operatingSystem":"Android","downloadUrl":"${PLAY_URL}","installUrl":"${PLAY_URL}","softwareVersion":"1.0","inLanguage":["en","si"],"offers":[{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Free download with basic features"},{"@type":"Offer","price":"4.99","priceCurrency":"USD","description":"Monthly subscription for full access"},{"@type":"Offer","price":"2.99","priceCurrency":"USD","description":"Compatibility matching report"},{"@type":"Offer","price":"3.99","priceCurrency":"USD","description":"Full life prediction report"}],"featureList":["Vedic birth chart analysis","Nakshatra identification","Dasha period predictions","25-year life report","Compatibility matching","Daily personalized horoscope","Dream interpretation","NASA-grade planetary calculations"],"screenshot":"https://grahachara.com/assets/og-card.png","creator":{"@type":"Organization","name":"Wenthura Solutions Pvt Ltd","url":"https://grahachara.com"}},
@@ -278,6 +286,19 @@ const glyphGroups = [
       ))}
     </div>
   </div>
+
+  <Faq
+    title="Questions, answered"
+    sub="Everything people ask before their first reading."
+    items={[
+      { q: 'What is a kendara (Vedic birth chart)?', a: 'A kendara — also called a janma kendara, kundli or Vedic birth chart — is a map of the sky at the exact moment you were born. Grahachara calculates yours with NASA-grade (Swiss Ephemeris) precision from your birth date, time and place, then explains your lagna, planetary positions, dasha periods and nakshatra in plain language. You can <a href="/features/birth-chart.html">create a free kendara here</a>.' },
+      { q: 'How can I check porondam (marriage compatibility) online?', a: 'Enter both partners’ birth details in our <a href="/features/compatibility.html">free porondam checker</a> to see your first three porondam instantly. The Grahachara app then runs the complete 20-porondam (Ashtakoot) match from both full charts, with dosha remedies and auspicious wedding dates.' },
+      { q: 'Is Grahachara free?', a: 'Yes — the website tools (kendara preview, quick porondam, daily readings, rahu kalaya) are completely free, and the Android app is free to download on Google Play. Optional Pro unlocks the full 25-year life report, unlimited astrologer chat and all divisional charts.' },
+      { q: 'How accurate are the calculations?', a: 'Grahachara uses Swiss Ephemeris planetary data — the same NASA-grade source used by professional astrologers — with the sidereal (Lahiri) zodiac, tuned to your exact birth time, birthplace and time zone. Nothing is copied from printed almanacs.' },
+      { q: 'Does it work outside Sri Lanka — in the USA, UK, Canada or Germany?', a: 'Yes. Every calculation — daily nakath, rahu kalaya, kendara and porondam — is tuned to your own city and time zone anywhere in the world, making Grahachara ideal for the Sri Lankan diaspora and international users alike.' },
+      { q: 'Is it available in Sinhala and English?', a: 'Fully bilingual. The app and this website work in both Sinhala and English — switch anytime with the EN / සිං toggle, and even your shareable kendara chart can be rendered in either language.' },
+    ]}
+  />
 
   <Footer />
 </BaseLayout>

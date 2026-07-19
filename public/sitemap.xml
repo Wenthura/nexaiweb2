@@ -2,114 +2,108 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
-  <!-- Homepage (highest priority) -->
+  <!-- ═══ Home (EN ↔ SI) ═══ -->
   <url>
     <loc>https://grahachara.com/</loc>
-    <lastmod>2026-03-31</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://grahachara.com/" />
     <xhtml:link rel="alternate" hreflang="si" href="https://grahachara.com/si.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://grahachara.com/" />
   </url>
-
-  <!-- Sinhala version -->
   <url>
     <loc>https://grahachara.com/si.html</loc>
-    <lastmod>2026-05-21</lastmod>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://grahachara.com/" />
+    <xhtml:link rel="alternate" hreflang="si" href="https://grahachara.com/si.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://grahachara.com/" />
+  </url>
+
+  <!-- ═══ Features ═══ -->
+  <url>
+    <loc>https://grahachara.com/features/birth-chart.html</loc>
+    <lastmod>2026-07-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="si" href="https://grahachara.com/si.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://grahachara.com/" />
-  </url>
-
-  <!-- Legal pages -->
-  <url>
-    <loc>https://grahachara.com/legal/privacy.html</loc>
-    <lastmod>2026-03-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://grahachara.com/features/birth-chart.html" />
+    <xhtml:link rel="alternate" hreflang="si" href="https://grahachara.com/features/birth-chart-si.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://grahachara.com/features/birth-chart.html" />
   </url>
   <url>
-    <loc>https://grahachara.com/legal/terms.html</loc>
-    <lastmod>2026-03-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <loc>https://grahachara.com/features/birth-chart-si.html</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://grahachara.com/features/birth-chart.html" />
+    <xhtml:link rel="alternate" hreflang="si" href="https://grahachara.com/features/birth-chart-si.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://grahachara.com/features/birth-chart.html" />
   </url>
   <url>
-    <loc>https://grahachara.com/legal/refund.html</loc>
-    <lastmod>2026-03-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <loc>https://grahachara.com/features/compatibility.html</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://grahachara.com/features/compatibility.html" />
+    <xhtml:link rel="alternate" hreflang="si" href="https://grahachara.com/features/compatibility-si.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://grahachara.com/features/compatibility.html" />
   </url>
   <url>
-    <loc>https://grahachara.com/legal/cookies.html</loc>
-    <lastmod>2026-03-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
+    <loc>https://grahachara.com/features/compatibility-si.html</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://grahachara.com/features/compatibility.html" />
+    <xhtml:link rel="alternate" hreflang="si" href="https://grahachara.com/features/compatibility-si.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://grahachara.com/features/compatibility.html" />
   </url>
   <url>
-    <loc>https://grahachara.com/legal/support.html</loc>
-    <lastmod>2026-03-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://grahachara.com/legal/contact.html</loc>
-    <lastmod>2026-03-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-
-  <!-- Feature pages -->
-  <url>
-    <loc>https://grahachara.com/features/birth-chart</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://grahachara.com/features/daily-horoscope.html</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://grahachara.com/features/compatibility</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://grahachara.com/features/life-report.html</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://grahachara.com/features/life-report</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://grahachara.com/features/daily-horoscope</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://grahachara.com/features/zodiac-signs</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://grahachara.com/features/zodiac-signs.html</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- Blog articles -->
+  <!-- ═══ Learn / Blog ═══ -->
   <url>
-    <loc>https://grahachara.com/blog/what-is-vedic-astrology</loc>
-    <lastmod>2026-05-20</lastmod>
+    <loc>https://grahachara.com/blog/what-is-vedic-astrology.html</loc>
+    <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://grahachara.com/blog/vedic-vs-western-astrology</loc>
-    <lastmod>2026-05-20</lastmod>
+    <loc>https://grahachara.com/blog/vedic-vs-western-astrology.html</loc>
+    <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://grahachara.com/blog/what-is-nakshatra</loc>
-    <lastmod>2026-05-20</lastmod>
+    <loc>https://grahachara.com/blog/what-is-nakshatra.html</loc>
+    <lastmod>2026-07-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
+  <!-- ═══ Legal / Support ═══ -->
+  <url><loc>https://grahachara.com/legal/privacy.html</loc><lastmod>2026-07-20</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://grahachara.com/legal/terms.html</loc><lastmod>2026-07-20</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://grahachara.com/legal/refund.html</loc><lastmod>2026-07-20</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://grahachara.com/legal/support.html</loc><lastmod>2026-07-20</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://grahachara.com/legal/contact.html</loc><lastmod>2026-07-20</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://grahachara.com/legal/cookies.html</loc><lastmod>2026-07-20</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://grahachara.com/legal/delete-account.html</loc><lastmod>2026-07-20</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>

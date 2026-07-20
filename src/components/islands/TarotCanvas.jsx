@@ -30,7 +30,13 @@ const FRAG = [
   '  float lum=dot(base,vec3(0.299,0.587,0.114));',
   '  float tw=hash(floor(vUv*420.0));',
   '  float sparkle=step(0.982,tw)*(0.5+0.5*sin(uTime*2.6+tw*40.0+uPhase));sparkle*=smoothstep(0.3,0.55,lum);',
-  '  vec3 col=base*(0.78+diff*fall*0.65)+warm*spec*fall*0.65+warm*sparkle*0.3;',
+  // magical golden spotlight: a horizontal beam that travels with the light —
+  // soft wide glow + bright shimmering core + sparkles igniting as it passes
+  '  float band=exp(-pow((vUv.y-lightUv.y)*5.5,2.0));',
+  '  float bcore=exp(-pow((vUv.y-lightUv.y)*16.0,2.0));',
+  '  float shim=0.8+0.2*sin(uTime*2.2+vUv.x*16.0+uPhase);',
+  '  float beam=(band*0.16+bcore*0.22)*shim*(1.0-uIdle*0.45);',
+  '  vec3 col=base*(0.78+diff*fall*0.65)+warm*spec*fall*0.65+warm*sparkle*0.3+warm*beam+warm*sparkle*band*0.55;',
   '  gl_FragColor=vec4(col,1.0);',
   '}',
 ].join('\n');

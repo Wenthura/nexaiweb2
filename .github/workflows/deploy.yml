@@ -1,4 +1,9 @@
-name: Deploy to GitHub Pages
+name: Build & Deploy grahachara.com
+
+# Every push to main: build the Astro site on GitHub's servers (Node 22),
+# then rsync dist/ onto the production VM (nginx web root) over SSH.
+# No local build needed — works even when the dev machine can't build.
+# Requires repo secret VM_SSH_KEY = the VM's SSH private key.
 
 on:
   push:
@@ -7,32 +12,59 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: deploy
+  cancel-in-progress: true
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Build Astro site
-        uses: withastro/action@v3
-        with:
-          node-version: 22   # Astro 7 requires Node >=22.12.0
-        # installs deps, runs `astro build`, uploads ./dist as the Pages artifact
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build site
+        run: npm run build
+
+      - name: Deploy to VM (grahachara.com)
+        env:
+          VM_SSH_KEY: ${{ secrets.VM_SSH_KEY }}
+          VM: ubuntu@140.245.23.173
+        run: |
+          if [ -z "$VM_SSH_KEY" ]; then
+            echo "::error::VM_SSH_KEY secret is not set — add it in Settings → Secrets and variables → Actions"; exit 1
+          fi
+          mkdir -p ~/.ssh
+          printf '%s\n' "$VM_SSH_KEY" > ~/.ssh/vm_key
+          chmod 600 ~/.ssh/vm_key
+          ssh-keyscan -H 140.245.23.173 >> ~/.ssh/known_hosts 2>/dev/null
+          tar -czf /tmp/site.tgz -C dist .
+          scp -i ~/.ssh/vm_key -o ConnectTimeout=30 /tmp/site.tgz "$VM":/tmp/gc-site.tgz
+          ssh -i ~/.ssh/vm_key -o ConnectTimeout=30 "$VM" '
+            set -e
+            sudo cp -a /var/www/grahachara "/var/www/grahachara.bak-$(date +%Y%m%d-%H%M%S)" || true
+            rm -rf /tmp/gc-new && mkdir -p /tmp/gc-new && tar -xzf /tmp/gc-site.tgz -C /tmp/gc-new
+            sudo rsync -a --delete /tmp/gc-new/ /var/www/grahachara/
+            sudo chown -R www-data:www-data /var/www/grahachara
+            sudo nginx -t && sudo systemctl reload nginx
+            rm -rf /tmp/gc-site.tgz /tmp/gc-new
+            # keep only the 3 newest backups
+            ls -d /var/www/grahachara.bak-* 2>/dev/null | sort | head -n -3 | xargs -r sudo rm -rf
+            echo "Deployed OK"'
+
+      - name: Verify live site
+        run: |
+          sleep 3
+          code=$(curl -s -o /dev/null -w '%{http_code}' -m 20 "https://grahachara.com/?cb=$RANDOM")
+          echo "grahachara.com -> $code"
+          [ "$code" = "200" ]

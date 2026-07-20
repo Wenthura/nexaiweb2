@@ -1,0 +1,88 @@
+---
+import ArticleLayout from '../layouts/ArticleLayout.astro';
+import { PLAY_URL } from '../data/site.js';
+const jsonld = JSON.stringify([
+  {
+    '@context': 'https://schema.org', '@type': 'AboutPage',
+    name: 'About Grahachara', url: 'https://grahachara.com/about.html',
+    isPartOf: { '@type': 'WebSite', name: 'Grahachara', url: 'https://grahachara.com' },
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'Organization',
+    name: 'Grahachara', legalName: 'Wenthura Solutions Pvt Ltd',
+    url: 'https://grahachara.com', logo: 'https://grahachara.com/assets/logo.png',
+    sameAs: [
+      'https://www.facebook.com/share/1FBBur8QZf/',
+      'https://www.instagram.com/grahachara_astro',
+      'https://www.tiktok.com/@grahachara_astro',
+    ],
+    contactPoint: { '@type': 'ContactPoint', email: 'support@grahachara.com', contactType: 'customer support' },
+  },
+]);
+---
+<ArticleLayout
+  title="About Us — Grahachara | The Story Behind the Vedic Astrology App"
+  description="Grahachara brings 5,000-year-old Jyotish wisdom together with NASA-grade astronomy. Built in Sri Lanka by Wenthura Solutions, read beneath the same sky everywhere — in Sinhala and English."
+  canonical="https://grahachara.com/about.html"
+  keywords="about grahachara, wenthura solutions, vedic astrology app sri lanka, jyotish app, sinhala astrology app, who makes grahachara"
+  altEn="https://grahachara.com/about.html"
+  altSi="https://grahachara.com/about-si.html"
+  eyebrow="Our Story"
+  heroTitle="Written in the stars. Built in Sri Lanka."
+  heroSub="Grahachara joins five thousand years of Jyotish wisdom with modern astronomy — so the sky that guided your grandparents can guide you, wherever in the world you stand."
+  breadcrumb={[{"label":"Home","href":"index.html"},{"label":"About Us"}]}
+  bg="page_hero_learn.webp"
+  active="About"
+  jsonld={jsonld}
+>
+  <p class="blog-article__intro">For generations, Sri Lankan families have begun the day with the litha — checking the nakath, minding the rahu kalaya, matching porondam before a marriage. But a printed almanac speaks to everyone at once, and therefore to no one in particular. Grahachara was born from a simple conviction: <strong>everyone deserves their own sky.</strong></p>
+
+  <div class="feature-page__glass-card">
+    <h2>Our story</h2>
+    <p>Grahachara ("the movement of the planets") started as a question between friends in Sri Lanka: why does the deep, precise astrology of our tradition reach people only through generic columns and photocopied charts? The knowledge was never the problem — the access was.</p>
+    <p>So we built the tool we wished our own families had. One that computes your actual kendara from the actual sky at your birth — then explains it in the language you think in, whether that is Sinhala or English. No jargon walls, no recycled predictions, no pretending one paragraph fits a twelfth of humanity.</p>
+    <p>Today Grahachara is used across Sri Lanka and by the diaspora in the United States, the United Kingdom, Canada, Germany, Australia and beyond — every calculation tuned to the user's own city and time zone, beneath the same sky.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="feature-page__glass-card">
+    <h2>What we believe</h2>
+    <ul>
+      <li><strong>Real calculations, always.</strong> Every chart uses Swiss Ephemeris planetary data — the same NASA-grade source professional astrologers trust — with the sidereal (Lahiri) zodiac, computed for your exact birth time and place. Nothing is copied from a printed litha.</li>
+      <li><strong>Plain words over jargon.</strong> A reading you cannot understand is not a reading. We explain the lagna, dasha and nakshatra in language you can act on.</li>
+      <li><strong>Both languages, equally.</strong> Sinhala is not a translation layer here — it is a first language of the product, from the daily nakath to your shareable kendara chart.</li>
+      <li><strong>Privacy by design.</strong> Your birth details are encrypted. They are yours; we simply do the mathematics.</li>
+      <li><strong>Astrology as a map, not a cage.</strong> Vedic wisdom reveals the map — you walk the path. We will always tell you honestly what the chart says, and never use fear to sell you anything.</li>
+    </ul>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="feature-page__glass-card">
+    <h2>What we've built</h2>
+    <ul>
+      <li><a href="/features/daily-horoscope.html">Daily nakath &amp; rahu kalaya</a> — live for your own city, every morning</li>
+      <li><a href="/features/birth-chart.html">Your complete kendara</a> — lagna, grahas, dasha timeline and navamsha, explained</li>
+      <li><a href="/features/compatibility.html">Porondam &amp; marriage compatibility</a> — the full 20-porondam match from both charts</li>
+      <li><a href="/features/life-report.html">25-year life reports</a> — career, love, health and money, from your own chart</li>
+      <li>A personal astrologer chat that already knows your kendara — day or night</li>
+      <li>Keepsake baby kendara and muhurtha timing for weddings and new beginnings</li>
+    </ul>
+    <p>Everything on this website — the kendara preview, the quick porondam, today's sky — is free. The app carries the full depth.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="feature-page__glass-card">
+    <h2>The people behind it</h2>
+    <p>Grahachara is built by <strong>Wenthura Solutions Pvt Ltd</strong>, a Sri Lankan software company. We are engineers and designers who grew up with this tradition — and we treat it with the respect of practitioners and the rigour of scientists.</p>
+    <p>We read every message. Say hello at <a href="mailto:support@grahachara.com">support@grahachara.com</a>, visit the <a href="/legal/support.html">help center</a>, or find us on <a href="https://www.facebook.com/share/1FBBur8QZf/" target="_blank" rel="noopener">Facebook</a>, <a href="https://www.instagram.com/grahachara_astro" target="_blank" rel="noopener">Instagram</a> and <a href="https://www.tiktok.com/@grahachara_astro" target="_blank" rel="noopener">TikTok</a>.</p>
+  </div>
+
+  <div class="feature-page__cta">
+    <h3>Walk beneath the same sky with us</h3>
+    <p style="color:var(--pc-text-soft);margin-bottom:20px;">Your chart is already written. Reading it is free.</p>
+    <a href={PLAY_URL} target="_blank" rel="noopener" class="pc-btn-gold">Get Grahachara on Google Play</a>
+  </div>
+</ArticleLayout>

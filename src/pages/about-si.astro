@@ -1,0 +1,84 @@
+---
+import ArticleLayout from '../layouts/ArticleLayout.astro';
+import { PLAY_URL } from '../data/site.js';
+const jsonld = JSON.stringify([
+  {
+    '@context': 'https://schema.org', '@type': 'AboutPage',
+    name: 'ග්‍රහචාර ගැන', url: 'https://grahachara.com/about-si.html', inLanguage: 'si',
+    isPartOf: { '@type': 'WebSite', name: 'Grahachara', url: 'https://grahachara.com' },
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'Organization',
+    name: 'Grahachara', legalName: 'Wenthura Solutions Pvt Ltd',
+    url: 'https://grahachara.com', logo: 'https://grahachara.com/assets/logo.png',
+    contactPoint: { '@type': 'ContactPoint', email: 'support@grahachara.com', contactType: 'customer support' },
+  },
+]);
+---
+<ArticleLayout
+  lang="si"
+  title="අප ගැන — ග්‍රහචාර | වේද ජ්‍යොතිෂ යෙදුම පිටුපස කතාව"
+  description="වසර පන්දහසක ජ්‍යොතිෂ ඥානය නවීන තාරකා විද්‍යාව සමඟ එක් කරන ග්‍රහචාර, ශ්‍රී ලංකාවේ Wenthura Solutions විසින් නිර්මාණය කරන ලදී — සිංහලෙන් සහ ඉංග්‍රීසියෙන්, ලොව ඕනෑම තැනක."
+  canonical="https://grahachara.com/about-si.html"
+  keywords="ග්‍රහචාර ගැන, wenthura solutions, ජ්‍යොතිෂ යෙදුම, සිංහල ජ්‍යොතිෂ app, ග්‍රහචාර කවුද, sri lanka astrology app"
+  altEn="https://grahachara.com/about.html"
+  altSi="https://grahachara.com/about-si.html"
+  eyebrow="අපේ කතාව"
+  heroTitle="තරු අතර ලියැවුණි. ශ්‍රී ලංකාවේ නිර්මාණය විය."
+  heroSub="වසර පන්දහසක ජ්‍යොතිෂ ප්‍රඥාව නවීන තාරකා විද්‍යාව සමඟ ග්‍රහචාර එක් කරයි — ඔබේ මුතුන්මිත්තන්ට මඟ පෙන්වූ අහසම, ලොව ඔබ සිටින ඕනෑම තැනක ඔබටත් මඟ පෙන්වන පිණිසයි."
+  breadcrumb={[{"label":"මුල් පිටුව","href":"si.html"},{"label":"අප ගැන"}]}
+  bg="page_hero_learn.webp"
+  active="අප ගැන"
+  jsonld={jsonld}
+>
+  <p class="blog-article__intro">පරම්පරා ගණනාවක් තිස්සේ ලාංකික පවුල් දවස අරඹන්නේ ලිත බලමිනි — නැකත් බලා, රාහු කාලය මගහැර, විවාහයකට පෙර පොරොන්දම් ගළපමිනි. එහෙත් මුද්‍රිත ලිතක් කතා කරන්නේ සියල්ලන්ටම එකවරය — එනම් කිසිවෙකුටත් විශේෂයෙන් නොවේ. ග්‍රහචාර උපන්නේ සරල විශ්වාසයකිනි: <strong>සෑම කෙනෙකුටම තමන්ගේම අහසක් හිමි විය යුතුය.</strong></p>
+
+  <div class="feature-page__glass-card">
+    <h2>අපේ කතාව</h2>
+    <p>ග්‍රහචාර ("ග්‍රහයන්ගේ ගමන") ඇරඹුණේ ශ්‍රී ලංකාවේ මිතුරන් අතර ඇති වූ ප්‍රශ්නයකිනි: අපේ සම්ප්‍රදායේ ගැඹුරු, නිවැරදි ජ්‍යොතිෂය ජනතාවට ළඟා වන්නේ පොදු තීරු ලිපි සහ ඡායා පිටපත් කළ කේන්දර හරහා පමණක් ඇයි? ගැටලුව දැනුම නොවේ — ප්‍රවේශයයි.</p>
+    <p>එබැවින් අපේම පවුල්වලට තිබුණා නම් යැයි අප පැතූ මෙවලම අප සෑදුවෙමු. ඔබ උපන් මොහොතේ සැබෑ අහසෙන් ඔබේ සැබෑ කේන්දරය ගණනය කර — ඔබ සිතන භාෂාවෙන්ම එය පැහැදිලි කරන මෙවලමකි; ඒ සිංහල වුවත් ඉංග්‍රීසි වුවත්.</p>
+    <p>අද ග්‍රහචාර ශ්‍රී ලංකාව පුරාත්, ඇමරිකාව, එංගලන්තය, කැනඩාව, ජර්මනිය, ඕස්ට්‍රේලියාව ඇතුළු විදේශගත ලාංකිකයන් අතරත් භාවිත වේ — සෑම ගණනයක්ම භාවිත කරන්නාගේම නගරයට හා වේලා කලාපයට ගැළපේ, එකම අහස යට.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="feature-page__glass-card">
+    <h2>අප විශ්වාස කරන දේ</h2>
+    <ul>
+      <li><strong>සැමවිටම නියම ගණනය.</strong> සෑම කේන්දරයක්ම වෘත්තීය ජ්‍යොතිෂවේදීන් විශ්වාස කරන Swiss Ephemeris ග්‍රහ දත්ත භාවිත කරයි — නිරයන (ලාහිරි) රාශි ක්‍රමයෙන්, ඔබේ නිශ්චිත උපන් වේලාවට හා ස්ථානයට. කිසිවක් ලිතකින් පිටපත් නොකෙරේ.</li>
+      <li><strong>වචන හරඹයට වඩා සරල බස.</strong> තේරුම් ගත නොහැකි පලාපලක් පලාපලක් නොවේ. ලග්නය, දශා සහ නක්ෂත්‍ර ඔබට ක්‍රියාත්මක කළ හැකි භාෂාවෙන් අප පැහැදිලි කරමු.</li>
+      <li><strong>භාෂා දෙකම සමානව.</strong> මෙහි සිංහල පරිවර්තන තට්ටුවක් නොවේ — දෛනික නැකතේ සිට බෙදාගත හැකි කේන්දර පත්‍රය දක්වා, එය නිෂ්පාදනයේ මව් භාෂාවකි.</li>
+      <li><strong>රහස්‍යතාව මුල සිටම.</strong> ඔබේ උපත් තොරතුරු සංකේතනය කර ඇත. ඒවා ඔබේය; අප කරන්නේ ගණිතය පමණි.</li>
+      <li><strong>ජ්‍යොතිෂය සිතියමක් මිස කූඩුවක් නොවේ.</strong> වේද ඥානය සිතියම හෙළි කරයි — ගමන යන්නේ ඔබය. කේන්දරය කියන දේ අප සැමවිටම අවංකව කියමු; බියෙන් කිසිවක් විකුණන්නේ නැත.</li>
+    </ul>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="feature-page__glass-card">
+    <h2>අප සාදා ඇති දේ</h2>
+    <ul>
+      <li><a href="/features/daily-horoscope.html">දෛනික නැකත් සහ රාහු කාලය</a> — සෑම උදෑසනකම ඔබේම නගරයට</li>
+      <li><a href="/features/birth-chart-si.html">ඔබේ සම්පූර්ණ කේන්දරය</a> — ලග්නය, ග්‍රහයෝ, දශා කාලරේඛාව සහ නවාංශකය, පැහැදිලි කර</li>
+      <li><a href="/features/compatibility-si.html">පොරොන්දම් සහ විවාහ ගැළපීම</a> — කේන්දර දෙකෙන්ම සම්පූර්ණ පොරොන්දම් 20</li>
+      <li><a href="/features/life-report.html">අවුරුදු 25 ජීවිත වාර්තා</a> — රැකියාව, ආදරය, සෞඛ්‍යය සහ මුදල්</li>
+      <li>ඔබේ කේන්දරය දැනටමත් දන්නා පෞද්ගලික ජ්‍යොතිෂ කතාබහක් — දිවා රෑ</li>
+      <li>සිහිවටන දරු කේන්දර සහ මංගල මුහුර්ත</li>
+    </ul>
+    <p>මෙම වෙබ් අඩවියේ ඇති සියල්ල — කේන්දර පෙරදසුන, ඉක්මන් පොරොන්දම්, අද අහස — නොමිලයි. සම්පූර්ණ ගැඹුර යෙදුමේ ඇත.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="feature-page__glass-card">
+    <h2>මේ පිටුපස සිටින අය</h2>
+    <p>ග්‍රහචාර නිර්මාණය කරන්නේ ශ්‍රී ලාංකික මෘදුකාංග සමාගමක් වන <strong>Wenthura Solutions Pvt Ltd</strong> විසිනි. අපි මේ සම්ප්‍රදායය සමඟ හැදී වැඩුණු ඉංජිනේරුවන් සහ නිර්මාණකරුවන් වෙමු — එය සලකන්නේ භක්තිකයන්ගේ ගෞරවයෙන් සහ විද්‍යාඥයන්ගේ නිරවද්‍යතාවෙනි.</p>
+    <p>අප සෑම පණිවිඩයක්ම කියවමු. <a href="mailto:support@grahachara.com">support@grahachara.com</a> වෙත ලියන්න, <a href="/legal/support.html">උදව් මධ්‍යස්ථානයට</a> පිවිසෙන්න, නැතහොත් <a href="https://www.facebook.com/share/1FBBur8QZf/" target="_blank" rel="noopener">Facebook</a>, <a href="https://www.instagram.com/grahachara_astro" target="_blank" rel="noopener">Instagram</a> සහ <a href="https://www.tiktok.com/@grahachara_astro" target="_blank" rel="noopener">TikTok</a> හි අප සොයාගන්න.</p>
+  </div>
+
+  <div class="feature-page__cta">
+    <h3>අප සමඟ එකම අහස යට ගමන් කරන්න</h3>
+    <p style="color:var(--pc-text-soft);margin-bottom:20px;">ඔබේ කේන්දරය දැනටමත් ලියැවී ඇත. එය කියවීම නොමිලයි.</p>
+    <a href={PLAY_URL} target="_blank" rel="noopener" class="pc-btn-gold">Google Play වෙතින් ග්‍රහචාර ලබාගන්න</a>
+  </div>
+</ArticleLayout>

@@ -9,7 +9,7 @@ export const navLinks = [
   { label: 'Daily Horoscope', href: 'features/daily-horoscope.html' },
   { label: 'Panchanga', href: 'features/zodiac-signs.html' },
   { label: 'Learn', href: 'blog/what-is-vedic-astrology.html' },
-  { label: 'About', href: 'index.html#wisdom' },
+  { label: 'About', href: 'about.html' },
 ];
 
 // Quick feature cards (top of page)
@@ -117,7 +117,7 @@ export const navLinksSi = [
   { label: 'දෛනික නැකත', href: 'features/daily-horoscope.html' },
   { label: 'පංචාංගය', href: 'features/zodiac-signs.html' },
   { label: 'දැනගන්න', href: 'blog/what-is-vedic-astrology.html' },
-  { label: 'අප ගැන', href: 'si.html#wisdom' },
+  { label: 'අප ගැන', href: 'about-si.html' },
 ];
 
 export const featureCardsSi = [

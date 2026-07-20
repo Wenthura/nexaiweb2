@@ -37,6 +37,13 @@ const bust = (u) => `${u}?v=${V}`;
       if (done) return; done = true;
       el.classList.add('is-done');
       document.documentElement.style.overflow = '';
+      // the scroll lock swallows the browser's #anchor jump — redo it now
+      if (location.hash) {
+        try {
+          var target = document.getElementById(location.hash.slice(1));
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (e) {}
+      }
       setTimeout(function () { if (el && el.parentNode) el.parentNode.removeChild(el); }, 1000);
     }
     function whenReady() { setTimeout(finish, Math.max(0, MIN - (Date.now() - start))); }

@@ -73,9 +73,11 @@ export default function TarotCanvas({ slug, base = '', index = 0, alt = '' }) {
 
     let loaded = 0, dead = false, raf = 0, io = null, running = false, visible = false, t0 = 0;
     const phase = index * 1.9;
-    let px = 0, py = 0, hasPointer = false, lastMove = 0;
+    let px = 0, py = 0, hasPointer = false, lastMove = 0, lastScroll = 0;
 
     const onMove = (e) => { px = e.clientX; py = e.clientY; hasPointer = true; lastMove = performance.now(); };
+    const onScroll = () => { lastScroll = performance.now(); };
+    const artEl = canvas.closest('.feature__art');   // 3D-turn wrapper (feature cards only)
 
     const srcs = [
       { url: `${base}/assets/cosmos/${slug}.webp`, unit: 0, u: 'uBase' },
@@ -94,10 +96,24 @@ export default function TarotCanvas({ slug, base = '', index = 0, alt = '' }) {
       if (!running) return;
       if (!t0) t0 = now;
       const r = canvas.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
       let lx = 0.5, ly = 0.4, idle = 1;
       const T = window.__gcTilt;
-      if (T && T.active) { lx = 0.5 + T.x * 0.85; ly = 0.42 + T.y * 0.85; idle = 0; }   // calibrated phone tilt
-      else if (hasPointer && now - lastMove < 3000 && r.width > 0) { lx = (px - r.left) / r.width; ly = (py - r.top) / r.height; idle = 0; }
+      if (hasPointer && now - lastMove < 3000 && r.width > 0) { lx = (px - r.left) / r.width; ly = (py - r.top) / r.height; idle = 0; }
+      else if (now - lastScroll < 1400 && r.height > 0) {
+        // Scroll lamp: a fixed light hangs at 28% of the viewport — as the card
+        // scrolls past it, the golden highlight physically travels across the art.
+        const prog = 1 - (r.top + r.height / 2) / vh;              // 0 entering → 1 leaving
+        ly = Math.max(-0.5, Math.min(1.5, (vh * 0.28 - r.top) / r.height));
+        lx = 0.5 + 0.2 * Math.sin(phase + prog * 2.6);             // gentle per-card arc
+        idle = 0;
+      }
+      else if (T && T.active) { lx = 0.5 + T.x * 0.85; ly = 0.42 + T.y * 0.85; idle = 0; }   // calibrated phone tilt
+      // 3D turn: cards tip like panes of glass as they cross the viewport centre.
+      if (artEl && !reduced && r.height > 0) {
+        const c = Math.max(-1, Math.min(1, (r.top + r.height / 2 - vh / 2) / (vh / 2)));
+        artEl.style.transform = `perspective(950px) rotateX(${(c * 6).toFixed(2)}deg) scale(${(1 - Math.abs(c) * 0.025).toFixed(3)})`;
+      }
       gl.uniform2f(U.uLight, lx, ly);
       gl.uniform1f(U.uTime, (now - t0) / 1000);
       gl.uniform1f(U.uIdle, idle);
@@ -114,6 +130,7 @@ export default function TarotCanvas({ slug, base = '', index = 0, alt = '' }) {
       resize();
       window.addEventListener('resize', resize);
       document.addEventListener('mousemove', onMove, { passive: true });
+      window.addEventListener('scroll', onScroll, { passive: true });
       if ('IntersectionObserver' in window) {
         io = new IntersectionObserver((es) => { visible = es[0].isIntersecting; visible ? play() : pause(); }, { rootMargin: '100px' });
         io.observe(canvas);
@@ -144,6 +161,7 @@ export default function TarotCanvas({ slug, base = '', index = 0, alt = '' }) {
       dead = true; pause();
       window.removeEventListener('resize', resize);
       document.removeEventListener('mousemove', onMove);
+      window.removeEventListener('scroll', onScroll);
       if (io) io.disconnect();
     };
   }, [slug, base, index]);
